@@ -1273,6 +1273,27 @@ class SWEAgent:
             "penalized_edges_count": len(self.adaptive_retrieval_result.penalized_edges) if self.adaptive_retrieval_result else 0,
             "negative_avoidance_count": self.adaptive_retrieval_result.negative_avoidance_count if self.adaptive_retrieval_result else 0,
             "stored_negative_experience_ids": self.stored_negative_experience_ids,
+            # ── Token usage (populated when using GemmaModelAdapter) ──────────
+            "total_input_tokens":  (
+                self.model.get_token_usage()["total_input_tokens"]
+                if hasattr(self.model, "get_token_usage") else 0
+            ),
+            "total_output_tokens": (
+                self.model.get_token_usage()["total_output_tokens"]
+                if hasattr(self.model, "get_token_usage") else 0
+            ),
+            "total_tokens": (
+                self.model.get_token_usage()["total_tokens"]
+                if hasattr(self.model, "get_token_usage") else 0
+            ),
+            "model_calls": (
+                self.model.get_token_usage()["total_calls"]
+                if hasattr(self.model, "get_token_usage") else 0
+            ),
+            "token_log": (
+                self.model.get_token_usage()["per_call_log"]
+                if hasattr(self.model, "get_token_usage") else []
+            ),
         }
 
         return {

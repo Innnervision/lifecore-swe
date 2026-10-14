@@ -1,0 +1,388 @@
+{
+  "m3_hydra_mesh": {
+    "label": "M3 Sequential Benchmark (hydra_mesh)",
+    "conditions_analysed": [
+      "A_STATELESS",
+      "B_STATIC_GRAPH",
+      "C_GRAPH_EXP_TEXT",
+      "D_EXP_CONDITIONED",
+      "E_EXP_GRAPH_NO_TEXT"
+    ],
+    "n_observations_per_condition": {
+      "A_STATELESS": {
+        "execution_time": 5,
+        "tool_calls": 5,
+        "search_count": 5,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "repository_localization_efficiency": 5
+      },
+      "B_STATIC_GRAPH": {
+        "execution_time": 5,
+        "tool_calls": 5,
+        "search_count": 5,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "repository_localization_efficiency": 5
+      },
+      "C_GRAPH_EXP_TEXT": {
+        "execution_time": 5,
+        "tool_calls": 5,
+        "search_count": 5,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "repository_localization_efficiency": 5
+      },
+      "D_EXP_CONDITIONED": {
+        "execution_time": 5,
+        "tool_calls": 5,
+        "search_count": 5,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "repository_localization_efficiency": 5
+      },
+      "E_EXP_GRAPH_NO_TEXT": {
+        "execution_time": 5,
+        "tool_calls": 5,
+        "search_count": 5,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "repository_localization_efficiency": 5
+      }
+    },
+    "bonferroni_alpha": 0.005,
+    "n_comparisons": 10,
+    "descriptive": {
+      "A_STATELESS": {
+        "execution_time": {
+          "n": 5,
+          "mean": 204.633,
+          "std": 89.876,
+          "min": 50.08,
+          "max": 285.4
+        },
+        "tool_calls": {
+          "n": 5,
+          "mean": 15.0,
+          "std": 5.745,
+          "min": 6.0,
+          "max": 20.0
+        },
+        "search_count": {
+          "n": 5,
+          "mean": 6.2,
+          "std": 3.701,
+          "min": 0.0,
+          "max": 10.0
+        },
+        "total_input_tokens": {
+          "n": 0
+        },
+        "total_output_tokens": {
+          "n": 0
+        },
+        "repository_localization_efficiency": {
+          "n": 5,
+          "mean": 0.9,
+          "std": 0.224,
+          "min": 0.5,
+          "max": 1.0
+        }
+      },
+      "B_STATIC_GRAPH": {
+        "execution_time": {
+          "n": 5,
+          "mean": 136.543,
+          "std": 90.362,
+          "min": 56.229,
+          "max": 264.842
+        },
+        "tool_calls": {
+          "n": 5,
+          "mean": 6.0,
+          "std": 1.0,
+          "min": 5.0,
+          "max": 7.0
+        },
+        "search_count": {
+          "n": 5,
+          "mean": 0.0,
+          "std": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "total_input_tokens": {
+          "n": 0
+        },
+        "total_output_tokens": {
+          "n": 0
+        },
+        "repository_localization_efficiency": {
+          "n": 5,
+          "mean": 0.7,
+          "std": 0.274,
+          "min": 0.5,
+          "max": 1.0
+        }
+      },
+      "C_GRAPH_EXP_TEXT": {
+        "execution_time": {
+          "n": 5,
+          "mean": 141.892,
+          "std": 74.321,
+          "min": 80.585,
+          "max": 241.711
+        },
+        "tool_calls": {
+          "n": 5,
+          "mean": 5.8,
+          "std": 0.837,
+          "min": 5.0,
+          "max": 7.0
+        },
+        "search_count": {
+          "n": 5,
+          "mean": 0.0,
+          "std": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "total_input_tokens": {
+          "n": 0
+        },
+        "total_output_tokens": {
+          "n": 0
+        },
+        "repository_localization_efficiency": {
+          "n": 5,
+          "mean": 0.8,
+          "std": 0.274,
+          "min": 0.5,
+          "max": 1.0
+        }
+      },
+      "D_EXP_CONDITIONED": {
+        "execution_time": {
+          "n": 5,
+          "mean": 180.719,
+          "std": 82.646,
+          "min": 96.011,
+          "max": 297.759
+        },
+        "tool_calls": {
+          "n": 5,
+          "mean": 8.0,
+          "std": 2.345,
+          "min": 6.0,
+          "max": 12.0
+        },
+        "search_count": {
+          "n": 5,
+          "mean": 0.2,
+          "std": 0.447,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "total_input_tokens": {
+          "n": 0
+        },
+        "total_output_tokens": {
+          "n": 0
+        },
+        "repository_localization_efficiency": {
+          "n": 5,
+          "mean": 0.6,
+          "std": 0.224,
+          "min": 0.5,
+          "max": 1.0
+        }
+      },
+      "E_EXP_GRAPH_NO_TEXT": {
+        "execution_time": {
+          "n": 5,
+          "mean": 115.502,
+          "std": 72.858,
+          "min": 60.167,
+          "max": 226.18
+        },
+        "tool_calls": {
+          "n": 5,
+          "mean": 6.0,
+          "std": 0.707,
+          "min": 5.0,
+          "max": 7.0
+        },
+        "search_count": {
+          "n": 5,
+          "mean": 0.0,
+          "std": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "total_input_tokens": {
+          "n": 0
+        },
+        "total_output_tokens": {
+          "n": 0
+        },
+        "repository_localization_efficiency": {
+          "n": 5,
+          "mean": 0.7,
+          "std": 0.274,
+          "min": 0.5,
+          "max": 1.0
+        }
+      }
+    },
+    "welch_t_tests": {
+      "execution_time": {
+        "A_STATELESS vs B_STATIC_GRAPH": {
+          "t": 1.1946,
+          "p": 0.2664,
+          "cohens_d": 0.7556,
+          "significant": false
+        },
+        "A_STATELESS vs C_GRAPH_EXP_TEXT": {
+          "t": 1.2029,
+          "p": 0.2646,
+          "cohens_d": 0.7608,
+          "significant": false
+        },
+        "A_STATELESS vs D_EXP_CONDITIONED": {
+          "t": 0.438,
+          "p": 0.6731,
+          "cohens_d": 0.277,
+          "significant": false
+        },
+        "A_STATELESS vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 1.7226,
+          "p": 0.1249,
+          "cohens_d": 1.0895,
+          "significant": false
+        },
+        "B_STATIC_GRAPH vs C_GRAPH_EXP_TEXT": {
+          "t": -0.1022,
+          "p": 0.9212,
+          "cohens_d": -0.0647,
+          "significant": false
+        },
+        "B_STATIC_GRAPH vs D_EXP_CONDITIONED": {
+          "t": -0.8067,
+          "p": 0.4434,
+          "cohens_d": -0.5102,
+          "significant": false
+        },
+        "B_STATIC_GRAPH vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 0.4053,
+          "p": 0.6963,
+          "cohens_d": 0.2563,
+          "significant": false
+        },
+        "C_GRAPH_EXP_TEXT vs D_EXP_CONDITIONED": {
+          "t": -0.7811,
+          "p": 0.4575,
+          "cohens_d": -0.494,
+          "significant": false
+        },
+        "C_GRAPH_EXP_TEXT vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 0.567,
+          "p": 0.5863,
+          "cohens_d": 0.3586,
+          "significant": false
+        },
+        "D_EXP_CONDITIONED vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 1.3236,
+          "p": 0.2228,
+          "cohens_d": 0.8371,
+          "significant": false
+        }
+      },
+      "tool_calls": {
+        "A_STATELESS vs B_STATIC_GRAPH": {
+          "t": 3.4513,
+          "p": 0.0237,
+          "cohens_d": 2.1828,
+          "significant": true
+        },
+        "A_STATELESS vs C_GRAPH_EXP_TEXT": {
+          "t": 3.5437,
+          "p": 0.0223,
+          "cohens_d": 2.2412,
+          "significant": true
+        },
+        "A_STATELESS vs D_EXP_CONDITIONED": {
+          "t": 2.5226,
+          "p": 0.0503,
+          "cohens_d": 1.5954,
+          "significant": false
+        },
+        "A_STATELESS vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 3.477,
+          "p": 0.0242,
+          "cohens_d": 2.199,
+          "significant": true
+        },
+        "B_STATIC_GRAPH vs C_GRAPH_EXP_TEXT": {
+          "t": 0.343,
+          "p": 0.7407,
+          "cohens_d": 0.2169,
+          "significant": false
+        },
+        "B_STATIC_GRAPH vs D_EXP_CONDITIONED": {
+          "t": -1.7541,
+          "p": 0.1353,
+          "cohens_d": -1.1094,
+          "significant": false
+        },
+        "B_STATIC_GRAPH vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 0.0,
+          "p": 1.0,
+          "cohens_d": 0.0,
+          "significant": false
+        },
+        "C_GRAPH_EXP_TEXT vs D_EXP_CONDITIONED": {
+          "t": -1.9757,
+          "p": 0.1051,
+          "cohens_d": -1.2495,
+          "significant": false
+        },
+        "C_GRAPH_EXP_TEXT vs E_EXP_GRAPH_NO_TEXT": {
+          "t": -0.4082,
+          "p": 0.6941,
+          "cohens_d": -0.2582,
+          "significant": false
+        },
+        "D_EXP_CONDITIONED vs E_EXP_GRAPH_NO_TEXT": {
+          "t": 1.8257,
+          "p": 0.1309,
+          "cohens_d": 1.1547,
+          "significant": false
+        }
+      }
+    },
+    "wilcoxon_b_vs_e": {
+      "execution_time": {
+        "W": 1,
+        "p": 0.0796,
+        "cohens_d": 0.2563,
+        "n_pairs": 5,
+        "significant": false
+      },
+      "tool_calls": {
+        "W": 1,
+        "p": 0.6547,
+        "cohens_d": 0.0,
+        "n_pairs": 5,
+        "significant": false
+      },
+      "search_count": {
+        "W": 0.0,
+        "p": 1.0,
+        "cohens_d": 0.0,
+        "n_pairs": 5,
+        "significant": false
+      }
+    },
+    "token_comparison": {}
+  }
+}

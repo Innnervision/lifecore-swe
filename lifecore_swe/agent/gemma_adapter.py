@@ -47,6 +47,12 @@ class GemmaModelAdapter(ModelAdapter):
         }
         self.tool_calling_capability = "Structured JSON Output Action Selection & Reasoning"
 
+        # Token usage tracking — accumulated across all calls in this adapter instance
+        self.total_input_tokens:  int = 0
+        self.total_output_tokens: int = 0
+        self.total_calls:         int = 0
+        self.token_log: list = []   # per-call breakdown: [{call_idx, input, output, cached}]
+
     def get_model_info(self) -> Dict[str, Any]:
         """Return exact model identity and runtime configuration."""
         return {
@@ -62,11 +68,59 @@ class GemmaModelAdapter(ModelAdapter):
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
+    def _record_token_usage(self, response, cached: bool = False) -> None:
+        """Extract usage_metadata from a GenAI response and accumulate totals."""
+        try:
+            usage = getattr(response, "usage_metadata", None)
+            if usage is None:
+                return
+            # Google GenAI SDK: usage_metadata has prompt_token_count and
+            # candidates_token_count (output), and total_token_count.
+            in_tok  = getattr(usage, "prompt_token_count",     0) or 0
+            out_tok = getattr(usage, "candidates_token_count", 0) or 0
+            self.total_input_tokens  += in_tok
+            self.total_output_tokens += out_tok
+            self.total_calls         += 1
+            self.token_log.append({
+                "call_index":    self.total_calls,
+                "input_tokens":  in_tok,
+                "output_tokens": out_tok,
+                "cached":        cached,
+            })
+        except Exception:
+            pass  # Never break the main flow due to token logging
+
+    def get_token_usage(self) -> dict:
+        """Return accumulated token usage summary."""
+        return {
+            "total_input_tokens":  self.total_input_tokens,
+            "total_output_tokens": self.total_output_tokens,
+            "total_tokens":        self.total_input_tokens + self.total_output_tokens,
+            "total_calls":         self.total_calls,
+            "per_call_log":        self.token_log,
+        }
+
+    def reset_token_usage(self) -> None:
+        """Reset counters — call between tasks to get per-task token totals."""
+        self.total_input_tokens  = 0
+        self.total_output_tokens = 0
+        self.total_calls         = 0
+        self.token_log           = []
+
     def _call_model_with_retry(self, prompt: str, max_retries: int = 5) -> str:
         """Call GenAI model with exponential backoff on transient errors."""
         last_error = None
         cache_key = hashlib.sha256((self.model_name + prompt).encode('utf-8')).hexdigest()
         if cache_key in _PROMPT_CACHE:
+            # Cache hit — estimate token count from prompt length (~4 chars/token)
+            # and mark as cached so the log is honest about live vs. cached calls.
+            self.total_calls += 1
+            self.token_log.append({
+                "call_index":    self.total_calls,
+                "input_tokens":  len(prompt) // 4,
+                "output_tokens": len(_PROMPT_CACHE[cache_key]) // 4,
+                "cached":        True,
+            })
             return _PROMPT_CACHE[cache_key]
 
         for attempt in range(max_retries):
@@ -81,6 +135,7 @@ class GemmaModelAdapter(ModelAdapter):
                 )
                 if response.text:
                     res_txt = response.text.strip()
+                    self._record_token_usage(response, cached=False)
                     _PROMPT_CACHE[cache_key] = res_txt
                     try:
                         _PROMPT_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -113,6 +168,7 @@ class GemmaModelAdapter(ModelAdapter):
             )
             if response.text:
                 res_txt = response.text.strip()
+                self._record_token_usage(response, cached=False)
                 _PROMPT_CACHE[cache_key] = res_txt
                 try:
                     _PROMPT_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)

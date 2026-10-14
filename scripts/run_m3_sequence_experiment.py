@@ -92,6 +92,9 @@ def run_task(task_def, condition, store_path=None, overlay_path=None, model_adap
 
     task_text = (REPO_PATH / task_def["task_file"]).read_text(encoding="utf-8")
     adapter = model_adapter or GemmaModelAdapter(model_name="gemma-4-26b-a4b-it", temperature=0.1)
+    # Reset per-task token counters so each result JSON has accurate per-task token usage
+    if hasattr(adapter, "reset_token_usage"):
+        adapter.reset_token_usage()
 
     traj_filename = f"m3_{condition.lower()}_{task_id.lower()}.jsonl"
     traj_path = f"/lifecore-swe/experiments/trajectories/{traj_filename}"
