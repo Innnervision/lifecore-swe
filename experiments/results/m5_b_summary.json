@@ -1,0 +1,45 @@
+{
+  "milestone": "M5-B",
+  "title": "Controlled Offline Ingestion & Validation Pipeline",
+  "status": "COMPLETED",
+  "date": "2026-09-30",
+  "research_question": "Can external software resources be ingested via deterministic offline adapters and rigorously validated against schema, cryptographic integrity, licensing, and ground truth contradictions before being accepted into the registry, without automatic elevation to trusted status?",
+  "components_implemented": [
+    "lifecore_swe.resources.adapters.base (BaseResourceAdapter, AdapterIngestionResult)",
+    "lifecore_swe.resources.adapters.python_docs (PythonDocsAdapter)",
+    "lifecore_swe.resources.adapters.package_metadata (PackageMetadataAdapter)",
+    "lifecore_swe.resources.adapters.mock_sources (MockResourceAdapter, official docs, package, API ref, code examples, adversarial fixtures)",
+    "lifecore_swe.resources.validator (ResourceValidator, ValidationResult with 7-stage check suite)",
+    "lifecore_swe.resources.registry (validate_and_register integration)"
+  ],
+  "validation_checks_supported": [
+    "schema_correctness",
+    "content_hash_integrity",
+    "version_consistency",
+    "source_identity_alignment",
+    "license_metadata_compliance",
+    "content_syntax_correctness",
+    "ground_truth_consistency"
+  ],
+  "core_rule_enforced": "RETRIEVED != VERIFIED (Adapters strictly produce RETRIEVED records; only validation against ground truth can elevate to VERIFIED)",
+  "network_calls_performed": 0,
+  "live_internet_enabled": false,
+  "test_metrics": {
+    "total_tests": 95,
+    "existing_tests_passed": 80,
+    "new_m5_b_tests_passed": 15,
+    "failed_tests": 0,
+    "pass_rate": 1.0,
+    "duration_seconds": 2.24
+  },
+  "backward_compatibility": {
+    "m0_1": "PRESERVED",
+    "m1a": "PRESERVED",
+    "m1b": "PRESERVED",
+    "m1c": "PRESERVED",
+    "m2": "PRESERVED",
+    "m3": "PRESERVED",
+    "m4": "PRESERVED",
+    "m5_a": "PRESERVED"
+  }
+}

@@ -1,0 +1,1927 @@
+{
+  "status": "SUCCESS",
+  "metrics": {
+    "task_success": true,
+    "patch_applied": true,
+    "patch_correctness": true,
+    "tests_before": {
+      "passed": false,
+      "summary": "============================== 1 failed in 0.04s ===============================",
+      "exit_code": 1
+    },
+    "tests_after": {
+      "passed": true,
+      "summary": "============================== 1 passed in 0.02s ===============================",
+      "exit_code": 0
+    },
+    "test_passed": true,
+    "files_inspected": [
+      "hydra_mesh/pipeline/transformer.py",
+      "hydra_mesh/pipeline/dead_letter.py"
+    ],
+    "files_read": 2,
+    "search_count": 0,
+    "tool_calls": 7,
+    "test_runs": 4,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 15,
+    "graph_edges_retrieved": 18,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 1,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 0.5,
+    "execution_time": 106.194,
+    "verification_status": "PASSED",
+    "experiences_retrieved": [
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977"
+    ],
+    "experience_count": 3,
+    "experience_stored": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-4-1790539088",
+    "experience_influence": "IGNORED",
+    "experience_stale_count": 3,
+    "experience_guided_edge_utilization": 0.0,
+    "experience_supported_edges": [],
+    "experience_edges_count": 0
+  },
+  "state": {
+    "task": "# SEQ-TASK-4: Route Malformed Schema Events to Dead-Letter Queue\n\n## Summary\nEvents arriving at the pipeline without a valid `event_id` currently raise an unhandled `SchemaError`, halting batch processing. Instead of terminating the pipeline, malformed events should be routed to the configured dead-letter queue.\n\n## Current Observed Behavior\n`EventTransformer.transform_event()` in `hydra_mesh/pipeline/transformer.py` raises `SchemaError` when `event_id` is missing.\n\n## Expected Behavior\nWhen an event is missing `event_id`, `EventTransformer` should route the invalid event and failure reason to `self.dead_letter.route(event, reason=\"Missing required event_id\")` and return `None` without raising an uncaught exception.\n",
+    "observations": [
+      "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/pipeline/__init__.py\n  - hydra_mesh/pipeline/coordinator.py\n  - hydra_mesh/pipeline/dead_letter.py\n  - hydra_mesh/pipeline/transformer.py\n\nKEY CODE SYMBOLS & NODES (Selected: 15):\n  - [CLASS] DeadLetterQueue (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.transformer (hydra_mesh/pipeline/transformer.py)\n  - [MODULE] hydra_mesh.pipeline.dead_letter (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.coordinator (hydra_mesh/pipeline/coordinator.py)\n  - [MODULE] tests.test_dead_letter (tests/test_dead_letter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n  - [CLASS] SchemaError (hydra_mesh/core/exceptions.py)\n  - [CLASS] EventTransformer (hydra_mesh/pipeline/transformer.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 18, Experience-Reinforced: 0):\n  - test_transformer_valid --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_valid --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - EventTransformer.transform_event --[CALLS]--> SchemaError [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.transformer [Base: 0.80, Exp: 0.00, Final: 0.80]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.dead_letter [Base: 0.80, Exp: 0.00, Final: 0.80]\n\nVERIFICATION TEST TARGETS (Prioritized: 3):\n  - test_transformer_valid (tests/test_dead_letter.py) verifies \n  - test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) verifies \n  - test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) verifies \n=========================================================",
+      "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2, Category: behavior_modification)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'self', 'the', 'behavior']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2'\n- Prior Task: # SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hyd\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 8 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'the', 'behavior', 'and']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1'\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CON\n... [Experience Context Truncated]",
+      "Listed 69 files in repository: hydra_mesh/__init__.py, hydra_mesh/connectors/__init__.py, hydra_mesh/connectors/auth.py, hydra_mesh/connectors/file_sink.py, hydra_mesh/connectors/http_sink.py, hydra_mesh/connectors/metrics_exporter.py, hydra_mesh/connectors/retry_policy.py, hydra_mesh/connectors/stream_sink.py",
+      "Inspected file hydra_mesh/pipeline/transformer.py (18 lines).",
+      "Test run failed: ============================== 1 failed in 0.04s ===============================",
+      "Inspected file hydra_mesh/pipeline/dead_letter.py (12 lines).",
+      "Applied code modification attempt #1 to hydra_mesh/pipeline/transformer.py (success: True).",
+      "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+      "Verification completed with status: PASSED"
+    ],
+    "hypotheses": [],
+    "files_inspected": [
+      "hydra_mesh/pipeline/transformer.py",
+      "hydra_mesh/pipeline/dead_letter.py"
+    ],
+    "searches": [],
+    "actions": [
+      {
+        "action": "modify_code",
+        "file": "hydra_mesh/pipeline/transformer.py",
+        "attempt": 1,
+        "success": true
+      }
+    ],
+    "test_results": [
+      {
+        "attempt": 0,
+        "passed": false,
+        "summary": "============================== 1 failed in 0.04s ==============================="
+      },
+      {
+        "attempt": 1,
+        "passed": true,
+        "summary": "============================== 1 passed in 0.02s ==============================="
+      }
+    ],
+    "failures": [],
+    "recovery_attempts": 0,
+    "patch_attempts": 1,
+    "final_patch": "diff --git a/hydra_mesh/pipeline/transformer.py b/hydra_mesh/pipeline/transformer.py\nindex 07c3066..e1cf531 100644\n--- a/hydra_mesh/pipeline/transformer.py\n+++ b/hydra_mesh/pipeline/transformer.py\n@@ -10,9 +10,8 @@ class EventTransformer:\n     def transform_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:\n         \"\"\"Transform event. If schema is missing required 'event_id', route to dead letter queue.\"\"\"\n         if \"event_id\" not in event:\n-            # BUG FOR TASK-203:\n-            # Directly raises SchemaError instead of routing to self.dead_letter.route()!\n-            raise SchemaError(\"Missing required event_id\")\n+            self.dead_letter.route(event, reason=\"Missing required event_id\")\n+            return None\n         \n         event[\"transformed\"] = True\n         return event\n",
+    "verification": {
+      "status": "PASSED",
+      "success": true,
+      "patch_applied": true,
+      "containment_ok": true,
+      "unintended_files": [],
+      "files_changed": [
+        "hydra_mesh/pipeline/transformer.py"
+      ],
+      "test_command": "pytest -v tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+      "test_summary": "============================== 1 passed in 0.01s ===============================",
+      "test_exit_code": 0,
+      "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+      "failure_reasons": []
+    },
+    "graph_evidence": "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/pipeline/__init__.py\n  - hydra_mesh/pipeline/coordinator.py\n  - hydra_mesh/pipeline/dead_letter.py\n  - hydra_mesh/pipeline/transformer.py\n\nKEY CODE SYMBOLS & NODES (Selected: 15):\n  - [CLASS] DeadLetterQueue (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.transformer (hydra_mesh/pipeline/transformer.py)\n  - [MODULE] hydra_mesh.pipeline.dead_letter (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.coordinator (hydra_mesh/pipeline/coordinator.py)\n  - [MODULE] tests.test_dead_letter (tests/test_dead_letter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n  - [CLASS] SchemaError (hydra_mesh/core/exceptions.py)\n  - [CLASS] EventTransformer (hydra_mesh/pipeline/transformer.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 18, Experience-Reinforced: 0):\n  - test_transformer_valid --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_valid --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - EventTransformer.transform_event --[CALLS]--> SchemaError [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.transformer [Base: 0.80, Exp: 0.00, Final: 0.80]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.dead_letter [Base: 0.80, Exp: 0.00, Final: 0.80]\n\nVERIFICATION TEST TARGETS (Prioritized: 3):\n  - test_transformer_valid (tests/test_dead_letter.py) verifies \n  - test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) verifies \n  - test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) verifies \n=========================================================",
+    "experience_context": "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2, Category: behavior_modification)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'self', 'the', 'behavior']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2'\n- Prior Task: # SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hyd\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 8 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'the', 'behavior', 'and']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1'\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CON\n... [Experience Context Truncated]",
+    "experiences_retrieved": [
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977"
+    ],
+    "current_phase": "COMPLETED"
+  },
+  "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-4.jsonl",
+  "model_info": {
+    "model_name": "models/gemma-4-26b-a4b-it",
+    "model_version": "001",
+    "display_name": "Gemma 4 26B A4B IT",
+    "provider": "Google",
+    "api_runtime": "Google GenAI API (google-genai 2.25.0)",
+    "context_length": {
+      "input_tokens": 262144,
+      "output_tokens": 32768
+    },
+    "temperature": 0.1,
+    "tool_calling_capability": "Structured JSON Output Action Selection & Reasoning",
+    "is_development_adapter": false,
+    "timestamp": "2026-09-27T19:58:08.948604+00:00"
+  },
+  "retrieval_result": {
+    "query": "# SEQ-TASK-4: Route Malformed Schema Events to Dead-Letter Queue\n\n## Summary\nEvents arriving at the pipeline without a valid `event_id` currently raise an unhandled `SchemaError`, halting batch processing. Instead of terminating the pipeline, malformed events should be routed to the configured dead-letter queue.\n\n## Current Observed Behavior\n`EventTransformer.transform_event()` in `hydra_mesh/pipeline/transformer.py` raises `SchemaError` when `event_id` is missing.\n\n## Expected Behavior\nWhen an event is missing `event_id`, `EventTransformer` should route the invalid event and failure reason to `self.dead_letter.route(event, reason=\"Missing required event_id\")` and return `None` without raising an uncaught exception.\n",
+    "candidate_nodes": [
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 15.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "hydra_mesh.pipeline.dead_letter",
+        "start_line": 1,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.transformer",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "hydra_mesh.pipeline.transformer",
+        "start_line": 1,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 9.5
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-1.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-1.md",
+        "symbol": "SEQ-TASK-1.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "16d80ce61dbaf7f0f358ddeb194fb3fcb6cc3ad245b238a777701df28bd91906",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-2.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-2.md",
+        "symbol": "SEQ-TASK-2.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "3d2062f8d070554fb988bd65e010c6bc0654bb9b217061b29009ba26141ca1b9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-3.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-3.md",
+        "symbol": "SEQ-TASK-3.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "598178c84c34c0c8c10385168451961d302623dfec1f693b94a79a72a90d2c73",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-4.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-4.md",
+        "symbol": "SEQ-TASK-4.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8f586a05e08b77498a610ae3856e4367e13bf4c6bf15e0df6def53b276da8ca7",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-5.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-5.md",
+        "symbol": "SEQ-TASK-5.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "452d455d60d4b841f01ece2abf4b69a65a93be285f94a6b5ddfefce83d242839",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/__init__.py",
+        "symbol": "hydra_mesh.pipeline.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "e79c3bec4e72cf2c52577fb270a1ed002a84e3046761bae09960e57e4d89c276",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.aggregators",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/aggregators.py",
+        "symbol": "hydra_mesh.pipeline.aggregators",
+        "start_line": 1,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "1553c5ea6f034c1ac796dd2f6f9b352fec8b8042e723b706afae86d606b70cfe",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.coordinator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/coordinator.py",
+        "symbol": "hydra_mesh.pipeline.coordinator",
+        "start_line": 1,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "d054f182170b9f349c9a39d07622384c89cf5f2de5367b9c18287b4e3e06268d",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.count",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.count",
+        "start_line": 11,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e42891d8a14d37ba4a04709002c78f65d63c031e32ae88fd8d7d1563b524f7d6",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "failed_events",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.deduplicator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/deduplicator.py",
+        "symbol": "hydra_mesh.pipeline.deduplicator",
+        "start_line": 1,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "7affe2ad1ee83c38f05099cafefe457877f4602bcf37c0db65f652305107fea4",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.enricher",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/enricher.py",
+        "symbol": "hydra_mesh.pipeline.enricher",
+        "start_line": 1,
+        "end_line": 4,
+        "language": "python",
+        "content_hash": "8790f81a0c638109b4241c83d2502dea112a18de904100d3d5de3d207a3e50b4",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.router",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/router.py",
+        "symbol": "hydra_mesh.pipeline.router",
+        "start_line": 1,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "c400085f54ce9ac2969b56aea38686c04d48b8c5d216e7a56aeb7a29f72b6db9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.windowing",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/windowing.py",
+        "symbol": "hydra_mesh.pipeline.windowing",
+        "start_line": 1,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "d9ba93d20e8fbe99b925c9b301cde72e2ea25d4cc14537c66e2e04f2a2d70a9a",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        },
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:hydra_mesh/pipeline/dead_letter.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "dead_letter.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {},
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "file:hydra_mesh/pipeline/transformer.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "transformer.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {},
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.route",
+        "start_line": 8,
+        "end_line": 9,
+        "language": "python",
+        "content_hash": "7098c5d4915aad915cd79a7e881724fc09393de7009547c2a6b6255de0298b3d",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "dict",
+            "str",
+            "append",
+            "failed_events",
+            "event",
+            "reason",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.__init__",
+        "start_line": 7,
+        "end_line": 8,
+        "language": "python",
+        "content_hash": "77d1e36dc3e12f3becfe134c7e23f1da327cd44b7ca9f23cdb364b92769944c5",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue"
+          ],
+          "references": [
+            "dead_letter",
+            "self",
+            "dlq",
+            "Optional",
+            "DeadLetterQueue"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.allow_request",
+        "start_line": 13,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "09fa08bc38f67b8496679a3d1587fce4514659a8f65328a24e74b6d35690d23f",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "max_requests",
+            "str",
+            "float",
+            "timestamp",
+            "window_seconds",
+            "setdefault",
+            "client_id",
+            "history",
+            "t",
+            "len",
+            "self",
+            "append"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "SchemaError",
+        "start_line": 2,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "98f4d8560143d831dcd369e078c157f1f09406caed81e897a70ae821500e8261",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "MeshError"
+          ],
+          "parent": null
+        },
+        "relevance_score": 5.0
+      },
+      {
+        "node_id": "file:tasks/TASK-201.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-201.md",
+        "symbol": "TASK-201.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-202.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-202.md",
+        "symbol": "TASK-202.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-203.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-203.md",
+        "symbol": "TASK-203.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-204.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-204.md",
+        "symbol": "TASK-204.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+        "metadata": {},
+        "relevance_score": 4.5
+      }
+    ],
+    "selected_nodes": [
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.transformer",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "hydra_mesh.pipeline.transformer",
+        "start_line": 1,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "hydra_mesh.pipeline.dead_letter",
+        "start_line": 1,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.coordinator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/coordinator.py",
+        "symbol": "hydra_mesh.pipeline.coordinator",
+        "start_line": 1,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "d054f182170b9f349c9a39d07622384c89cf5f2de5367b9c18287b4e3e06268d",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:tests.test_dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "tests.test_dead_letter",
+        "start_line": 1,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "b66821fd776fb6656495aa65ce54adebf05af0a8b488ffb2dd6b73311a225f25",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.core.exceptions",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "hydra_mesh.core.exceptions",
+        "start_line": 1,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "6769c2c553e722be2c81eaecaf94a1562398bd265d8581a9fae65bb240f30e82",
+        "metadata": {}
+      },
+      {
+        "node_id": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "SchemaError",
+        "start_line": 2,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "98f4d8560143d831dcd369e078c157f1f09406caed81e897a70ae821500e8261",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "MeshError"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "start_line": 14,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "9b733e6559a338b3e77e0c1f57bf26f8049925ce67ec84ed2db25c0cce8e0fdb",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/coordinator.py",
+        "symbol": "PipelineCoordinator.run_pipeline",
+        "start_line": 6,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "3646bffb334add15eb7f89687ab1a0df4ffd8eff1c0135d0cd38b95c0a20d5a4",
+        "metadata": {
+          "calls": [
+            "transform_event"
+          ],
+          "references": [
+            "list",
+            "transform_event",
+            "e",
+            "events",
+            "transformer",
+            "self"
+          ],
+          "parent": "PipelineCoordinator"
+        }
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        }
+      },
+      {
+        "node_id": "file:hydra_mesh/pipeline/transformer.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "transformer.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/__init__.py",
+        "symbol": "hydra_mesh.pipeline.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "e79c3bec4e72cf2c52577fb270a1ed002a84e3046761bae09960e57e4d89c276",
+        "metadata": {}
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_rate_limited_to_dlq",
+        "start_line": 22,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "9c63cb6a9f7e7952286e9634ed0d3658a4148c31a1c28aaa38ce56bfa55fe081",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "limiter",
+            "transformer",
+            "res1",
+            "res2",
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count",
+            "failed_events"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_valid",
+        "start_line": 6,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e633fb7b1da317ff21071c41111eea4e4bb8f51fe9ecc37441992441c0a34fed",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        }
+      }
+    ],
+    "selected_edges": [
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_valid->TESTS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "TESTS",
+        "source_symbol": "test_transformer_valid",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (TESTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_valid->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "source_symbol": "test_transformer_valid",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (CALLS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "TESTS",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (TESTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (CALLS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "TESTS",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (TESTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (CALLS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event->CALLS->class:hydra_mesh/core/exceptions.py::SchemaError",
+        "source": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "target": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "edge_type": "CALLS",
+        "source_symbol": "EventTransformer.transform_event",
+        "target_symbol": "SchemaError",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (CALLS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "source_symbol": "PipelineCoordinator.run_pipeline",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 1.0,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 1.0,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (CALLS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.pipeline.transformer",
+        "source": "module:tests.test_dead_letter",
+        "target": "module:hydra_mesh.pipeline.transformer",
+        "edge_type": "IMPORTS",
+        "source_symbol": "tests.test_dead_letter",
+        "target_symbol": "hydra_mesh.pipeline.transformer",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.pipeline.dead_letter",
+        "source": "module:tests.test_dead_letter",
+        "target": "module:hydra_mesh.pipeline.dead_letter",
+        "edge_type": "IMPORTS",
+        "source_symbol": "tests.test_dead_letter",
+        "target_symbol": "hydra_mesh.pipeline.dead_letter",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.transformer->IMPORTS->module:hydra_mesh.pipeline.dead_letter",
+        "source": "module:hydra_mesh.pipeline.transformer",
+        "target": "module:hydra_mesh.pipeline.dead_letter",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.pipeline.transformer",
+        "target_symbol": "hydra_mesh.pipeline.dead_letter",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.transformer->IMPORTS->module:hydra_mesh.core.exceptions",
+        "source": "module:hydra_mesh.pipeline.transformer",
+        "target": "module:hydra_mesh.core.exceptions",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.pipeline.transformer",
+        "target_symbol": "hydra_mesh.core.exceptions",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.coordinator->IMPORTS->module:hydra_mesh.pipeline.transformer",
+        "source": "module:hydra_mesh.pipeline.coordinator",
+        "target": "module:hydra_mesh.pipeline.transformer",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.pipeline.coordinator",
+        "target_symbol": "hydra_mesh.pipeline.transformer",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.__init__->IMPORTS->module:hydra_mesh.pipeline.transformer",
+        "source": "module:hydra_mesh.pipeline.__init__",
+        "target": "module:hydra_mesh.pipeline.transformer",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.pipeline.__init__",
+        "target_symbol": "hydra_mesh.pipeline.transformer",
+        "base_score": 0.8,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.8,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (IMPORTS); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.transformer->DEFINES->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "module:hydra_mesh.pipeline.transformer",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "edge_type": "DEFINES",
+        "source_symbol": "hydra_mesh.pipeline.transformer",
+        "target_symbol": "EventTransformer",
+        "base_score": 0.6,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.6,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (DEFINES); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "module:hydra_mesh.pipeline.dead_letter->DEFINES->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "module:hydra_mesh.pipeline.dead_letter",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "edge_type": "DEFINES",
+        "source_symbol": "hydra_mesh.pipeline.dead_letter",
+        "target_symbol": "DeadLetterQueue",
+        "base_score": 0.6,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.6,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (DEFINES); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "file:hydra_mesh/pipeline/transformer.py->DEFINES->module:hydra_mesh.pipeline.transformer",
+        "source": "file:hydra_mesh/pipeline/transformer.py",
+        "target": "module:hydra_mesh.pipeline.transformer",
+        "edge_type": "DEFINES",
+        "source_symbol": "transformer.py",
+        "target_symbol": "hydra_mesh.pipeline.transformer",
+        "base_score": 0.6,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.6,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (DEFINES); no prior verified experience.",
+        "freshness_status": "VALID"
+      },
+      {
+        "edge_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer->DEFINES->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "edge_type": "DEFINES",
+        "source_symbol": "EventTransformer",
+        "target_symbol": "EventTransformer.transform_event",
+        "base_score": 0.6,
+        "experience_score": 0.0,
+        "task_relevance": 0.0,
+        "freshness_factor": 1.0,
+        "final_score": 0.6,
+        "contributing_experiences": [],
+        "selection_reason": "Base structural edge (DEFINES); no prior verified experience.",
+        "freshness_status": "VALID"
+      }
+    ],
+    "relevant_files": [
+      "hydra_mesh/core/exceptions.py",
+      "hydra_mesh/pipeline/__init__.py",
+      "hydra_mesh/pipeline/coordinator.py",
+      "hydra_mesh/pipeline/dead_letter.py",
+      "hydra_mesh/pipeline/transformer.py"
+    ],
+    "relevant_symbols": [
+      "DeadLetterQueue",
+      "hydra_mesh.pipeline.transformer",
+      "hydra_mesh.pipeline.dead_letter",
+      "hydra_mesh.pipeline.coordinator",
+      "tests.test_dead_letter",
+      "hydra_mesh.core.exceptions",
+      "SchemaError",
+      "EventTransformer",
+      "test_transformer_missing_schema_routes_to_dlq",
+      "PipelineCoordinator.run_pipeline",
+      "EventTransformer.transform_event",
+      "transformer.py",
+      "hydra_mesh.pipeline.__init__",
+      "test_transformer_rate_limited_to_dlq",
+      "test_transformer_valid"
+    ],
+    "associated_tests": [
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_valid",
+        "start_line": 6,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e633fb7b1da317ff21071c41111eea4e4bb8f51fe9ecc37441992441c0a34fed",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.0
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_rate_limited_to_dlq",
+        "start_line": 22,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "9c63cb6a9f7e7952286e9634ed0d3658a4148c31a1c28aaa38ce56bfa55fe081",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "limiter",
+            "transformer",
+            "res1",
+            "res2",
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count",
+            "failed_events"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.0
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "start_line": 14,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "9b733e6559a338b3e77e0c1f57bf26f8049925ce67ec84ed2db25c0cce8e0fdb",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.0
+      }
+    ],
+    "latency_ms": 4.89,
+    "compact_context": "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/pipeline/__init__.py\n  - hydra_mesh/pipeline/coordinator.py\n  - hydra_mesh/pipeline/dead_letter.py\n  - hydra_mesh/pipeline/transformer.py\n\nKEY CODE SYMBOLS & NODES (Selected: 15):\n  - [CLASS] DeadLetterQueue (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.transformer (hydra_mesh/pipeline/transformer.py)\n  - [MODULE] hydra_mesh.pipeline.dead_letter (hydra_mesh/pipeline/dead_letter.py)\n  - [MODULE] hydra_mesh.pipeline.coordinator (hydra_mesh/pipeline/coordinator.py)\n  - [MODULE] tests.test_dead_letter (tests/test_dead_letter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n  - [CLASS] SchemaError (hydra_mesh/core/exceptions.py)\n  - [CLASS] EventTransformer (hydra_mesh/pipeline/transformer.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 18, Experience-Reinforced: 0):\n  - test_transformer_valid --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_valid --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - EventTransformer.transform_event --[CALLS]--> SchemaError [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event [Base: 1.00, Exp: 0.00, Final: 1.00]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.transformer [Base: 0.80, Exp: 0.00, Final: 0.80]\n  - tests.test_dead_letter --[IMPORTS]--> hydra_mesh.pipeline.dead_letter [Base: 0.80, Exp: 0.00, Final: 0.80]\n\nVERIFICATION TEST TARGETS (Prioritized: 3):\n  - test_transformer_valid (tests/test_dead_letter.py) verifies \n  - test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) verifies \n  - test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) verifies \n=========================================================",
+    "config": {
+      "base_weight_calls": 1.0,
+      "base_weight_tests": 1.0,
+      "base_weight_imports": 0.8,
+      "base_weight_defines": 0.6,
+      "base_weight_default": 0.5,
+      "alpha_experience": 1.0,
+      "recency_tau_seconds": 604800.0,
+      "stale_freshness_factor": 0.3,
+      "revalidated_freshness_factor": 0.8,
+      "contradicted_freshness_factor": 0.0,
+      "max_nodes": 15,
+      "max_edges": 25,
+      "max_tests": 5,
+      "max_files": 5,
+      "expansion_depth": 1,
+      "max_context_chars": 3500,
+      "enable_experience_text": true,
+      "min_edge_score": 0.05
+    }
+  },
+  "experience_result": {
+    "query": "# SEQ-TASK-4: Route Malformed Schema Events to Dead-Letter Queue\n\n## Summary\nEvents arriving at the pipeline without a valid `event_id` currently raise an unhandled `SchemaError`, halting batch processing. Instead of terminating the pipeline, malformed events should be routed to the configured dead-letter queue.\n\n## Current Observed Behavior\n`EventTransformer.transform_event()` in `hydra_mesh/pipeline/transformer.py` raises `SchemaError` when `event_id` is missing.\n\n## Expected Behavior\nWhen an event is missing `event_id`, `EventTransformer` should route the invalid event and failure reason to `self.dead_letter.route(event, reason=\"Missing required event_id\")` and return `None` without raising an uncaught exception.\n",
+    "candidate_count": 3,
+    "selected_experiences": [
+      {
+        "experience_id": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875",
+        "task_id": "M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2",
+        "repository_id": "scaled_repo",
+        "repository_version": "585e0ab",
+        "task_description": "# SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hydra_mesh/ingest/rate_limiter.py` requires a `reset(client_id=None)` method.\n\n## Current Observed Behavior\n`SlidingWindowLimiter` does not have a `reset()` method; calling it raises `AttributeError`.\n\n## Expected Behavior\nImplement `reset(self, client_id: Optional[str] = None) -> None`:\n- If `client_id` is provided, clear the request history list for that specific client only.\n- If `client_id` is None, clear the history dictionary for all clients.\n",
+        "task_category": "behavior_modification",
+        "relevant_nodes": [
+          "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+          "module:tests.test_rate_limiter",
+          "module:hydra_mesh.core.exceptions",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "file:hydra_mesh/ingest/rate_limiter.py",
+          "module:hydra_mesh.ingest.__init__",
+          "module:hydra_mesh.ingest.rate_limiter",
+          "module:tests.test_dead_letter"
+        ],
+        "relevant_edges": [
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "module:tests.test_rate_limiter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->IMPORTS->module:hydra_mesh.core.exceptions",
+          "module:hydra_mesh.ingest.__init__->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->DEFINES->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "file:hydra_mesh/ingest/rate_limiter.py->DEFINES->module:hydra_mesh.ingest.rate_limiter"
+        ],
+        "files_inspected": [
+          "hydra_mesh/ingest/rate_limiter.py",
+          "tests/test_rate_limiter.py"
+        ],
+        "files_modified": [
+          "hydra_mesh/ingest/rate_limiter.py"
+        ],
+        "symbols_modified": [],
+        "hypothesis": "",
+        "actions": [
+          {
+            "step": 0,
+            "action": "adaptive_graph_pre_retrieval",
+            "tool": "adaptive_graph_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 8,
+            "action": "finalize_trajectory",
+            "tool": "none"
+          }
+        ],
+        "observations": [
+          "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+          "Test run passed: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+          "Verification completed with status: PASSED"
+        ],
+        "patch_summary": "Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py",
+        "final_patch": "diff --git a/hydra_mesh/ingest/rate_limiter.py b/hydra_mesh/ingest/rate_limiter.py\nindex 024c2ee..012c3b5 100644\n--- a/hydra_mesh/ingest/rate_limiter.py\n+++ b/hydra_mesh/ingest/rate_limiter.py\n@@ -1,5 +1,5 @@\n import time\n-from typing import Dict, List\n+from typing import Dict, List, Optional\n from ..core.exceptions import RateLimitExceeded\n \n class SlidingWindowLimiter:\n@@ -26,3 +26,11 @@ class SlidingWindowLimiter:\n             self.history[client_id].append(timestamp)\n             return True\n         return False\n+\n+    def reset(self, client_id: Optional[str] = None) -> None:\n+        \"\"\"Reset the request history.\"\"\"\n+        if client_id is not None:\n+            if client_id in self.history:\n+                del self.history[client_id]\n+        else:\n+            self.history.clear()\n",
+        "tests_run": [
+          {
+            "summary": "============================== 1 passed in 0.01s ===============================",
+            "passed": true
+          }
+        ],
+        "verification_result": {
+          "status": "PASSED",
+          "success": true,
+          "patch_applied": true,
+          "containment_ok": true,
+          "unintended_files": [],
+          "files_changed": [
+            "hydra_mesh/ingest/rate_limiter.py"
+          ],
+          "test_command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_reset",
+          "test_summary": "============================== 1 passed in 0.01s ===============================",
+          "test_exit_code": 0,
+          "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_reset PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "failure_reasons": []
+        },
+        "success": true,
+        "failure_reason": null,
+        "recovery_attempts": 0,
+        "tool_usage": {
+          "tool_calls": 8,
+          "searches": 0,
+          "test_runs": 5
+        },
+        "confidence": 1.0,
+        "timestamp": "2026-09-27T19:54:35.881654+00:00",
+        "provenance": {
+          "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-2.jsonl",
+          "model": "models/gemma-4-26b-a4b-it",
+          "git_commit": "585e0ab"
+        },
+        "verification_status": "VERIFIED",
+        "file_hashes": {
+          "tests/test_rate_limiter.py": "57b9f107783cc885",
+          "hydra_mesh/ingest/rate_limiter.py": "9839c478dea7a538"
+        },
+        "graph_hash": null,
+        "stale_status": "STALE"
+      },
+      {
+        "experience_id": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665",
+        "task_id": "M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1",
+        "repository_id": "scaled_repo",
+        "repository_version": "585e0ab",
+        "task_description": "# SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the ingestion rate limiter. When a client sends requests exceeding `max_requests`, the limiter is expected to permit up to `max_requests + burst_allowance` requests within the active time window.\n\n## Current Observed Behavior\nRequests sent after reaching `max_requests` are rejected with False, even when burst allowance is configured and unexhausted.\n\n## Expected Behavior\nThe limiter must permit requests up to the combined limit of `max_requests + burst_allowance` within the sliding window before throttling subsequent calls in `hydra_mesh/ingest/rate_limiter.py`.\n",
+        "task_category": "bug_fix",
+        "relevant_nodes": [
+          "module:hydra_mesh.ingest.__init__",
+          "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "module:tests.test_rate_limiter",
+          "file:hydra_mesh/ingest/rate_limiter.py",
+          "module:tests.test_dead_letter",
+          "module:hydra_mesh.ingest.rate_limiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "module:hydra_mesh.core.exceptions",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+          "method:hydra_mesh/storage/wal.py::WriteAheadLog.append"
+        ],
+        "relevant_edges": [
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "module:tests.test_rate_limiter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->IMPORTS->module:hydra_mesh.core.exceptions",
+          "module:hydra_mesh.ingest.__init__->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->DEFINES->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "file:hydra_mesh/ingest/rate_limiter.py->DEFINES->module:hydra_mesh.ingest.rate_limiter"
+        ],
+        "files_inspected": [
+          "hydra_mesh/ingest/rate_limiter.py",
+          "tests/test_rate_limiter.py"
+        ],
+        "files_modified": [
+          "hydra_mesh/ingest/rate_limiter.py"
+        ],
+        "symbols_modified": [],
+        "hypothesis": "",
+        "actions": [
+          {
+            "step": 0,
+            "action": "adaptive_graph_pre_retrieval",
+            "tool": "adaptive_graph_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 7,
+            "action": "finalize_trajectory",
+            "tool": "none"
+          }
+        ],
+        "observations": [
+          "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+          "Test run passed: ============================== 1 passed in 0.01s ===============================. Ready for verification.",
+          "Verification completed with status: PASSED"
+        ],
+        "patch_summary": "Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py",
+        "final_patch": "diff --git a/hydra_mesh/ingest/rate_limiter.py b/hydra_mesh/ingest/rate_limiter.py\nindex 024c2ee..6dc119a 100644\n--- a/hydra_mesh/ingest/rate_limiter.py\n+++ b/hydra_mesh/ingest/rate_limiter.py\n@@ -18,11 +18,13 @@ class SlidingWindowLimiter:\n         self.history[client_id] = [t for t in timestamps if t >= window_start]\n         current_count = len(self.history[client_id])\n         \n-        # BUG FOR TASK-201:\n-        # Strict equality drops request when count reaches max_requests, even if burst_allowance allows extra!\n-        # Should check: current_count < (self.max_requests + self.burst_allowance)\n-        limit = self.max_requests  # Erroneously ignores burst_allowance!\n+        limit = self.max_requests + self.burst_allowance\n         if current_count < limit:\n             self.history[client_id].append(timestamp)\n             return True\n         return False\n+\n+    def reset(self, client_id: str) -> None:\n+        \"\"\"Reset the history for a specific client.\"\"\"\n+        if client_id in self.history:\n+            self.history[client_id] = []\n",
+        "tests_run": [
+          {
+            "summary": "============================== 1 passed in 0.01s ===============================",
+            "passed": true
+          }
+        ],
+        "verification_result": {
+          "status": "PASSED",
+          "success": true,
+          "patch_applied": true,
+          "containment_ok": true,
+          "unintended_files": [],
+          "files_changed": [
+            "hydra_mesh/ingest/rate_limiter.py"
+          ],
+          "test_command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "test_summary": "============================== 1 passed in 0.01s ===============================",
+          "test_exit_code": 0,
+          "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_burst_allowance PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "failure_reasons": []
+        },
+        "success": true,
+        "failure_reason": null,
+        "recovery_attempts": 0,
+        "tool_usage": {
+          "tool_calls": 7,
+          "searches": 0,
+          "test_runs": 5
+        },
+        "confidence": 1.0,
+        "timestamp": "2026-09-27T19:51:05.089256+00:00",
+        "provenance": {
+          "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-1.jsonl",
+          "model": "models/gemma-4-26b-a4b-it",
+          "git_commit": "585e0ab"
+        },
+        "verification_status": "VERIFIED",
+        "file_hashes": {
+          "hydra_mesh/ingest/rate_limiter.py": "d1afe2ed905633ff",
+          "tests/test_rate_limiter.py": "57b9f107783cc885"
+        },
+        "graph_hash": null,
+        "stale_status": "STALE"
+      },
+      {
+        "experience_id": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977",
+        "task_id": "M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3",
+        "repository_id": "scaled_repo",
+        "repository_version": "585e0ab",
+        "task_description": "# SEQ-TASK-3: Fix Assertion in Multi-Client Isolation Test\n\n## Summary\nThe rate limiter test suite has a bug in `tests/test_rate_limiter.py::test_rate_limiter_client_isolation`. The test is intended to verify that throttling `client1` does not affect `client2`. However, the test author mistakenly queried `client1` instead of `client2` in the second assertion.\n\n## Current Observed Behavior\n`tests/test_rate_limiter.py::test_rate_limiter_client_isolation` fails with `AssertionError: assert False` because `client1` was queried after its quota was exhausted.\n\n## Expected Behavior\nUpdate the second assertion in `test_rate_limiter_client_isolation` to query `client2` so that independent quotas are accurately tested.\n",
+        "task_category": "test_change",
+        "relevant_nodes": [
+          "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "file:tasks/SEQ-TASK-1.md",
+          "file:tasks/SEQ-TASK-2.md",
+          "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+          "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+          "method:hydra_mesh/storage/memory_store.py::MemoryStore.save",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+          "test:tests/test_dead_letter.py::test_transformer_valid",
+          "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+          "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq"
+        ],
+        "relevant_edges": [
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_dead_letter.py::test_transformer_valid->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "method:hydra_mesh/storage/memory_store.py::MemoryStore.save->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "method:hydra_mesh/storage/buffer.py::RingBuffer.push->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append"
+        ],
+        "files_inspected": [
+          "tests/test_rate_limiter.py"
+        ],
+        "files_modified": [
+          "tests/test_rate_limiter.py"
+        ],
+        "symbols_modified": [],
+        "hypothesis": "",
+        "actions": [
+          {
+            "step": 0,
+            "action": "adaptive_graph_pre_retrieval",
+            "tool": "adaptive_graph_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 6,
+            "action": "finalize_trajectory",
+            "tool": "none"
+          }
+        ],
+        "observations": [
+          "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+          "Test run passed: ============================== 1 passed in 0.01s ===============================. Ready for verification.",
+          "Verification completed with status: PASSED"
+        ],
+        "patch_summary": "Modified 1 file(s): tests/test_rate_limiter.py",
+        "final_patch": "diff --git a/tests/test_rate_limiter.py b/tests/test_rate_limiter.py\nindex 3052c72..3a8eb67 100644\n--- a/tests/test_rate_limiter.py\n+++ b/tests/test_rate_limiter.py\n@@ -34,4 +34,4 @@ def test_rate_limiter_client_isolation():\n     # Intended to test that client2 is permitted even after client1 is exhausted.\n     # But author mistakenly queried client1 again!\n     # Fix: change \"client1\" to \"client2\" in line below:\n-    assert limiter.allow_request(\"client1\", 11.0), \"Isolated client quota rejected!\"\n+    assert limiter.allow_request(\"client2\", 11.0), \"Isolated client quota rejected!\"\n",
+        "tests_run": [
+          {
+            "summary": "============================== 1 passed in 0.01s ===============================",
+            "passed": true
+          }
+        ],
+        "verification_result": {
+          "status": "PASSED",
+          "success": true,
+          "patch_applied": true,
+          "containment_ok": true,
+          "unintended_files": [],
+          "files_changed": [
+            "tests/test_rate_limiter.py"
+          ],
+          "test_command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+          "test_summary": "============================== 1 passed in 0.01s ===============================",
+          "test_exit_code": 0,
+          "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_client_isolation PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "failure_reasons": []
+        },
+        "success": true,
+        "failure_reason": null,
+        "recovery_attempts": 0,
+        "tool_usage": {
+          "tool_calls": 6,
+          "searches": 0,
+          "test_runs": 5
+        },
+        "confidence": 1.0,
+        "timestamp": "2026-09-27T19:56:17.441359+00:00",
+        "provenance": {
+          "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-3.jsonl",
+          "model": "models/gemma-4-26b-a4b-it",
+          "git_commit": "585e0ab"
+        },
+        "verification_status": "VERIFIED",
+        "file_hashes": {
+          "tests/test_rate_limiter.py": "9572be46cac67089"
+        },
+        "graph_hash": null,
+        "stale_status": "STALE"
+      }
+    ],
+    "selection_reasons": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875": [
+        "Repository match: 'scaled_repo'",
+        "Task keywords matched (12): ['observed', 'self', 'the', 'behavior']",
+        "Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2'"
+      ],
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": [
+        "Repository match: 'scaled_repo'",
+        "Task keywords matched (12): ['observed', 'the', 'behavior', 'and']",
+        "Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1'"
+      ],
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977": [
+        "Repository match: 'scaled_repo'",
+        "Task keywords matched (9): ['observed', 'the', 'instead', 'behavior']",
+        "Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3'"
+      ]
+    },
+    "ranking_scores": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875": 0.2962,
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": 0.2962,
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977": 0.2846
+    },
+    "stale_statuses": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875": "STALE",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": "STALE",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977": "STALE"
+    },
+    "stale_details": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875": "Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": "Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']",
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-3-1790538977": "Files modified since task verified: ['tests/test_rate_limiter.py']"
+    },
+    "compact_context": "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2, Category: behavior_modification)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'self', 'the', 'behavior']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2'\n- Prior Task: # SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hyd\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 8 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.30 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Task keywords matched (12): ['observed', 'the', 'behavior', 'and']; Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1'\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CON\n... [Experience Context Truncated]",
+    "latency_ms": 1.8
+  }
+}

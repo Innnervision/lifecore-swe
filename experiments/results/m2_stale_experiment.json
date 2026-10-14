@@ -1,0 +1,32 @@
+{
+  "experiment": "M2_CONTROLLED_STALE_EXPERIENCE",
+  "target_file": "hydra_mesh/ingest/rate_limiter.py",
+  "initial_file_hash": "9c7ecfa4d0e7c61f",
+  "phases": [
+    {
+      "phase": "1_clean_baseline",
+      "status": "VALID",
+      "detail": "File contents and versions match baseline.",
+      "detected_correctly": true
+    },
+    {
+      "phase": "2_file_modified",
+      "status": "STALE",
+      "detail": "Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']",
+      "detected_correctly": true
+    },
+    {
+      "phase": "3_file_missing",
+      "status": "CONTRADICTED",
+      "detail": "Files no longer exist: ['hydra_mesh/ingest/rate_limiter.py']",
+      "detected_correctly": true
+    },
+    {
+      "phase": "4_version_bump",
+      "status": "REVALIDATED",
+      "detail": "Repo version changed (v1.0.0 -> v2.0.0), but file content matches.",
+      "detected_correctly": true
+    }
+  ],
+  "summary": "All 4 freshness phases (VALID, STALE, CONTRADICTED, REVALIDATED) were deterministically identified."
+}

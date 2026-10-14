@@ -1,0 +1,53 @@
+{
+  "milestone": "M5-A",
+  "title": "Resource Intelligence Foundation: Provenance, Permissions & Persistent Resource Model",
+  "status": "COMPLETED",
+  "date": "2026-09-30",
+  "research_question": "Can external software resources be represented as persistent, provenance-aware, version-aware, permission-controlled entities that can later be integrated into the LIFECORE-SWE world model without contaminating the verified internal code graph?",
+  "components_implemented": [
+    "lifecore_swe.resources.models (ResourceType, ResourceRecord, FreshnessPolicy, hashing, URL canonicalization)",
+    "lifecore_swe.resources.provenance (SourceType, TrustLevel, RetrievalMethod, ProvenanceRecord)",
+    "lifecore_swe.resources.permissions (NetworkPermissionLevel 0-6, NetworkRequest, PermissionDecision, PermissionPolicy)",
+    "lifecore_swe.resources.store (ResourceStore SQLite persistence: resources, provenance, resource_versions)",
+    "lifecore_swe.resources.registry (ResourceRegistry deduplication, versioning, freshness & verification lifecycle)",
+    "lifecore_swe.resources.__init__ (Public interface export)"
+  ],
+  "verification_lifecycle": [
+    "UNVERIFIED",
+    "RETRIEVED",
+    "VALIDATED",
+    "VERIFIED",
+    "STALE",
+    "CONTRADICTED",
+    "REJECTED"
+  ],
+  "permission_levels": [
+    "LEVEL_0_NO_NETWORK",
+    "LEVEL_1_APPROVED_DOCUMENTATION",
+    "LEVEL_2_APPROVED_PUBLIC_REPOSITORIES",
+    "LEVEL_3_PACKAGE_MODEL_DOWNLOADS",
+    "LEVEL_4_EXTERNAL_APIS",
+    "LEVEL_5_AUTHENTICATED_SERVICES",
+    "LEVEL_6_SENSITIVE_PRIVATE_INFRASTRUCTURE"
+  ],
+  "network_calls_performed": 0,
+  "live_fetching_implemented": false,
+  "test_metrics": {
+    "total_tests": 80,
+    "existing_tests_passed": 56,
+    "new_m5_a_tests_passed": 24,
+    "failed_tests": 0,
+    "pass_rate": 1.0,
+    "duration_seconds": 1.82
+  },
+  "backward_compatibility": {
+    "m0_1": "PRESERVED",
+    "m1a": "PRESERVED",
+    "m1b": "PRESERVED",
+    "m1c": "PRESERVED",
+    "m2": "PRESERVED",
+    "m3": "PRESERVED",
+    "m4": "PRESERVED"
+  },
+  "security_boundary_isolation": "VERIFIED (Zero contamination of GraphIndex, ExperienceGraphOverlay, or NegativeGraphOverlay)"
+}

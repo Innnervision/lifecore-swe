@@ -1,0 +1,271 @@
+{
+  "benchmark": "M2_SEQUENTIAL_EXPERIENCE_BENCHMARK",
+  "model": "models/gemma-4-26b-a4b-it",
+  "repository": "scaled_repo (hydra_mesh)",
+  "task_count": 5,
+  "conditions": {
+    "STATELESS": {
+      "success_count": 3,
+      "total_tasks": 5,
+      "success_rate": 0.6,
+      "avg_tool_calls": 15.0,
+      "avg_searches": 6.2,
+      "avg_files_inspected": 1.0,
+      "avg_test_runs": 3.2,
+      "avg_execution_time": 204.63,
+      "avg_localization_efficiency": 0.9,
+      "experience_reused_count": 0,
+      "experience_reuse_rate": null,
+      "stale_experiences_detected": 0
+    },
+    "GRAPH": {
+      "success_count": 5,
+      "total_tasks": 5,
+      "success_rate": 1.0,
+      "avg_tool_calls": 6.0,
+      "avg_searches": 0.0,
+      "avg_files_inspected": 1.6,
+      "avg_test_runs": 4.4,
+      "avg_execution_time": 136.54,
+      "avg_localization_efficiency": 0.7,
+      "experience_reused_count": 0,
+      "experience_reuse_rate": null,
+      "stale_experiences_detected": 0
+    },
+    "GRAPH_EXPERIENCE": {
+      "success_count": 5,
+      "total_tasks": 5,
+      "success_rate": 1.0,
+      "avg_tool_calls": 5.8,
+      "avg_searches": 0.0,
+      "avg_files_inspected": 1.4,
+      "avg_test_runs": 4.4,
+      "avg_execution_time": 141.89,
+      "avg_localization_efficiency": 0.8,
+      "experience_reused_count": 3,
+      "experience_reuse_rate": 0.75,
+      "stale_experiences_detected": 9
+    }
+  },
+  "per_task_results": {
+    "seq-task-1": {
+      "STATELESS": {
+        "status": "FAIL",
+        "success": false,
+        "tool_calls": 20,
+        "searches": 10,
+        "files_inspected": 1,
+        "test_runs": 2,
+        "execution_time": 223.702,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 5,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 82.101,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH_EXPERIENCE": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 5,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 80.585,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      }
+    },
+    "seq-task-2": {
+      "STATELESS": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 14,
+        "searches": 7,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 227.484,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 7,
+        "searches": 0,
+        "files_inspected": 2,
+        "test_runs": 5,
+        "execution_time": 264.842,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH_EXPERIENCE": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 6,
+        "searches": 0,
+        "files_inspected": 2,
+        "test_runs": 4,
+        "execution_time": 241.711,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-1-1790533120"
+        ],
+        "experience_influence": "VERIFIED_USEFUL",
+        "stale_count": 1
+      }
+    },
+    "seq-task-3": {
+      "STATELESS": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 6,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 50.08,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 5,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 56.229,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH_EXPERIENCE": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 6,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 5,
+        "execution_time": 94.39,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-1-1790533120",
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-2-1790534111"
+        ],
+        "experience_influence": "VERIFIED_USEFUL",
+        "stale_count": 2
+      }
+    },
+    "seq-task-4": {
+      "STATELESS": {
+        "status": "FAIL",
+        "success": false,
+        "tool_calls": 20,
+        "searches": 7,
+        "files_inspected": 1,
+        "test_runs": 2,
+        "execution_time": 236.498,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 6,
+        "searches": 0,
+        "files_inspected": 2,
+        "test_runs": 4,
+        "execution_time": 81.61,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH_EXPERIENCE": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 5,
+        "searches": 0,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 91.272,
+        "localization_efficiency": 1.0,
+        "experiences_retrieved": [
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-2-1790534111",
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-1-1790533120",
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-3-1790534211"
+        ],
+        "experience_influence": "IGNORED",
+        "stale_count": 3
+      }
+    },
+    "seq-task-5": {
+      "STATELESS": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 15,
+        "searches": 7,
+        "files_inspected": 1,
+        "test_runs": 4,
+        "execution_time": 285.4,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 7,
+        "searches": 0,
+        "files_inspected": 2,
+        "test_runs": 5,
+        "execution_time": 197.932,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [],
+        "experience_influence": "NONE",
+        "stale_count": 0
+      },
+      "GRAPH_EXPERIENCE": {
+        "status": "SUCCESS",
+        "success": true,
+        "tool_calls": 7,
+        "searches": 0,
+        "files_inspected": 2,
+        "test_runs": 5,
+        "execution_time": 201.5,
+        "localization_efficiency": 0.5,
+        "experiences_retrieved": [
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-4-1790534309",
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-2-1790534111",
+          "EXP-M2-GRAPH_EXPERIENCE-SEQ-TASK-1-1790533120"
+        ],
+        "experience_influence": "VERIFIED_USEFUL",
+        "stale_count": 3
+      }
+    }
+  },
+  "overall_metrics": {}
+}

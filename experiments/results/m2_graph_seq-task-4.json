@@ -1,0 +1,1146 @@
+{
+  "status": "SUCCESS",
+  "metrics": {
+    "task_success": true,
+    "patch_applied": true,
+    "patch_correctness": true,
+    "tests_before": {
+      "passed": false,
+      "summary": "============================== 1 failed in 0.04s ===============================",
+      "exit_code": 1
+    },
+    "tests_after": {
+      "passed": true,
+      "summary": "============================== 1 passed in 0.02s ===============================",
+      "exit_code": 0
+    },
+    "test_passed": true,
+    "files_inspected": [
+      "hydra_mesh/pipeline/transformer.py",
+      "hydra_mesh/pipeline/dead_letter.py"
+    ],
+    "files_read": 2,
+    "search_count": 0,
+    "tool_calls": 6,
+    "test_runs": 4,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 12,
+    "graph_edges_retrieved": 20,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 1,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 0.5,
+    "execution_time": 81.61,
+    "verification_status": "PASSED",
+    "experiences_retrieved": [],
+    "experience_count": 0,
+    "experience_stored": null,
+    "experience_influence": "NONE",
+    "experience_stale_count": 0
+  },
+  "state": {
+    "task": "# SEQ-TASK-4: Route Malformed Schema Events to Dead-Letter Queue\n\n## Summary\nEvents arriving at the pipeline without a valid `event_id` currently raise an unhandled `SchemaError`, halting batch processing. Instead of terminating the pipeline, malformed events should be routed to the configured dead-letter queue.\n\n## Current Observed Behavior\n`EventTransformer.transform_event()` in `hydra_mesh/pipeline/transformer.py` raises `SchemaError` when `event_id` is missing.\n\n## Expected Behavior\nWhen an event is missing `event_id`, `EventTransformer` should route the invalid event and failure reason to `self.dead_letter.route(event, reason=\"Missing required event_id\")` and return `None` without raising an uncaught exception.\n",
+    "observations": [
+      "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/pipeline/__init__.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n- hydra_mesh/storage/wal.py\n- tests/test_buffer_eviction.py\n\n[Relevant Symbols & Definitions]\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- hydra_mesh.pipeline.transformer [module] in hydra_mesh/pipeline/transformer.py (lines 1-18)\n- hydra_mesh.pipeline.dead_letter [module] in hydra_mesh/pipeline/dead_letter.py (lines 1-12)\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- hydra_mesh.pipeline.__init__ [module] in hydra_mesh/pipeline/__init__.py (lines 1-2)\n- SEQ-TASK-5.md [file] in tasks/SEQ-TASK-5.md\n- SEQ-TASK-4.md [file] in tasks/SEQ-TASK-4.md\n- SEQ-TASK-3.md [file] in tasks/SEQ-TASK-3.md\n- SEQ-TASK-2.md [file] in tasks/SEQ-TASK-2.md\n- SEQ-TASK-1.md [file] in tasks/SEQ-TASK-1.md\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> WriteAheadLog.append\n- test_transformer_rate_limited_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer",
+      "Inspected file hydra_mesh/pipeline/transformer.py (18 lines).",
+      "Test run failed: ============================== 1 failed in 0.04s ===============================",
+      "Inspected file hydra_mesh/pipeline/dead_letter.py (12 lines).",
+      "Applied code modification attempt #1 to hydra_mesh/pipeline/transformer.py (success: True).",
+      "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+      "Verification completed with status: PASSED"
+    ],
+    "hypotheses": [],
+    "files_inspected": [
+      "hydra_mesh/pipeline/transformer.py",
+      "hydra_mesh/pipeline/dead_letter.py"
+    ],
+    "searches": [],
+    "actions": [
+      {
+        "action": "modify_code",
+        "file": "hydra_mesh/pipeline/transformer.py",
+        "attempt": 1,
+        "success": true
+      }
+    ],
+    "test_results": [
+      {
+        "attempt": 0,
+        "passed": false,
+        "summary": "============================== 1 failed in 0.04s ==============================="
+      },
+      {
+        "attempt": 1,
+        "passed": true,
+        "summary": "============================== 1 passed in 0.02s ==============================="
+      }
+    ],
+    "failures": [],
+    "recovery_attempts": 0,
+    "patch_attempts": 1,
+    "final_patch": "diff --git a/hydra_mesh/pipeline/transformer.py b/hydra_mesh/pipeline/transformer.py\nindex 07c3066..e1cf531 100644\n--- a/hydra_mesh/pipeline/transformer.py\n+++ b/hydra_mesh/pipeline/transformer.py\n@@ -10,9 +10,8 @@ class EventTransformer:\n     def transform_event(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:\n         \"\"\"Transform event. If schema is missing required 'event_id', route to dead letter queue.\"\"\"\n         if \"event_id\" not in event:\n-            # BUG FOR TASK-203:\n-            # Directly raises SchemaError instead of routing to self.dead_letter.route()!\n-            raise SchemaError(\"Missing required event_id\")\n+            self.dead_letter.route(event, reason=\"Missing required event_id\")\n+            return None\n         \n         event[\"transformed\"] = True\n         return event\n",
+    "verification": {
+      "status": "PASSED",
+      "success": true,
+      "patch_applied": true,
+      "containment_ok": true,
+      "unintended_files": [],
+      "files_changed": [
+        "hydra_mesh/pipeline/transformer.py"
+      ],
+      "test_command": "pytest -v tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+      "test_summary": "============================== 1 passed in 0.02s ===============================",
+      "test_exit_code": 0,
+      "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq PASSED [100%]\n\n============================== 1 passed in 0.02s ===============================\n",
+      "failure_reasons": []
+    },
+    "graph_evidence": "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/pipeline/__init__.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n- hydra_mesh/storage/wal.py\n- tests/test_buffer_eviction.py\n\n[Relevant Symbols & Definitions]\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- hydra_mesh.pipeline.transformer [module] in hydra_mesh/pipeline/transformer.py (lines 1-18)\n- hydra_mesh.pipeline.dead_letter [module] in hydra_mesh/pipeline/dead_letter.py (lines 1-12)\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- hydra_mesh.pipeline.__init__ [module] in hydra_mesh/pipeline/__init__.py (lines 1-2)\n- SEQ-TASK-5.md [file] in tasks/SEQ-TASK-5.md\n- SEQ-TASK-4.md [file] in tasks/SEQ-TASK-4.md\n- SEQ-TASK-3.md [file] in tasks/SEQ-TASK-3.md\n- SEQ-TASK-2.md [file] in tasks/SEQ-TASK-2.md\n- SEQ-TASK-1.md [file] in tasks/SEQ-TASK-1.md\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> WriteAheadLog.append\n- test_transformer_rate_limited_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer",
+    "experience_context": "",
+    "experiences_retrieved": [],
+    "current_phase": "COMPLETED"
+  },
+  "trajectory_file": "/lifecore-swe/experiments/trajectories/m2_graph_seq-task-4.jsonl",
+  "model_info": {
+    "model_name": "models/gemma-4-26b-a4b-it",
+    "model_version": "001",
+    "display_name": "Gemma 4 26B A4B IT",
+    "provider": "Google",
+    "api_runtime": "Google GenAI API (google-genai 2.25.0)",
+    "context_length": {
+      "input_tokens": 262144,
+      "output_tokens": 32768
+    },
+    "temperature": 0.1,
+    "tool_calling_capability": "Structured JSON Output Action Selection & Reasoning",
+    "is_development_adapter": false,
+    "timestamp": "2026-09-27T18:48:58.167064+00:00"
+  },
+  "retrieval_result": {
+    "query": "# SEQ-TASK-4: Route Malformed Schema Events to Dead-Letter Queue\n\n## Summary\nEvents arriving at the pipeline without a valid `event_id` currently raise an unhandled `SchemaError`, halting batch processing. Instead of terminating the pipeline, malformed events should be routed to the configured dead-letter queue.\n\n## Current Observed Behavior\n`EventTransformer.transform_event()` in `hydra_mesh/pipeline/transformer.py` raises `SchemaError` when `event_id` is missing.\n\n## Expected Behavior\nWhen an event is missing `event_id`, `EventTransformer` should route the invalid event and failure reason to `self.dead_letter.route(event, reason=\"Missing required event_id\")` and return `None` without raising an uncaught exception.\n",
+    "candidate_nodes": [
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 15.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "hydra_mesh.pipeline.dead_letter",
+        "start_line": 1,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.transformer",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "hydra_mesh.pipeline.transformer",
+        "start_line": 1,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 9.5
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-1.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-1.md",
+        "symbol": "SEQ-TASK-1.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "16d80ce61dbaf7f0f358ddeb194fb3fcb6cc3ad245b238a777701df28bd91906",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-2.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-2.md",
+        "symbol": "SEQ-TASK-2.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "3d2062f8d070554fb988bd65e010c6bc0654bb9b217061b29009ba26141ca1b9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-3.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-3.md",
+        "symbol": "SEQ-TASK-3.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "598178c84c34c0c8c10385168451961d302623dfec1f693b94a79a72a90d2c73",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-4.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-4.md",
+        "symbol": "SEQ-TASK-4.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8f586a05e08b77498a610ae3856e4367e13bf4c6bf15e0df6def53b276da8ca7",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-5.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-5.md",
+        "symbol": "SEQ-TASK-5.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "452d455d60d4b841f01ece2abf4b69a65a93be285f94a6b5ddfefce83d242839",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/__init__.py",
+        "symbol": "hydra_mesh.pipeline.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "e79c3bec4e72cf2c52577fb270a1ed002a84e3046761bae09960e57e4d89c276",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.aggregators",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/aggregators.py",
+        "symbol": "hydra_mesh.pipeline.aggregators",
+        "start_line": 1,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "1553c5ea6f034c1ac796dd2f6f9b352fec8b8042e723b706afae86d606b70cfe",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.coordinator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/coordinator.py",
+        "symbol": "hydra_mesh.pipeline.coordinator",
+        "start_line": 1,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "d054f182170b9f349c9a39d07622384c89cf5f2de5367b9c18287b4e3e06268d",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.count",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.count",
+        "start_line": 11,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e42891d8a14d37ba4a04709002c78f65d63c031e32ae88fd8d7d1563b524f7d6",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "failed_events",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.deduplicator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/deduplicator.py",
+        "symbol": "hydra_mesh.pipeline.deduplicator",
+        "start_line": 1,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "7affe2ad1ee83c38f05099cafefe457877f4602bcf37c0db65f652305107fea4",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.enricher",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/enricher.py",
+        "symbol": "hydra_mesh.pipeline.enricher",
+        "start_line": 1,
+        "end_line": 4,
+        "language": "python",
+        "content_hash": "8790f81a0c638109b4241c83d2502dea112a18de904100d3d5de3d207a3e50b4",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.router",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/router.py",
+        "symbol": "hydra_mesh.pipeline.router",
+        "start_line": 1,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "c400085f54ce9ac2969b56aea38686c04d48b8c5d216e7a56aeb7a29f72b6db9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.windowing",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/windowing.py",
+        "symbol": "hydra_mesh.pipeline.windowing",
+        "start_line": 1,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "d9ba93d20e8fbe99b925c9b301cde72e2ea25d4cc14537c66e2e04f2a2d70a9a",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        },
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:hydra_mesh/pipeline/dead_letter.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "dead_letter.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {},
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "file:hydra_mesh/pipeline/transformer.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "transformer.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {},
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.route",
+        "start_line": 8,
+        "end_line": 9,
+        "language": "python",
+        "content_hash": "7098c5d4915aad915cd79a7e881724fc09393de7009547c2a6b6255de0298b3d",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "dict",
+            "str",
+            "append",
+            "failed_events",
+            "event",
+            "reason",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.__init__",
+        "start_line": 7,
+        "end_line": 8,
+        "language": "python",
+        "content_hash": "77d1e36dc3e12f3becfe134c7e23f1da327cd44b7ca9f23cdb364b92769944c5",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue"
+          ],
+          "references": [
+            "dead_letter",
+            "self",
+            "dlq",
+            "Optional",
+            "DeadLetterQueue"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 7.5
+      }
+    ],
+    "selected_nodes": [
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 15.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.transformer",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "hydra_mesh.pipeline.transformer",
+        "start_line": 1,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "59875b3ccfb7f9041debd54f11b8a5fa471717e9958d1296345cd6b77adf5331",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "hydra_mesh.pipeline.dead_letter",
+        "start_line": 1,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "b73ffcc0871da9d5dec5647d85d9e44b926e3fd97bf6bf7a5fe47cd8948917de",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 9.5
+      },
+      {
+        "node_id": "module:hydra_mesh.pipeline.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/__init__.py",
+        "symbol": "hydra_mesh.pipeline.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "e79c3bec4e72cf2c52577fb270a1ed002a84e3046761bae09960e57e4d89c276",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-5.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-5.md",
+        "symbol": "SEQ-TASK-5.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "452d455d60d4b841f01ece2abf4b69a65a93be285f94a6b5ddfefce83d242839",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-4.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-4.md",
+        "symbol": "SEQ-TASK-4.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8f586a05e08b77498a610ae3856e4367e13bf4c6bf15e0df6def53b276da8ca7",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-3.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-3.md",
+        "symbol": "SEQ-TASK-3.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "598178c84c34c0c8c10385168451961d302623dfec1f693b94a79a72a90d2c73",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-2.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-2.md",
+        "symbol": "SEQ-TASK-2.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "3d2062f8d070554fb988bd65e010c6bc0654bb9b217061b29009ba26141ca1b9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-1.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-1.md",
+        "symbol": "SEQ-TASK-1.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "16d80ce61dbaf7f0f358ddeb194fb3fcb6cc3ad245b238a777701df28bd91906",
+        "metadata": {},
+        "relevance_score": 9.0
+      }
+    ],
+    "selected_edges": [
+      {
+        "edge_id": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.register->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.register",
+        "source_symbol": "EventDispatcher.register",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add",
+        "source_symbol": "EventBatcher.add",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source_symbol": "SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.__init__->CALLS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.__init__",
+        "source_symbol": "PipelineCoordinator.__init__",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline",
+        "source_symbol": "PipelineCoordinator.run_pipeline",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route",
+        "source_symbol": "DeadLetterQueue.route",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__->CALLS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__",
+        "source_symbol": "EventTransformer.__init__",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event->CALLS->class:hydra_mesh/core/exceptions.py::SchemaError",
+        "source": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source_symbol": "EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "target_symbol": "SchemaError"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.push->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+        "source_symbol": "RingBuffer.push",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/memory_store.py::MemoryStore.save->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/storage/memory_store.py::MemoryStore.save",
+        "source_symbol": "MemoryStore.save",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+        "source_symbol": "test_buffer_push_and_capacity",
+        "edge_type": "TESTS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "TESTS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "TESTS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "TESTS",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "TESTS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      }
+    ],
+    "relevant_files": [
+      "hydra_mesh/pipeline/__init__.py",
+      "hydra_mesh/pipeline/dead_letter.py",
+      "hydra_mesh/pipeline/transformer.py",
+      "hydra_mesh/storage/wal.py",
+      "tests/test_buffer_eviction.py"
+    ],
+    "relevant_symbols": [
+      "EventTransformer.transform_event",
+      "hydra_mesh.pipeline.transformer",
+      "hydra_mesh.pipeline.dead_letter",
+      "WriteAheadLog.append",
+      "EventTransformer",
+      "DeadLetterQueue",
+      "hydra_mesh.pipeline.__init__",
+      "SEQ-TASK-5.md",
+      "SEQ-TASK-4.md",
+      "SEQ-TASK-3.md",
+      "SEQ-TASK-2.md",
+      "SEQ-TASK-1.md"
+    ],
+    "associated_tests": [
+      {
+        "node_id": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_buffer_eviction.py",
+        "symbol": "test_buffer_push_and_capacity",
+        "start_line": 5,
+        "end_line": 14,
+        "language": "python",
+        "content_hash": "b2afa3eb3d6109f4dbedcb013bd125e00426ea4b6f7d1d377deec78dcd74fdb9",
+        "metadata": {
+          "calls": [
+            "RingBuffer",
+            "push",
+            "size",
+            "raises"
+          ],
+          "references": [
+            "buf",
+            "RingBuffer",
+            "push",
+            "size",
+            "raises",
+            "BufferOverflowError",
+            "pytest"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_buffer_push_and_capacity calls RingBuffer which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "start_line": 14,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "9b733e6559a338b3e77e0c1f57bf26f8049925ce67ec84ed2db25c0cce8e0fdb",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Test verification: test_transformer_missing_schema_routes_to_dlq directly executes/asserts EventTransformer.transform_event",
+        "edge_confidence": 0.92,
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_rate_limited_to_dlq",
+        "start_line": 22,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "9c63cb6a9f7e7952286e9634ed0d3658a4148c31a1c28aaa38ce56bfa55fe081",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "limiter",
+            "transformer",
+            "res1",
+            "res2",
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count",
+            "failed_events"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Test verification: test_transformer_rate_limited_to_dlq directly executes/asserts EventTransformer.transform_event",
+        "edge_confidence": 0.92,
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_valid",
+        "start_line": 6,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e633fb7b1da317ff21071c41111eea4e4bb8f51fe9ecc37441992441c0a34fed",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Test verification: test_transformer_valid directly executes/asserts EventTransformer.transform_event",
+        "edge_confidence": 0.92,
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_burst_allowance",
+        "start_line": 9,
+        "end_line": 19,
+        "language": "python",
+        "content_hash": "7601f5f70009062a63932d769fcbe29839d1948305a9cc8606942395431bd3dc",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_rate_limiter_burst_allowance calls SlidingWindowLimiter.allow_request which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      }
+    ],
+    "latency_ms": 4.19,
+    "compact_context": "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/pipeline/__init__.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n- hydra_mesh/storage/wal.py\n- tests/test_buffer_eviction.py\n\n[Relevant Symbols & Definitions]\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- hydra_mesh.pipeline.transformer [module] in hydra_mesh/pipeline/transformer.py (lines 1-18)\n- hydra_mesh.pipeline.dead_letter [module] in hydra_mesh/pipeline/dead_letter.py (lines 1-12)\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- hydra_mesh.pipeline.__init__ [module] in hydra_mesh/pipeline/__init__.py (lines 1-2)\n- SEQ-TASK-5.md [file] in tasks/SEQ-TASK-5.md\n- SEQ-TASK-4.md [file] in tasks/SEQ-TASK-4.md\n- SEQ-TASK-3.md [file] in tasks/SEQ-TASK-3.md\n- SEQ-TASK-2.md [file] in tasks/SEQ-TASK-2.md\n- SEQ-TASK-1.md [file] in tasks/SEQ-TASK-1.md\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies EventTransformer.transform_event\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> EventTransformer.transform_event\n- test_transformer_missing_schema_routes_to_dlq --[TESTS]--> WriteAheadLog.append\n- test_transformer_rate_limited_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_rate_limited_to_dlq --[CALLS]--> EventTransformer",
+    "config": {
+      "max_nodes": 12,
+      "max_edges": 20,
+      "max_files": 5,
+      "max_tests": 5,
+      "max_context_chars": 4000,
+      "expansion_depth": 1,
+      "enable_relationship_expansion": true
+    }
+  },
+  "experience_result": null
+}

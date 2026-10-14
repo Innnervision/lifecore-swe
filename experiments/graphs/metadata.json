@@ -1,0 +1,27 @@
+{
+  "repository": "buggy_repo",
+  "commit_version": "3e5e5f4a721fc1beb775e55ac49d526740d7bb9b",
+  "timestamp": "2026-09-25T23:57:00.894415+00:00",
+  "parser_version": "1.0.0",
+  "language": "python",
+  "node_count": 28,
+  "edge_count": 63,
+  "node_types": {
+    "file": 8,
+    "module": 6,
+    "repository": 1,
+    "directory": 2,
+    "function": 1,
+    "test": 3,
+    "method": 4,
+    "class": 3
+  },
+  "edge_types": {
+    "TESTS": 12,
+    "IMPORTS": 8,
+    "REFERENCES": 6,
+    "DEFINES": 17,
+    "CONTAINS": 10,
+    "CALLS": 10
+  }
+}

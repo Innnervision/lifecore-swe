@@ -1,0 +1,47 @@
+{
+  "milestone": "M5-D",
+  "title": "Integrating Verified Resource Evidence into Reasoning & Multi-Stream Context",
+  "status": "COMPLETED",
+  "date": "2026-09-30",
+  "research_question": "Can external software resource evidence be formatted, bounded, and injected into the agent reasoning context with unambiguous truth boundaries so that Gemma 4 distinguishes internal code facts, positive experiences, negative failure anti-priors, and external advisory documentation without treating unverified resources as ground truth?",
+  "components_implemented": [
+    "lifecore_swe.resources.context_builder.ResourceContextBuilder (Structured external evidence block, status warnings, provenance citations, budget truncation)",
+    "lifecore_swe.resources.context_builder.UnifiedWorldModelContextBuilder (4-stream evidence synthesis with explicit trust boundaries)",
+    "lifecore_swe.agent.agent.SWEAgent (Integration of enable_resource_graph, resource pre-retrieval, state observation injection, reasoning context injection)"
+  ],
+  "evidence_streams_supported": [
+    "STREAM 1: INTERNAL CODE EVIDENCE (AST REPOSITORY GRAPH)",
+    "STREAM 2: VERIFIED POSITIVE EXPERIENCE (REINFORCED TRANSITIONS)",
+    "STREAM 3: ATTRIBUTED NEGATIVE EXPERIENCE (FAILURE AVOIDANCE)",
+    "STREAM 4: EXTERNAL RESOURCE EVIDENCE (PROVENANCE & VERSION AWARE)"
+  ],
+  "truth_boundary_rules_enforced": [
+    "INTERNAL REPOSITORY CODE IS ABSOLUTE GROUND TRUTH",
+    "VERIFIED POSITIVE EXPERIENCE PROVIDES PROVEN STRUCTURAL PRIORS",
+    "NEGATIVE EXPERIENCE WARNS AGAINST KNOWN FAILED TRANSITIONS",
+    "EXTERNAL RESOURCES ARE ADVISORY ONLY (NEVER TREAT UNVERIFIED SPECS AS GROUND TRUTH)"
+  ],
+  "network_calls_performed": 0,
+  "live_internet_enabled": false,
+  "test_metrics": {
+    "total_tests": 121,
+    "existing_tests_passed": 110,
+    "new_m5_d_tests_passed": 11,
+    "failed_tests": 0,
+    "pass_rate": 1.0,
+    "duration_seconds": 4.86
+  },
+  "backward_compatibility": {
+    "m0_1": "PRESERVED",
+    "m1a": "PRESERVED",
+    "m1b": "PRESERVED",
+    "m1c": "PRESERVED",
+    "m2": "PRESERVED",
+    "m3": "PRESERVED",
+    "m4": "PRESERVED",
+    "m5_a": "PRESERVED",
+    "m5_b": "PRESERVED",
+    "m5_c": "PRESERVED"
+  },
+  "security_boundary_isolation": "VERIFIED (Zero mutation of GraphIndex, ExperienceGraphOverlay, or NegativeGraphOverlay)"
+}

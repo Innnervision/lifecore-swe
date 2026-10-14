@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.env
+*.env
+
+# Secrets — never commit
+*.key
+secrets.json
+credentials.json
+
+# Large trajectory logs (optional — remove this line to include them)
+experiments/trajectories/
+
+# OS
+.DS_Store
+Thumbs.db

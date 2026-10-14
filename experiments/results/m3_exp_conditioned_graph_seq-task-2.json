@@ -1,0 +1,1848 @@
+{
+  "status": "SUCCESS",
+  "metrics": {
+    "task_success": true,
+    "patch_applied": true,
+    "patch_correctness": true,
+    "tests_before": {
+      "passed": false,
+      "summary": "============================== 1 failed in 0.03s ===============================",
+      "exit_code": 1
+    },
+    "tests_after": {
+      "passed": true,
+      "summary": "============================== 1 passed in 0.01s ===============================",
+      "exit_code": 0
+    },
+    "test_passed": true,
+    "files_inspected": [
+      "hydra_mesh/ingest/rate_limiter.py",
+      "tests/test_rate_limiter.py"
+    ],
+    "files_read": 2,
+    "search_count": 0,
+    "tool_calls": 8,
+    "test_runs": 5,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 14,
+    "graph_edges_retrieved": 25,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 1,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 0.5,
+    "execution_time": 200.462,
+    "verification_status": "PASSED",
+    "experiences_retrieved": [
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+    ],
+    "experience_count": 1,
+    "experience_stored": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-2-1790538875",
+    "experience_influence": "VERIFIED_USEFUL",
+    "experience_stale_count": 1,
+    "experience_guided_edge_utilization": 1.0,
+    "experience_supported_edges": [
+      "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+      "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+      "module:tests.test_rate_limiter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+      "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+      "module:hydra_mesh.ingest.rate_limiter->IMPORTS->module:hydra_mesh.core.exceptions",
+      "module:hydra_mesh.ingest.__init__->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+      "module:hydra_mesh.ingest.rate_limiter->DEFINES->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+      "file:hydra_mesh/ingest/rate_limiter.py->DEFINES->module:hydra_mesh.ingest.rate_limiter"
+    ],
+    "experience_edges_count": 25
+  },
+  "state": {
+    "task": "# SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hydra_mesh/ingest/rate_limiter.py` requires a `reset(client_id=None)` method.\n\n## Current Observed Behavior\n`SlidingWindowLimiter` does not have a `reset()` method; calling it raises `AttributeError`.\n\n## Expected Behavior\nImplement `reset(self, client_id: Optional[str] = None) -> None`:\n- If `client_id` is provided, clear the request history list for that specific client only.\n- If `client_id` is None, clear the history dictionary for all clients.\n",
+    "observations": [
+      "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/ingest/__init__.py\n  - hydra_mesh/ingest/rate_limiter.py\n  - hydra_mesh/storage/wal.py\n  - tests/test_dead_letter.py\n\nKEY CODE SYMBOLS & NODES (Selected: 14):\n  - [CLASS] SlidingWindowLimiter (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] SlidingWindowLimiter.allow_request (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] WriteAheadLog.append (hydra_mesh/storage/wal.py)\n  - [TEST] test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py)\n  - [TEST] test_rate_limiter_client_isolation (tests/test_rate_limiter.py)\n  - [TEST] test_rate_limiter_standard (tests/test_rate_limiter.py)\n  - [MODULE] tests.test_rate_limiter (tests/test_rate_limiter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 25, Experience-Reinforced: 25):\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_COND\n... [Context truncated to budget]",
+      "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.39 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Overlapping files (1): ['hydra_mesh/ingest/rate_limiter.py']; Task keywords matched (17): ['rate', 'rate_limiter', 'behavior', 'slidingwindowlimiter']\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches",
+      "Listed 69 files in repository: hydra_mesh/__init__.py, hydra_mesh/connectors/__init__.py, hydra_mesh/connectors/auth.py, hydra_mesh/connectors/file_sink.py, hydra_mesh/connectors/http_sink.py, hydra_mesh/connectors/metrics_exporter.py, hydra_mesh/connectors/retry_policy.py, hydra_mesh/connectors/stream_sink.py",
+      "Inspected file hydra_mesh/ingest/rate_limiter.py (28 lines).",
+      "Inspected file tests/test_rate_limiter.py (37 lines).",
+      "Test run failed: ============================== 1 failed in 0.04s ===============================",
+      "Applied code modification attempt #1 to hydra_mesh/ingest/rate_limiter.py (success: True).",
+      "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+      "Test run passed: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+      "Verification completed with status: PASSED"
+    ],
+    "hypotheses": [],
+    "files_inspected": [
+      "hydra_mesh/ingest/rate_limiter.py",
+      "tests/test_rate_limiter.py"
+    ],
+    "searches": [],
+    "actions": [
+      {
+        "action": "modify_code",
+        "file": "hydra_mesh/ingest/rate_limiter.py",
+        "attempt": 1,
+        "success": true
+      }
+    ],
+    "test_results": [
+      {
+        "attempt": 0,
+        "passed": false,
+        "summary": "============================== 1 failed in 0.04s ==============================="
+      },
+      {
+        "attempt": 1,
+        "passed": true,
+        "summary": "============================== 1 passed in 0.02s ==============================="
+      },
+      {
+        "attempt": 1,
+        "passed": true,
+        "summary": "============================== 1 passed in 0.02s ==============================="
+      }
+    ],
+    "failures": [],
+    "recovery_attempts": 0,
+    "patch_attempts": 1,
+    "final_patch": "diff --git a/hydra_mesh/ingest/rate_limiter.py b/hydra_mesh/ingest/rate_limiter.py\nindex 024c2ee..012c3b5 100644\n--- a/hydra_mesh/ingest/rate_limiter.py\n+++ b/hydra_mesh/ingest/rate_limiter.py\n@@ -1,5 +1,5 @@\n import time\n-from typing import Dict, List\n+from typing import Dict, List, Optional\n from ..core.exceptions import RateLimitExceeded\n \n class SlidingWindowLimiter:\n@@ -26,3 +26,11 @@ class SlidingWindowLimiter:\n             self.history[client_id].append(timestamp)\n             return True\n         return False\n+\n+    def reset(self, client_id: Optional[str] = None) -> None:\n+        \"\"\"Reset the request history.\"\"\"\n+        if client_id is not None:\n+            if client_id in self.history:\n+                del self.history[client_id]\n+        else:\n+            self.history.clear()\n",
+    "verification": {
+      "status": "PASSED",
+      "success": true,
+      "patch_applied": true,
+      "containment_ok": true,
+      "unintended_files": [],
+      "files_changed": [
+        "hydra_mesh/ingest/rate_limiter.py"
+      ],
+      "test_command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_reset",
+      "test_summary": "============================== 1 passed in 0.01s ===============================",
+      "test_exit_code": 0,
+      "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_reset PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+      "failure_reasons": []
+    },
+    "graph_evidence": "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/ingest/__init__.py\n  - hydra_mesh/ingest/rate_limiter.py\n  - hydra_mesh/storage/wal.py\n  - tests/test_dead_letter.py\n\nKEY CODE SYMBOLS & NODES (Selected: 14):\n  - [CLASS] SlidingWindowLimiter (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] SlidingWindowLimiter.allow_request (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] WriteAheadLog.append (hydra_mesh/storage/wal.py)\n  - [TEST] test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py)\n  - [TEST] test_rate_limiter_client_isolation (tests/test_rate_limiter.py)\n  - [TEST] test_rate_limiter_standard (tests/test_rate_limiter.py)\n  - [MODULE] tests.test_rate_limiter (tests/test_rate_limiter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 25, Experience-Reinforced: 25):\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_COND\n... [Context truncated to budget]",
+    "experience_context": "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.39 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Overlapping files (1): ['hydra_mesh/ingest/rate_limiter.py']; Task keywords matched (17): ['rate', 'rate_limiter', 'behavior', 'slidingwindowlimiter']\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches",
+    "experiences_retrieved": [
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+    ],
+    "current_phase": "COMPLETED"
+  },
+  "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-2.jsonl",
+  "model_info": {
+    "model_name": "models/gemma-4-26b-a4b-it",
+    "model_version": "001",
+    "display_name": "Gemma 4 26B A4B IT",
+    "provider": "Google",
+    "api_runtime": "Google GenAI API (google-genai 2.25.0)",
+    "context_length": {
+      "input_tokens": 262144,
+      "output_tokens": 32768
+    },
+    "temperature": 0.1,
+    "tool_calling_capability": "Structured JSON Output Action Selection & Reasoning",
+    "is_development_adapter": false,
+    "timestamp": "2026-09-27T19:54:35.900903+00:00"
+  },
+  "retrieval_result": {
+    "query": "# SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hydra_mesh/ingest/rate_limiter.py` requires a `reset(client_id=None)` method.\n\n## Current Observed Behavior\n`SlidingWindowLimiter` does not have a `reset()` method; calling it raises `AttributeError`.\n\n## Expected Behavior\nImplement `reset(self, client_id: Optional[str] = None) -> None`:\n- If `client_id` is provided, clear the request history list for that specific client only.\n- If `client_id` is None, clear the history dictionary for all clients.\n",
+    "candidate_nodes": [
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        },
+        "relevance_score": 15.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.rate_limiter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "hydra_mesh.ingest.rate_limiter",
+        "start_line": 1,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "9c7ecfa4d0e7c61f25811030bf6ae3c71eb6b96aca431b3be1bb4a45018782ab",
+        "metadata": {},
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.allow_request",
+        "start_line": 13,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "09fa08bc38f67b8496679a3d1587fce4514659a8f65328a24e74b6d35690d23f",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "max_requests",
+            "str",
+            "float",
+            "timestamp",
+            "window_seconds",
+            "setdefault",
+            "client_id",
+            "history",
+            "t",
+            "len",
+            "self",
+            "append"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 13.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 12.5
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-1.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-1.md",
+        "symbol": "SEQ-TASK-1.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "16d80ce61dbaf7f0f358ddeb194fb3fcb6cc3ad245b238a777701df28bd91906",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-2.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-2.md",
+        "symbol": "SEQ-TASK-2.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "3d2062f8d070554fb988bd65e010c6bc0654bb9b217061b29009ba26141ca1b9",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-3.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-3.md",
+        "symbol": "SEQ-TASK-3.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "598178c84c34c0c8c10385168451961d302623dfec1f693b94a79a72a90d2c73",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-4.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-4.md",
+        "symbol": "SEQ-TASK-4.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8f586a05e08b77498a610ae3856e4367e13bf4c6bf15e0df6def53b276da8ca7",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:tasks/SEQ-TASK-5.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/SEQ-TASK-5.md",
+        "symbol": "SEQ-TASK-5.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "452d455d60d4b841f01ece2abf4b69a65a93be285f94a6b5ddfefce83d242839",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/__init__.py",
+        "symbol": "hydra_mesh.ingest.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "8a8348dfce85299ac5099c7937bc5ac015b8cada3da5858cccd0dcbb62fe3af8",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.batcher",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/batcher.py",
+        "symbol": "hydra_mesh.ingest.batcher",
+        "start_line": 1,
+        "end_line": 15,
+        "language": "python",
+        "content_hash": "f7afcd83bdabf1a40ee6479ac2046a0565b486fd47906962178671f2fb3810f7",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.decoders",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/decoders.py",
+        "symbol": "hydra_mesh.ingest.decoders",
+        "start_line": 1,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "ded1ba48c41b71d3d4a115ae440f14094018d55fb5d6c02d724bb2c2e1edb989",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.filters",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/filters.py",
+        "symbol": "hydra_mesh.ingest.filters",
+        "start_line": 1,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "6e3531ccfa3b41d7bec3faefe49bbb9110bbbf22ad912b786930af5bde0999e1",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.receivers",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/receivers.py",
+        "symbol": "hydra_mesh.ingest.receivers",
+        "start_line": 1,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "478afe54270df1c6abfd274e2cc348b0a395b6d09f75378ad080da3ea9f0e0d5",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.sanitizers",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/sanitizers.py",
+        "symbol": "hydra_mesh.ingest.sanitizers",
+        "start_line": 1,
+        "end_line": 4,
+        "language": "python",
+        "content_hash": "ad76aa1c70b89146091c761201f7bc021eeffb04ab3d4722ddc65871a84f71fb",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.validator",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/validator.py",
+        "symbol": "hydra_mesh.ingest.validator",
+        "start_line": 1,
+        "end_line": 4,
+        "language": "python",
+        "content_hash": "bed1cb3d84f66eec4a2ec573ead047290bc7a344f1741b217d40f478546949bd",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "file:hydra_mesh/ingest/rate_limiter.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "rate_limiter.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "9c7ecfa4d0e7c61f25811030bf6ae3c71eb6b96aca431b3be1bb4a45018782ab",
+        "metadata": {},
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.__init__",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.__init__",
+        "start_line": 7,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "adfe38a30c47392c03826a223df0718087bb4141e571e9370dc921f991b4ff16",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "List"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 7.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 6.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 6.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 6.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/batcher.py",
+        "symbol": "EventBatcher.add",
+        "start_line": 7,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "8fddf98e5e5ef1c6d029c1cf0fdcad2f3dd1bdc932166f963496a873604ec201",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "bool",
+            "dict",
+            "max_batch_size",
+            "append",
+            "event",
+            "len",
+            "current_batch",
+            "self"
+          ],
+          "parent": "EventBatcher"
+        },
+        "relevance_score": 6.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.count",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.count",
+        "start_line": 11,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e42891d8a14d37ba4a04709002c78f65d63c031e32ae88fd8d7d1563b524f7d6",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "failed_events",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 6.0
+      },
+      {
+        "node_id": "file:tasks/TASK-201.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-201.md",
+        "symbol": "TASK-201.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-202.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-202.md",
+        "symbol": "TASK-202.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-203.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-203.md",
+        "symbol": "TASK-203.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-204.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-204.md",
+        "symbol": "TASK-204.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "module:hydra_mesh.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/__init__.py",
+        "symbol": "hydra_mesh.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "37a72656ce69e29a0cff4e3b30c4dbcf28995c391dc3a7173ca0d73447a93bcc",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "module:hydra_mesh.storage.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/__init__.py",
+        "symbol": "hydra_mesh.storage.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "a51fc14d4767254fc203598eaca953a54e0a9034f2548b11e5930e06621c1aba",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "module:hydra_mesh.storage.buffer",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/buffer.py",
+        "symbol": "hydra_mesh.storage.buffer",
+        "start_line": 1,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "cfb7986be9973441f2cfd17da0b6a36a3eaa4ccecf3ea11184ee2a9a8eecad05",
+        "metadata": {},
+        "relevance_score": 4.5
+      }
+    ],
+    "selected_nodes": [
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.allow_request",
+        "start_line": 13,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "09fa08bc38f67b8496679a3d1587fce4514659a8f65328a24e74b6d35690d23f",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "max_requests",
+            "str",
+            "float",
+            "timestamp",
+            "window_seconds",
+            "setdefault",
+            "client_id",
+            "history",
+            "t",
+            "len",
+            "self",
+            "append"
+          ],
+          "parent": "SlidingWindowLimiter"
+        }
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        }
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_rate_limited_to_dlq",
+        "start_line": 22,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "9c63cb6a9f7e7952286e9634ed0d3658a4148c31a1c28aaa38ce56bfa55fe081",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "limiter",
+            "transformer",
+            "res1",
+            "res2",
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count",
+            "failed_events"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_client_isolation",
+        "start_line": 30,
+        "end_line": 37,
+        "language": "python",
+        "content_hash": "94f7f0882f503117fe2d5b8fd04163a0a0e066054b1d541ca358c69c7ed1fecd",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "SlidingWindowLimiter",
+            "allow_request"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_standard",
+        "start_line": 4,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "0c62e4d181388643c2f72912d794ae6b0ff0627262ff4959ed23e1ab91af93f1",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "module:tests.test_rate_limiter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "tests.test_rate_limiter",
+        "start_line": 1,
+        "end_line": 37,
+        "language": "python",
+        "content_hash": "57b9f107783cc885682082cbae1305fa57f6432cca4a5e03b5a1020fe908b88f",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.core.exceptions",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "hydra_mesh.core.exceptions",
+        "start_line": 1,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "6769c2c553e722be2c81eaecaf94a1562398bd265d8581a9fae65bb240f30e82",
+        "metadata": {}
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_reset",
+        "start_line": 21,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "cce4f4173ff709f273e715b22617dd9cb14e0119bffa03ad2917df572a965b97",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "allow_request",
+            "reset"
+          ],
+          "references": [
+            "limiter",
+            "SlidingWindowLimiter",
+            "allow_request",
+            "reset"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_burst_allowance",
+        "start_line": 9,
+        "end_line": 19,
+        "language": "python",
+        "content_hash": "7601f5f70009062a63932d769fcbe29839d1948305a9cc8606942395431bd3dc",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        }
+      },
+      {
+        "node_id": "file:hydra_mesh/ingest/rate_limiter.py",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "rate_limiter.py",
+        "start_line": null,
+        "end_line": null,
+        "language": "python",
+        "content_hash": "9c7ecfa4d0e7c61f25811030bf6ae3c71eb6b96aca431b3be1bb4a45018782ab",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.__init__",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/__init__.py",
+        "symbol": "hydra_mesh.ingest.__init__",
+        "start_line": 1,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "8a8348dfce85299ac5099c7937bc5ac015b8cada3da5858cccd0dcbb62fe3af8",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:hydra_mesh.ingest.rate_limiter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "hydra_mesh.ingest.rate_limiter",
+        "start_line": 1,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "9c7ecfa4d0e7c61f25811030bf6ae3c71eb6b96aca431b3be1bb4a45018782ab",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:tests.test_dead_letter",
+        "node_type": "module",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "tests.test_dead_letter",
+        "start_line": 1,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "b66821fd776fb6656495aa65ce54adebf05af0a8b488ffb2dd6b73311a225f25",
+        "metadata": {}
+      }
+    ],
+    "selected_edges": [
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_standard",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_standard",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_standard",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_standard",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_reset",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_reset",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_reset",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_reset",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_client_isolation",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_client_isolation",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_client_isolation",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_client_isolation",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_burst_allowance",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "TESTS",
+        "source_symbol": "test_rate_limiter_burst_allowance",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "target": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_burst_allowance",
+        "target_symbol": "SlidingWindowLimiter.allow_request",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "CALLS",
+        "source_symbol": "test_rate_limiter_burst_allowance",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "TESTS",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "CALLS",
+        "source_symbol": "test_transformer_rate_limited_to_dlq",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "edge_type": "CALLS",
+        "source_symbol": "SlidingWindowLimiter.allow_request",
+        "target_symbol": "WriteAheadLog.append",
+        "base_score": 1.0,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 1.105,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "module:tests.test_rate_limiter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+        "source": "module:tests.test_rate_limiter",
+        "target": "module:hydra_mesh.ingest.rate_limiter",
+        "edge_type": "IMPORTS",
+        "source_symbol": "tests.test_rate_limiter",
+        "target_symbol": "hydra_mesh.ingest.rate_limiter",
+        "base_score": 0.8,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.905,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this IMPORTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+        "source": "module:tests.test_dead_letter",
+        "target": "module:hydra_mesh.ingest.rate_limiter",
+        "edge_type": "IMPORTS",
+        "source_symbol": "tests.test_dead_letter",
+        "target_symbol": "hydra_mesh.ingest.rate_limiter",
+        "base_score": 0.8,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.905,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this IMPORTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "module:hydra_mesh.ingest.rate_limiter->IMPORTS->module:hydra_mesh.core.exceptions",
+        "source": "module:hydra_mesh.ingest.rate_limiter",
+        "target": "module:hydra_mesh.core.exceptions",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.ingest.rate_limiter",
+        "target_symbol": "hydra_mesh.core.exceptions",
+        "base_score": 0.8,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.905,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this IMPORTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "module:hydra_mesh.ingest.__init__->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+        "source": "module:hydra_mesh.ingest.__init__",
+        "target": "module:hydra_mesh.ingest.rate_limiter",
+        "edge_type": "IMPORTS",
+        "source_symbol": "hydra_mesh.ingest.__init__",
+        "target_symbol": "hydra_mesh.ingest.rate_limiter",
+        "base_score": 0.8,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.905,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this IMPORTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "module:hydra_mesh.ingest.rate_limiter->DEFINES->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "source": "module:hydra_mesh.ingest.rate_limiter",
+        "target": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "edge_type": "DEFINES",
+        "source_symbol": "hydra_mesh.ingest.rate_limiter",
+        "target_symbol": "SlidingWindowLimiter",
+        "base_score": 0.6,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.705,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this DEFINES edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      },
+      {
+        "edge_id": "file:hydra_mesh/ingest/rate_limiter.py->DEFINES->module:hydra_mesh.ingest.rate_limiter",
+        "source": "file:hydra_mesh/ingest/rate_limiter.py",
+        "target": "module:hydra_mesh.ingest.rate_limiter",
+        "edge_type": "DEFINES",
+        "source_symbol": "rate_limiter.py",
+        "target_symbol": "hydra_mesh.ingest.rate_limiter",
+        "base_score": 0.6,
+        "experience_score": 0.105,
+        "task_relevance": 0.7,
+        "freshness_factor": 0.3,
+        "final_score": 0.705,
+        "contributing_experiences": [
+          "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665"
+        ],
+        "selection_reason": "Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this DEFINES edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)",
+        "freshness_status": "STALE"
+      }
+    ],
+    "relevant_files": [
+      "hydra_mesh/core/exceptions.py",
+      "hydra_mesh/ingest/__init__.py",
+      "hydra_mesh/ingest/rate_limiter.py",
+      "hydra_mesh/storage/wal.py",
+      "tests/test_dead_letter.py"
+    ],
+    "relevant_symbols": [
+      "SlidingWindowLimiter",
+      "SlidingWindowLimiter.allow_request",
+      "WriteAheadLog.append",
+      "test_transformer_rate_limited_to_dlq",
+      "test_rate_limiter_client_isolation",
+      "test_rate_limiter_standard",
+      "tests.test_rate_limiter",
+      "hydra_mesh.core.exceptions",
+      "test_rate_limiter_reset",
+      "test_rate_limiter_burst_allowance",
+      "rate_limiter.py",
+      "hydra_mesh.ingest.__init__",
+      "hydra_mesh.ingest.rate_limiter",
+      "tests.test_dead_letter"
+    ],
+    "associated_tests": [
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_standard",
+        "start_line": 4,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "0c62e4d181388643c2f72912d794ae6b0ff0627262ff4959ed23e1ab91af93f1",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.105
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_reset",
+        "start_line": 21,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "cce4f4173ff709f273e715b22617dd9cb14e0119bffa03ad2917df572a965b97",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "allow_request",
+            "reset"
+          ],
+          "references": [
+            "limiter",
+            "SlidingWindowLimiter",
+            "allow_request",
+            "reset"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.105
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_client_isolation",
+        "start_line": 30,
+        "end_line": 37,
+        "language": "python",
+        "content_hash": "94f7f0882f503117fe2d5b8fd04163a0a0e066054b1d541ca358c69c7ed1fecd",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "SlidingWindowLimiter",
+            "allow_request"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.105
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_burst_allowance",
+        "start_line": 9,
+        "end_line": 19,
+        "language": "python",
+        "content_hash": "7601f5f70009062a63932d769fcbe29839d1948305a9cc8606942395431bd3dc",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.105
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_rate_limited_to_dlq",
+        "start_line": 22,
+        "end_line": 36,
+        "language": "python",
+        "content_hash": "9c63cb6a9f7e7952286e9634ed0d3658a4148c31a1c28aaa38ce56bfa55fe081",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "limiter",
+            "transformer",
+            "res1",
+            "res2",
+            "DeadLetterQueue",
+            "SlidingWindowLimiter",
+            "EventTransformer",
+            "transform_event",
+            "count",
+            "failed_events"
+          ],
+          "parent": null
+        },
+        "edge_score": 1.105
+      }
+    ],
+    "latency_ms": 10.27,
+    "compact_context": "=== EXPERIENCE-CONDITIONED REPOSITORY GRAPH EVIDENCE ===\nNOTE: Repository graph transitions below are ranked by static AST structure + verified historical SWE experience.\nCURRENT REPOSITORY STATE ALWAYS WINS: Structural priors and experience weights guide navigation, but live code is ground truth.\n\nPRIORITY RELEVANT FILES:\n  - hydra_mesh/core/exceptions.py\n  - hydra_mesh/ingest/__init__.py\n  - hydra_mesh/ingest/rate_limiter.py\n  - hydra_mesh/storage/wal.py\n  - tests/test_dead_letter.py\n\nKEY CODE SYMBOLS & NODES (Selected: 14):\n  - [CLASS] SlidingWindowLimiter (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] SlidingWindowLimiter.allow_request (hydra_mesh/ingest/rate_limiter.py)\n  - [METHOD] WriteAheadLog.append (hydra_mesh/storage/wal.py)\n  - [TEST] test_transformer_rate_limited_to_dlq (tests/test_dead_letter.py)\n  - [TEST] test_rate_limiter_client_isolation (tests/test_rate_limiter.py)\n  - [TEST] test_rate_limiter_standard (tests/test_rate_limiter.py)\n  - [MODULE] tests.test_rate_limiter (tests/test_rate_limiter.py)\n  - [MODULE] hydra_mesh.core.exceptions (hydra_mesh/core/exceptions.py)\n\nEXPERIENCE-CONDITIONED TRANSITIONS (Total: 25, Experience-Reinforced: 25):\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_standard --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[TESTS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this TESTS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter.allow_request [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665'] traversed this CALLS edge (Verified successes: 1, Task relevance: 0.70, Freshness: STALE, Exp boost: +0.10)\n  - test_rate_limiter_reset --[CALLS]--> SlidingWindowLimiter [Base: 1.00, Exp: +0.10, Final: 1.10]\n    Reason: Verified prior tasks ['EXP-M3-EXP_COND\n... [Context truncated to budget]",
+    "config": {
+      "base_weight_calls": 1.0,
+      "base_weight_tests": 1.0,
+      "base_weight_imports": 0.8,
+      "base_weight_defines": 0.6,
+      "base_weight_default": 0.5,
+      "alpha_experience": 1.0,
+      "recency_tau_seconds": 604800.0,
+      "stale_freshness_factor": 0.3,
+      "revalidated_freshness_factor": 0.8,
+      "contradicted_freshness_factor": 0.0,
+      "max_nodes": 15,
+      "max_edges": 25,
+      "max_tests": 5,
+      "max_files": 5,
+      "expansion_depth": 1,
+      "max_context_chars": 3500,
+      "enable_experience_text": true,
+      "min_edge_score": 0.05
+    }
+  },
+  "experience_result": {
+    "query": "# SEQ-TASK-2: Add Reset Capability to SlidingWindowLimiter\n\n## Summary\nOperations needs an administrative endpoint to reset rate limiter history. The `SlidingWindowLimiter` in `hydra_mesh/ingest/rate_limiter.py` requires a `reset(client_id=None)` method.\n\n## Current Observed Behavior\n`SlidingWindowLimiter` does not have a `reset()` method; calling it raises `AttributeError`.\n\n## Expected Behavior\nImplement `reset(self, client_id: Optional[str] = None) -> None`:\n- If `client_id` is provided, clear the request history list for that specific client only.\n- If `client_id` is None, clear the history dictionary for all clients.\n",
+    "candidate_count": 1,
+    "selected_experiences": [
+      {
+        "experience_id": "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665",
+        "task_id": "M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1",
+        "repository_id": "scaled_repo",
+        "repository_version": "585e0ab",
+        "task_description": "# SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the ingestion rate limiter. When a client sends requests exceeding `max_requests`, the limiter is expected to permit up to `max_requests + burst_allowance` requests within the active time window.\n\n## Current Observed Behavior\nRequests sent after reaching `max_requests` are rejected with False, even when burst allowance is configured and unexhausted.\n\n## Expected Behavior\nThe limiter must permit requests up to the combined limit of `max_requests + burst_allowance` within the sliding window before throttling subsequent calls in `hydra_mesh/ingest/rate_limiter.py`.\n",
+        "task_category": "bug_fix",
+        "relevant_nodes": [
+          "module:hydra_mesh.ingest.__init__",
+          "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "module:tests.test_rate_limiter",
+          "file:hydra_mesh/ingest/rate_limiter.py",
+          "module:tests.test_dead_letter",
+          "module:hydra_mesh.ingest.rate_limiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "module:hydra_mesh.core.exceptions",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset",
+          "method:hydra_mesh/storage/wal.py::WriteAheadLog.append"
+        ],
+        "relevant_edges": [
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_standard->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_reset->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_client_isolation->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+          "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->TESTS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "test:tests/test_dead_letter.py::test_transformer_rate_limited_to_dlq->CALLS->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+          "module:tests.test_rate_limiter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:tests.test_dead_letter->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->IMPORTS->module:hydra_mesh.core.exceptions",
+          "module:hydra_mesh.ingest.__init__->IMPORTS->module:hydra_mesh.ingest.rate_limiter",
+          "module:hydra_mesh.ingest.rate_limiter->DEFINES->class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+          "file:hydra_mesh/ingest/rate_limiter.py->DEFINES->module:hydra_mesh.ingest.rate_limiter"
+        ],
+        "files_inspected": [
+          "hydra_mesh/ingest/rate_limiter.py",
+          "tests/test_rate_limiter.py"
+        ],
+        "files_modified": [
+          "hydra_mesh/ingest/rate_limiter.py"
+        ],
+        "symbols_modified": [],
+        "hypothesis": "",
+        "actions": [
+          {
+            "step": 0,
+            "action": "adaptive_graph_pre_retrieval",
+            "tool": "adaptive_graph_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 0,
+            "action": "experience_pre_retrieval",
+            "tool": "experience_retriever"
+          },
+          {
+            "step": 7,
+            "action": "finalize_trajectory",
+            "tool": "none"
+          }
+        ],
+        "observations": [
+          "Post-patch tests PASSED: ============================== 1 passed in 0.02s ===============================. Ready for verification.",
+          "Test run passed: ============================== 1 passed in 0.01s ===============================. Ready for verification.",
+          "Verification completed with status: PASSED"
+        ],
+        "patch_summary": "Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py",
+        "final_patch": "diff --git a/hydra_mesh/ingest/rate_limiter.py b/hydra_mesh/ingest/rate_limiter.py\nindex 024c2ee..6dc119a 100644\n--- a/hydra_mesh/ingest/rate_limiter.py\n+++ b/hydra_mesh/ingest/rate_limiter.py\n@@ -18,11 +18,13 @@ class SlidingWindowLimiter:\n         self.history[client_id] = [t for t in timestamps if t >= window_start]\n         current_count = len(self.history[client_id])\n         \n-        # BUG FOR TASK-201:\n-        # Strict equality drops request when count reaches max_requests, even if burst_allowance allows extra!\n-        # Should check: current_count < (self.max_requests + self.burst_allowance)\n-        limit = self.max_requests  # Erroneously ignores burst_allowance!\n+        limit = self.max_requests + self.burst_allowance\n         if current_count < limit:\n             self.history[client_id].append(timestamp)\n             return True\n         return False\n+\n+    def reset(self, client_id: str) -> None:\n+        \"\"\"Reset the history for a specific client.\"\"\"\n+        if client_id in self.history:\n+            self.history[client_id] = []\n",
+        "tests_run": [
+          {
+            "summary": "============================== 1 passed in 0.01s ===============================",
+            "passed": true
+          }
+        ],
+        "verification_result": {
+          "status": "PASSED",
+          "success": true,
+          "patch_applied": true,
+          "containment_ok": true,
+          "unintended_files": [],
+          "files_changed": [
+            "hydra_mesh/ingest/rate_limiter.py"
+          ],
+          "test_command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+          "test_summary": "============================== 1 passed in 0.01s ===============================",
+          "test_exit_code": 0,
+          "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_burst_allowance PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================\n",
+          "failure_reasons": []
+        },
+        "success": true,
+        "failure_reason": null,
+        "recovery_attempts": 0,
+        "tool_usage": {
+          "tool_calls": 7,
+          "searches": 0,
+          "test_runs": 5
+        },
+        "confidence": 1.0,
+        "timestamp": "2026-09-27T19:51:05.089256+00:00",
+        "provenance": {
+          "trajectory_file": "/lifecore-swe/experiments/trajectories/m3_exp_conditioned_graph_seq-task-1.jsonl",
+          "model": "models/gemma-4-26b-a4b-it",
+          "git_commit": "585e0ab"
+        },
+        "verification_status": "VERIFIED",
+        "file_hashes": {
+          "hydra_mesh/ingest/rate_limiter.py": "d1afe2ed905633ff",
+          "tests/test_rate_limiter.py": "57b9f107783cc885"
+        },
+        "graph_hash": null,
+        "stale_status": "STALE"
+      }
+    ],
+    "selection_reasons": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": [
+        "Repository match: 'scaled_repo'",
+        "Overlapping files (1): ['hydra_mesh/ingest/rate_limiter.py']",
+        "Task keywords matched (17): ['rate', 'rate_limiter', 'behavior', 'slidingwindowlimiter']",
+        "Verified solution status on task 'M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1'"
+      ]
+    },
+    "ranking_scores": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": 0.3908
+    },
+    "stale_statuses": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": "STALE"
+    },
+    "stale_details": {
+      "EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665": "Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']"
+    },
+    "compact_context": "==================================================\nVERIFIED EPISODIC EXPERIENCE (HISTORICAL EVIDENCE)\n==================================================\nNOTICE TO AGENT:\n1. Historical experience is EVIDENCE, NOT AN INSTRUCTION.\n2. CURRENT REPOSITORY STATE AND TESTS ALWAYS TAKE PRECEDENCE.\n3. Do NOT blindly copy patches. Verify current file contents before making edits.\n4. If historical experience contradicts current source, current code wins.\n--------------------------------------------------\n\n[VERIFIED EXPERIENCE] EXP-M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1-1790538665 (Task: M3-EXP_CONDITIONED_GRAPH-SEQ-TASK-1, Category: bug_fix)\n- Relevance Score: 0.39 | Status: VERIFIED | Freshness: STALE\n- Freshness Warning: Files modified since task verified: ['hydra_mesh/ingest/rate_limiter.py']\n- Selection Reason: Repository match: 'scaled_repo'; Overlapping files (1): ['hydra_mesh/ingest/rate_limiter.py']; Task keywords matched (17): ['rate', 'rate_limiter', 'behavior', 'slidingwindowlimiter']\n- Prior Task: # SEQ-TASK-1: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the i\n- Impacted Files: hydra_mesh/ingest/rate_limiter.py\n- Verified Change Summary: Modified 1 file(s): hydra_mesh/ingest/rate_limiter.py\n- Verified Passing Tests: ============================== 1 passed in 0.01s ===============================\n- Efficiency: 7 calls, 0 searches",
+    "latency_ms": 1.08
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "task_id": "M4-TASK-C",
+  "condition": "STATELESS",
+  "metrics": {
+    "task_success": false,
+    "patch_applied": false,
+    "patch_correctness": false,
+    "tests_before": {
+      "passed": false,
+      "summary": "============================== 1 failed in 0.04s ===============================",
+      "exit_code": 1
+    },
+    "tests_after": {
+      "command": "pytest -v tests/test_rate_limiter.py::test_rate_limiter_reset",
+      "exit_code": 1,
+      "passed": false,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 1 item\n\ntests/test_rate_limiter.py::test_rate_limiter_reset FAILED               [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_rate_limiter_reset ____________________________\n\n    def test_rate_limiter_reset():\n        limiter = SlidingWindowLimiter(max_requests=2, burst_allowance=0, window_seconds=60.0)\n        assert limiter.allow_request(\"client1\", 10.0)\n        assert limiter.allow_request(\"client1\", 11.0)\n        assert not limiter.allow_request(\"client1\", 12.0)\n        # Reset client1\n>       limiter.reset(\"client1\")\n        ^^^^^^^^^^^^^\nE       AttributeError: 'SlidingWindowLimiter' object has no attribute 'reset'\n\ntests/test_rate_limiter.py:27: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_rate_limiter.py::test_rate_limiter_reset - AttributeError: ...\n============================== 1 failed in 0.04s ===============================\n",
+      "stderr": "",
+      "summary": "============================== 1 failed in 0.04s ==============================="
+    },
+    "test_passed": false,
+    "files_inspected": [
+      "hydra_mesh/ingest/rate_limiter.py"
+    ],
+    "files_read": 1,
+    "search_count": 6,
+    "tool_calls": 10,
+    "test_runs": 1,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 0,
+    "graph_edges_retrieved": 0,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 0,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 1.0,
+    "execution_time": 185.797,
+    "verification_status": "FAILED",
+    "experiences_retrieved": [],
+    "experience_count": 0,
+    "experience_stored": null,
+    "experience_influence": "NONE",
+    "experience_stale_count": 0,
+    "experience_guided_edge_utilization": 0.0,
+    "experience_supported_edges": [],
+    "experience_edges_count": 0,
+    "penalized_edges": [],
+    "penalized_edges_count": 0,
+    "negative_avoidance_count": 0,
+    "stored_negative_experience_ids": [],
+    "avoided_trap_transition": true,
+    "repeated_failure": false,
+    "false_negative_guidance": false
+  },
+  "status": "FAILED"
+}

@@ -1,0 +1,153 @@
+<svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="720" fill="#F8F9FA" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A1A2E">LIFECORE-SWE: 4-Stream Unified World Model Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="11" fill="#666">Experience-Conditioned Code Graphs for Autonomous Software Engineering</text>
+
+  <!-- TASK INPUT -->
+  <rect x="325" y="74" width="250" height="42" rx="8" fill="#1A1A2E" stroke="none"/>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="white">TASK DESCRIPTION</text>
+
+  <line x1="450" y1="116" x2="450" y2="138" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- STREAM 1 -->
+  <rect x="30" y="140" width="195" height="130" rx="8" fill="white" stroke="#4285F4" stroke-width="2"/>
+  <rect x="30" y="140" width="195" height="28" rx="8" fill="#4285F4"/>
+  <rect x="30" y="155" width="195" height="13" fill="#4285F4"/>
+  <text x="127" y="159" text-anchor="middle" font-size="10" font-weight="bold" fill="white">STREAM 1</text>
+  <text x="127" y="173" text-anchor="middle" font-size="9" fill="white">Static AST Code Graph</text>
+  <text x="40" y="194" font-size="9" fill="#333">&#x2022; Repository AST (252 nodes)</text>
+  <text x="40" y="208" font-size="9" fill="#333">&#x2022; 345 directed edges</text>
+  <text x="40" y="222" font-size="9" fill="#333">&#x2022; CALLS / TESTS / IMPORTS</text>
+  <text x="40" y="236" font-size="9" fill="#333">&#x2022; DEFINES / REFERENCES</text>
+  <text x="40" y="252" font-size="9" fill="#4285F4" font-weight="bold">Retrieval: &lt;3ms, 100% recall</text>
+
+  <!-- STREAM 2 -->
+  <rect x="245" y="140" width="195" height="130" rx="8" fill="white" stroke="#34A853" stroke-width="2"/>
+  <rect x="245" y="140" width="195" height="28" rx="8" fill="#34A853"/>
+  <rect x="245" y="155" width="195" height="13" fill="#34A853"/>
+  <text x="342" y="159" text-anchor="middle" font-size="10" font-weight="bold" fill="white">STREAM 2</text>
+  <text x="342" y="173" text-anchor="middle" font-size="9" fill="white">Positive Experience Overlay</text>
+  <text x="255" y="194" font-size="9" fill="#333">&#x2022; Verified trajectory edge weights</text>
+  <text x="255" y="208" font-size="9" fill="#333">&#x2022; score = S_base + &#x03B1;&#xB7;E_freq&#xB7;R_task</text>
+  <text x="255" y="222" font-size="9" fill="#333">&#x2022; &#xB7;F_fresh&#xB7;D_recency&#xB7;C_conf</text>
+  <text x="255" y="236" font-size="9" fill="#333">&#x2022; Cold-start = static graph</text>
+  <text x="255" y="252" font-size="9" fill="#34A853" font-weight="bold">SQLite overlay DB (M3)</text>
+
+  <!-- STREAM 3 -->
+  <rect x="460" y="140" width="195" height="130" rx="8" fill="white" stroke="#EA4335" stroke-width="2"/>
+  <rect x="460" y="140" width="195" height="28" rx="8" fill="#EA4335"/>
+  <rect x="460" y="155" width="195" height="13" fill="#EA4335"/>
+  <text x="557" y="159" text-anchor="middle" font-size="10" font-weight="bold" fill="white">STREAM 3</text>
+  <text x="557" y="173" text-anchor="middle" font-size="9" fill="white">Negative Experience Overlay</text>
+  <text x="470" y="194" font-size="9" fill="#333">&#x2022; Causal attribution filter</text>
+  <text x="470" y="208" font-size="9" fill="#333">&#x2022; STRONG / VERIFIED only</text>
+  <text x="470" y="222" font-size="9" fill="#333">&#x2022; Score floor &#x2265; 0.15</text>
+  <text x="470" y="236" font-size="9" fill="#333">&#x2022; Recency decay &#x03C4; = 24h</text>
+  <text x="470" y="252" font-size="9" fill="#EA4335" font-weight="bold">SQLite overlay DB (M4)</text>
+
+  <!-- STREAM 4 -->
+  <rect x="675" y="140" width="195" height="130" rx="8" fill="white" stroke="#9334E6" stroke-width="2"/>
+  <rect x="675" y="140" width="195" height="28" rx="8" fill="#9334E6"/>
+  <rect x="675" y="155" width="195" height="13" fill="#9334E6"/>
+  <text x="772" y="159" text-anchor="middle" font-size="10" font-weight="bold" fill="white">STREAM 4</text>
+  <text x="772" y="173" text-anchor="middle" font-size="9" fill="white">External Resource Graph</text>
+  <text x="685" y="194" font-size="9" fill="#333">&#x2022; Provenance-aware (M5)</text>
+  <text x="685" y="208" font-size="9" fill="#333">&#x2022; 7-stage verification lifecycle</text>
+  <text x="685" y="222" font-size="9" fill="#333">&#x2022; RETRIEVED &#x2260; VERIFIED</text>
+  <text x="685" y="236" font-size="9" fill="#333">&#x2022; Advisory only &#x2014; clearly labeled</text>
+  <text x="685" y="252" font-size="9" fill="#9334E6" font-weight="bold">Truth-boundary enforced (M5-D)</text>
+
+  <!-- Arrows streams to context builder -->
+  <line x1="127" y1="270" x2="127" y2="308" stroke="#4285F4" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <line x1="342" y1="270" x2="342" y2="308" stroke="#34A853" stroke-width="2" marker-end="url(#arr-green)"/>
+  <line x1="557" y1="270" x2="557" y2="308" stroke="#EA4335" stroke-width="2" marker-end="url(#arr-red)"/>
+  <line x1="772" y1="270" x2="772" y2="308" stroke="#9334E6" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <!-- UNIFIED CONTEXT BUILDER -->
+  <rect x="30" y="308" width="840" height="52" rx="8" fill="#1A1A2E" stroke="none"/>
+  <text x="450" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Unified World Model Context Builder</text>
+  <text x="450" y="348" text-anchor="middle" font-size="10" fill="#AAB4BE">Strict truth boundaries &#xB7; Explicit stream labels &#xB7; Budget-bounded context &#xB7; Advisory warnings for unverified resources</text>
+
+  <line x1="450" y1="360" x2="450" y2="388" stroke="#555" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- GEMMA 4 -->
+  <rect x="250" y="388" width="400" height="52" rx="8" fill="#0D47A1" stroke="none"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gemma 4  (gemma-4-26b-a4b-it)</text>
+  <text x="450" y="428" text-anchor="middle" font-size="10" fill="#90CAF9">temperature=0.1 &#xB7; Structured JSON output &#xB7; Google GenAI SDK 2.25.0</text>
+
+  <line x1="450" y1="440" x2="450" y2="465" stroke="#555" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- AGENT LOOP -->
+  <rect x="60" y="465" width="760" height="52" rx="8" fill="white" stroke="#555" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="450" y="487" text-anchor="middle" font-size="12" font-weight="bold" fill="#1A1A2E">Autonomous Agent Loop</text>
+  <text x="170" y="505" text-anchor="middle" font-size="10" fill="#4285F4" font-weight="bold">PLAN</text>
+  <text x="285" y="505" text-anchor="middle" font-size="10" fill="#34A853" font-weight="bold">READ / SEARCH</text>
+  <text x="430" y="505" text-anchor="middle" font-size="10" fill="#EA4335" font-weight="bold">EDIT / PATCH</text>
+  <text x="580" y="505" text-anchor="middle" font-size="10" fill="#FBBC04" font-weight="bold">TEST</text>
+  <text x="710" y="505" text-anchor="middle" font-size="10" fill="#9334E6" font-weight="bold">VERIFY</text>
+  <line x1="210" y1="495" x2="235" y2="495" stroke="#888" stroke-width="1" marker-end="url(#arr-sm)"/>
+  <line x1="340" y1="495" x2="370" y2="495" stroke="#888" stroke-width="1" marker-end="url(#arr-sm)"/>
+  <line x1="490" y1="495" x2="520" y2="495" stroke="#888" stroke-width="1" marker-end="url(#arr-sm)"/>
+  <line x1="610" y1="495" x2="640" y2="495" stroke="#888" stroke-width="1" marker-end="url(#arr-sm)"/>
+
+  <line x1="450" y1="517" x2="450" y2="542" stroke="#555" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- VERIFICATION GATE -->
+  <rect x="200" y="542" width="500" height="40" rx="8" fill="#E8F5E9" stroke="#34A853" stroke-width="2"/>
+  <text x="450" y="558" text-anchor="middle" font-size="11" font-weight="bold" fill="#1B5E20">Independent Verification Gate</text>
+  <text x="450" y="572" text-anchor="middle" font-size="9.5" fill="#2E7D32">All tests pass &#xB7; Patch contained &#xB7; No unintended file changes</text>
+
+  <line x1="310" y1="582" x2="200" y2="615" stroke="#34A853" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <line x1="590" y1="582" x2="700" y2="615" stroke="#EA4335" stroke-width="1.5" marker-end="url(#arr-red)"/>
+
+  <!-- PASS box -->
+  <rect x="100" y="615" width="200" height="72" rx="8" fill="white" stroke="#34A853" stroke-width="2"/>
+  <text x="200" y="633" text-anchor="middle" font-size="10" font-weight="bold" fill="#34A853">&#x2713; VERIFIED &#x2014; PASS</text>
+  <text x="200" y="648" text-anchor="middle" font-size="8.5" fill="#333">Update Stream 2 overlay</text>
+  <text x="200" y="661" text-anchor="middle" font-size="8.5" fill="#333">(positive edge weights)</text>
+  <text x="200" y="675" text-anchor="middle" font-size="8.5" fill="#333">Store experience record</text>
+
+  <!-- FAIL box -->
+  <rect x="600" y="615" width="200" height="72" rx="8" fill="white" stroke="#EA4335" stroke-width="2"/>
+  <text x="700" y="633" text-anchor="middle" font-size="10" font-weight="bold" fill="#EA4335">&#x2717; FAILED</text>
+  <text x="700" y="648" text-anchor="middle" font-size="8.5" fill="#333">Run failure attribution</text>
+  <text x="700" y="661" text-anchor="middle" font-size="8.5" fill="#333">STRONG/VERIFIED only &#x2192;</text>
+  <text x="700" y="675" text-anchor="middle" font-size="8.5" fill="#333">Update Stream 3 overlay</text>
+
+  <text x="248" y="610" font-size="9" fill="#34A853" font-weight="bold">PASS</text>
+  <text x="651" y="610" font-size="9" fill="#EA4335" font-weight="bold">FAIL</text>
+
+  <!-- Invariant note -->
+  <rect x="310" y="628" width="280" height="40" rx="6" fill="#FFF8E1" stroke="#FBBC04" stroke-width="1.5"/>
+  <text x="450" y="644" text-anchor="middle" font-size="8.5" fill="#7B5800" font-weight="bold">Architectural Invariant</text>
+  <text x="450" y="658" text-anchor="middle" font-size="8" fill="#7B5800">AST graph never mutated by experience signals</text>
+
+  <!-- Key finding -->
+  <rect x="30" y="695" width="840" height="18" rx="4" fill="#E3F2FD" stroke="#4285F4" stroke-width="1"/>
+  <text x="450" y="708" text-anchor="middle" font-size="9.5" fill="#0D47A1" font-weight="bold">Key Finding (M3 Condition E): Structural graph conditioning alone &#x2014; without text injection &#x2014; achieves 100% task success at 36% lower latency</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4285F4"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34A853"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#EA4335"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9334E6"/>
+    </marker>
+    <marker id="arr-sm" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

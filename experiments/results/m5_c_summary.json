@@ -1,0 +1,63 @@
+{
+  "milestone": "M5-C",
+  "title": "Provenance-Aware Resource Graph & Deterministic Resource Retrieval",
+  "status": "COMPLETED",
+  "date": "2026-09-30",
+  "research_question": "Can external software knowledge be represented as a provenance-aware, version-aware graph and retrieved as bounded evidence without contaminating the internal repository, positive-experience, or negative-experience graphs?",
+  "components_implemented": [
+    "lifecore_swe.resources.graph.schema (ResourceNodeType, ResourceEdgeType, ResourceNode, ResourceEdge)",
+    "lifecore_swe.resources.graph.index (ResourceGraph with associative type, source, package, and status indexing)",
+    "lifecore_swe.resources.graph.builder (ResourceGraphBuilder inferring SOURCED_FROM, DOCUMENTS, VERSION_OF, EXAMPLE_FOR, DEPENDS_ON, REFERENCES)",
+    "lifecore_swe.resources.graph.ranking (ResourceRanker with multi-attribute scoring: relevance, authority, version, freshness, trust, status, confidence)",
+    "lifecore_swe.resources.graph.retriever (ResourceGraphRetriever with multi-hop expansion, filtering, bounded selection, and context formatting)"
+  ],
+  "graph_entity_types": [
+    "RESOURCE",
+    "SOURCE",
+    "PACKAGE",
+    "PACKAGE_VERSION",
+    "REPOSITORY",
+    "DOCUMENTATION",
+    "API",
+    "EXAMPLE",
+    "ISSUE",
+    "COMMIT",
+    "PAPER",
+    "BENCHMARK"
+  ],
+  "graph_relationship_types": [
+    "SOURCED_FROM",
+    "DOCUMENTS",
+    "VERSION_OF",
+    "REFERENCES",
+    "EXAMPLE_FOR",
+    "DEPENDS_ON",
+    "RELATED_TO",
+    "SUPERSEDES",
+    "CONTRADICTS",
+    "VALIDATED_BY"
+  ],
+  "network_calls_performed": 0,
+  "live_internet_enabled": false,
+  "llm_prompting_enabled": false,
+  "test_metrics": {
+    "total_tests": 110,
+    "existing_tests_passed": 95,
+    "new_m5_c_tests_passed": 15,
+    "failed_tests": 0,
+    "pass_rate": 1.0,
+    "duration_seconds": 2.17
+  },
+  "backward_compatibility": {
+    "m0_1": "PRESERVED",
+    "m1a": "PRESERVED",
+    "m1b": "PRESERVED",
+    "m1c": "PRESERVED",
+    "m2": "PRESERVED",
+    "m3": "PRESERVED",
+    "m4": "PRESERVED",
+    "m5_a": "PRESERVED",
+    "m5_b": "PRESERVED"
+  },
+  "security_boundary_isolation": "VERIFIED (Zero mutation of GraphIndex, ExperienceGraphOverlay, or NegativeGraphOverlay)"
+}

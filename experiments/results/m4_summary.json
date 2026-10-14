@@ -1,0 +1,184 @@
+{
+  "timestamp": 1790577214.541779,
+  "model": {
+    "model_name": "models/gemma-4-26b-a4b-it",
+    "model_version": "001",
+    "display_name": "Gemma 4 26B A4B IT",
+    "provider": "Google",
+    "api_runtime": "Google GenAI API (google-genai 2.25.0)",
+    "context_length": {
+      "input_tokens": 262144,
+      "output_tokens": 32768
+    },
+    "temperature": 0.1,
+    "tool_calling_capability": "Structured JSON Output Action Selection & Reasoning",
+    "is_development_adapter": false,
+    "timestamp": "2026-09-28T06:33:34.541783+00:00"
+  },
+  "benchmark_tasks": [
+    {
+      "task_id": "M4-TASK-A",
+      "title": "Fix RingBuffer capacity handling in storage/buffer.py",
+      "description": "Clients report buffer overflow errors are not triggered at capacity. Fix RingBuffer.push in hydra_mesh/storage/buffer.py so that pushing item when size >= capacity raises BufferOverflowError. Note: Do not confuse with key-value eviction in storage/cache.py.",
+      "category": "bug_fix",
+      "target_file": "hydra_mesh/storage/buffer.py",
+      "trap_file": "hydra_mesh/storage/cache.py",
+      "trap_transition": "file:hydra_mesh/storage/buffer.py->REFERENCES->file:hydra_mesh/storage/cache.py",
+      "correct_symbol": "RingBuffer.push",
+      "trap_symbol": "KeyValueCache.set",
+      "test_target": "tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+      "failure_mode": "NAVIGATION_LOCALIZATION_TRAP"
+    },
+    {
+      "task_id": "M4-TASK-B",
+      "title": "Route missing event_id to DeadLetterQueue in EventTransformer",
+      "description": "EventTransformer in hydra_mesh/pipeline/transformer.py crashes with SchemaError when 'event_id' is missing. Instead of raising SchemaError, it must route the invalid event to self.dlq.route(event, reason='Missing required event_id') and return None.",
+      "category": "cross_module",
+      "target_file": "hydra_mesh/pipeline/transformer.py",
+      "trap_file": "hydra_mesh/pipeline/dead_letter.py",
+      "trap_transition": "file:hydra_mesh/pipeline/transformer.py->CALLS->file:hydra_mesh/pipeline/dead_letter.py",
+      "correct_symbol": "EventTransformer.transform_event",
+      "trap_symbol": "DeadLetterQueue.route",
+      "test_target": "tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+      "failure_mode": "CALLER_CALLEE_AMBIGUITY"
+    },
+    {
+      "task_id": "M4-TASK-C",
+      "title": "Implement selective reset(client_id) on SlidingWindowLimiter",
+      "description": "SlidingWindowLimiter in hydra_mesh/ingest/rate_limiter.py needs a reset method. If client_id is given, reset only that client's history. If None, reset all. CRITICAL: Global reset must not be used when client_id is specified, as it destroys multi-client isolation.",
+      "category": "behavior_modification",
+      "target_file": "hydra_mesh/ingest/rate_limiter.py",
+      "trap_file": "hydra_mesh/ingest/rate_limiter.py",
+      "trap_transition": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.reset->CALLS->dict.clear",
+      "correct_symbol": "SlidingWindowLimiter.reset",
+      "trap_symbol": "dict.clear",
+      "test_target": "tests/test_rate_limiter.py::test_rate_limiter_reset",
+      "failure_mode": "INCORRECT_HYPOTHESIS_GLOBAL_RESET"
+    },
+    {
+      "task_id": "M4-TASK-D",
+      "title": "SlidingWindowLimiter Burst Allowance Configuration",
+      "description": "When burst_allowance > 0, SlidingWindowLimiter in hydra_mesh/ingest/rate_limiter.py must allow up to max_requests + burst_allowance within the active sliding window before rejecting requests.",
+      "category": "bug_fix",
+      "target_file": "hydra_mesh/ingest/rate_limiter.py",
+      "trap_file": "hydra_mesh/storage/cache.py",
+      "trap_transition": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->KeyValueCache.get",
+      "correct_symbol": "SlidingWindowLimiter.allow_request",
+      "trap_symbol": "KeyValueCache.get",
+      "test_target": "tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+      "failure_mode": "REPEATED_TEMPTATION_AVOIDANCE"
+    }
+  ],
+  "conditions": {
+    "STATELESS": {
+      "total_tasks": 4,
+      "task_success_rate": 0.5,
+      "patch_correctness": 0.5,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 10.75,
+      "avg_searches": 4.0,
+      "avg_files_inspected": 1.25,
+      "avg_execution_time": 179.12,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    },
+    "STATIC_GRAPH": {
+      "total_tasks": 4,
+      "task_success_rate": 1.0,
+      "patch_correctness": 1.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 5.5,
+      "avg_searches": 0.0,
+      "avg_files_inspected": 1.5,
+      "avg_execution_time": 102.65,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    },
+    "POSITIVE_GRAPH": {
+      "total_tasks": 4,
+      "task_success_rate": 1.0,
+      "patch_correctness": 1.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 6.75,
+      "avg_searches": 0.5,
+      "avg_files_inspected": 1.5,
+      "avg_execution_time": 131.98,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    },
+    "POSITIVE_NEGATIVE_GRAPH": {
+      "total_tasks": 4,
+      "task_success_rate": 1.0,
+      "patch_correctness": 1.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 5.75,
+      "avg_searches": 0.25,
+      "avg_files_inspected": 1.5,
+      "avg_execution_time": 115.36,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    },
+    "POSITIVE_NEGATIVE_NO_TEXT": {
+      "total_tasks": 4,
+      "task_success_rate": 1.0,
+      "patch_correctness": 1.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 6.0,
+      "avg_searches": 0.0,
+      "avg_files_inspected": 1.75,
+      "avg_execution_time": 136.88,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    }
+  },
+  "ablations": {
+    "ABLATION_NO_ATTR": {
+      "total_tasks": 2,
+      "task_success_rate": 0.0,
+      "patch_correctness": 0.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 10.5,
+      "avg_searches": 2.5,
+      "avg_files_inspected": 1.0,
+      "avg_execution_time": 132.94,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    },
+    "ABLATION_NO_RECENCY": {
+      "total_tasks": 1,
+      "task_success_rate": 0.0,
+      "patch_correctness": 0.0,
+      "negative_avoidance_rate": 1.0,
+      "repeat_failure_rate": 0.0,
+      "false_negative_guidance_rate": 0.0,
+      "avg_tool_calls": 11.0,
+      "avg_searches": 4.0,
+      "avg_files_inspected": 1.0,
+      "avg_execution_time": 1.7,
+      "avg_recovery_attempts": 0.0,
+      "avg_penalized_edges": 0.0
+    }
+  },
+  "comparisons": {
+    "positive_vs_positive_negative": {
+      "success_rate_delta": 0.0,
+      "repeat_failure_rate_reduction": 0.0,
+      "avoidance_rate_gain": 0.0,
+      "tool_call_reduction": 1.0,
+      "false_negative_guidance_rate": 0.0
+    }
+  },
+  "raw_task_runs": {}
+}

@@ -1,0 +1,190 @@
+[
+  {
+    "task_id": "TASK-101",
+    "repo": "buggy_repo",
+    "ground_truth_files": [
+      "event_processor/filters.py"
+    ],
+    "condition_b_full_graph": {
+      "relevant_files": [
+        "event_processor/filters.py",
+        "event_processor/models.py",
+        "event_processor/pipeline.py",
+        "tests/test_pipeline.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.25,
+      "selected_nodes": 12,
+      "selected_edges": 20,
+      "associated_tests": 3,
+      "latency_ms": 1.25,
+      "context_chars": 2683
+    },
+    "condition_c_no_expansion": {
+      "relevant_files": [
+        "event_processor/filters.py",
+        "event_processor/models.py",
+        "event_processor/pipeline.py",
+        "tests/test_pipeline.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.25,
+      "selected_nodes": 11,
+      "selected_edges": 0,
+      "associated_tests": 0,
+      "latency_ms": 0.36,
+      "context_chars": 1062
+    }
+  },
+  {
+    "task_id": "TASK-201",
+    "repo": "scaled_repo",
+    "ground_truth_files": [
+      "hydra_mesh/ingest/rate_limiter.py"
+    ],
+    "condition_b_full_graph": {
+      "relevant_files": [
+        "hydra_mesh/ingest/rate_limiter.py",
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py",
+        "tests/test_buffer_eviction.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.2,
+      "selected_nodes": 12,
+      "selected_edges": 20,
+      "associated_tests": 5,
+      "latency_ms": 2.25,
+      "context_chars": 3171
+    },
+    "condition_c_no_expansion": {
+      "relevant_files": [
+        "hydra_mesh/ingest/rate_limiter.py",
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.25,
+      "selected_nodes": 12,
+      "selected_edges": 0,
+      "associated_tests": 0,
+      "latency_ms": 2.22,
+      "context_chars": 1196
+    }
+  },
+  {
+    "task_id": "TASK-202",
+    "repo": "scaled_repo",
+    "ground_truth_files": [
+      "hydra_mesh/connectors/http_sink.py"
+    ],
+    "condition_b_full_graph": {
+      "relevant_files": [
+        "hydra_mesh/connectors/http_sink.py",
+        "hydra_mesh/ingest/rate_limiter.py",
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.2,
+      "selected_nodes": 12,
+      "selected_edges": 20,
+      "associated_tests": 5,
+      "latency_ms": 2.09,
+      "context_chars": 3109
+    },
+    "condition_c_no_expansion": {
+      "relevant_files": [
+        "hydra_mesh/connectors/http_sink.py",
+        "hydra_mesh/ingest/rate_limiter.py",
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.2,
+      "selected_nodes": 12,
+      "selected_edges": 0,
+      "associated_tests": 0,
+      "latency_ms": 1.7,
+      "context_chars": 1214
+    }
+  },
+  {
+    "task_id": "TASK-203",
+    "repo": "scaled_repo",
+    "ground_truth_files": [
+      "hydra_mesh/pipeline/transformer.py"
+    ],
+    "condition_b_full_graph": {
+      "relevant_files": [
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py",
+        "tests/test_buffer_eviction.py",
+        "tests/test_dead_letter.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.2,
+      "selected_nodes": 12,
+      "selected_edges": 20,
+      "associated_tests": 5,
+      "latency_ms": 2.55,
+      "context_chars": 3157
+    },
+    "condition_c_no_expansion": {
+      "relevant_files": [
+        "hydra_mesh/pipeline/dead_letter.py",
+        "hydra_mesh/pipeline/transformer.py",
+        "hydra_mesh/storage/wal.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.333,
+      "selected_nodes": 12,
+      "selected_edges": 0,
+      "associated_tests": 0,
+      "latency_ms": 2.04,
+      "context_chars": 1130
+    }
+  },
+  {
+    "task_id": "TASK-204",
+    "repo": "scaled_repo",
+    "ground_truth_files": [
+      "hydra_mesh/storage/buffer.py"
+    ],
+    "condition_b_full_graph": {
+      "relevant_files": [
+        "hydra_mesh/core/exceptions.py",
+        "hydra_mesh/storage/buffer.py",
+        "hydra_mesh/storage/wal.py",
+        "tests/test_buffer_eviction.py",
+        "tests/test_dead_letter.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.2,
+      "selected_nodes": 12,
+      "selected_edges": 19,
+      "associated_tests": 5,
+      "latency_ms": 2.68,
+      "context_chars": 2778
+    },
+    "condition_c_no_expansion": {
+      "relevant_files": [
+        "hydra_mesh/core/exceptions.py",
+        "hydra_mesh/storage/buffer.py",
+        "hydra_mesh/storage/wal.py"
+      ],
+      "file_recall": 1.0,
+      "localization_efficiency": 0.333,
+      "selected_nodes": 12,
+      "selected_edges": 0,
+      "associated_tests": 0,
+      "latency_ms": 2.09,
+      "context_chars": 1039
+    }
+  }
+]

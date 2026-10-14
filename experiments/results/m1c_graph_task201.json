@@ -1,0 +1,1616 @@
+{
+  "status": "SUCCESS",
+  "metrics": {
+    "task_success": true,
+    "patch_applied": true,
+    "patch_correctness": true,
+    "tests_before": {
+      "passed": false,
+      "summary": "========================= 1 failed, 1 passed in 0.07s ==========================",
+      "exit_code": 1
+    },
+    "tests_after": {
+      "passed": true,
+      "summary": "============================== 2 passed in 0.05s ===============================",
+      "exit_code": 0
+    },
+    "test_passed": true,
+    "files_inspected": [
+      "hydra_mesh/ingest/rate_limiter.py"
+    ],
+    "files_read": 1,
+    "search_count": 0,
+    "tool_calls": 5,
+    "test_runs": 4,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 15,
+    "graph_edges_retrieved": 25,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 1,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 1.0,
+    "execution_time": 52.977,
+    "verification_status": "PASSED"
+  },
+  "state": {
+    "task": "# TASK-201: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the ingestion rate limiter. When a client sends requests exceeding `max_requests`, the limiter is expected to permit up to `max_requests + burst_allowance` requests within the active time window.\n\n## Current Observed Behavior\nRequests sent after reaching `max_requests` are rejected with False, even when burst allowance is configured and unexhausted.\n\n## Expected Behavior\nThe limiter must permit requests up to the combined limit of `max_requests + burst_allowance` within the sliding window before throttling subsequent calls.\n",
+    "observations": [
+      "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/core/base.py\n- hydra_mesh/core/registry.py\n- hydra_mesh/ingest/rate_limiter.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n\n[Relevant Symbols & Definitions]\n- TASK-201.md [file] in tasks/TASK-201.md\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- SlidingWindowLimiter.allow_request [method] in hydra_mesh/ingest/rate_limiter.py (lines 13-28)\n- SlidingWindowLimiter [class] in hydra_mesh/ingest/rate_limiter.py (lines 5-28)\n- TASK-204.md [file] in tasks/TASK-204.md\n- TASK-203.md [file] in tasks/TASK-203.md\n- TASK-202.md [file] in tasks/TASK-202.md\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- DeadLetterQueue.count [method] in hydra_mesh/pipeline/dead_letter.py (lines 11-12)\n- SlidingWindowLimiter.__init__ [method] in hydra_mesh/ingest/rate_limiter.py (lines 7-11)\n- KeyValueCache.get [method] in hydra_mesh/storage/cache.py (lines 3-3)\n- ComponentRegistry.get [method] in hydra_mesh/core/registry.py (lines 6-6)\n- MeshEntity [class] in hydra_mesh/core/base.py (lines 5-9)\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_mesh_entity (tests/test_core.py) -> verifies MeshEntity\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.dispatch --[CALLS]--> ComponentRegistry.get\n- EventDispatcher.dispatch --[CALLS]--> KeyValueCache.get\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- ComponentRegistry.get --[CALLS]--> KeyValueCache.get\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- MetricsAggregator.sum_metric --[CALLS]--> ComponentRegistry.get\n- MetricsAggregator.sum_metric --[CALLS]--> KeyValueCache.get\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventRouter.route_key --[CALLS]--> ComponentRegistry.get\n- EventRouter.route_key --[CALLS]--> KeyValueCache.get\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- KeyValueCache.get --[CALLS]--> ComponentRegistry.get\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- SimpleQueryEngine.match --[CALLS]--> ComponentRegistry.get\n- SimpleQueryEngine.match --[CALLS]--> KeyValueCache.get\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_mesh_entity --[CALLS]--> MeshEntity\n- test_mesh_entity --[TESTS]--> MeshEntity\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer",
+      "Inspected file hydra_mesh/ingest/rate_limiter.py (28 lines).",
+      "Test run failed: ========================= 1 failed, 1 passed in 0.06s ==========================",
+      "Applied code modification attempt #1 to hydra_mesh/ingest/rate_limiter.py (success: True).",
+      "Post-patch tests PASSED: ============================== 2 passed in 0.02s ===============================. Ready for verification.",
+      "Verification completed with status: PASSED"
+    ],
+    "hypotheses": [],
+    "files_inspected": [
+      "hydra_mesh/ingest/rate_limiter.py"
+    ],
+    "searches": [],
+    "actions": [
+      {
+        "action": "modify_code",
+        "file": "hydra_mesh/ingest/rate_limiter.py",
+        "attempt": 1,
+        "success": true
+      }
+    ],
+    "test_results": [
+      {
+        "attempt": 0,
+        "passed": false,
+        "summary": "========================= 1 failed, 1 passed in 0.06s =========================="
+      },
+      {
+        "attempt": 1,
+        "passed": true,
+        "summary": "============================== 2 passed in 0.02s ==============================="
+      }
+    ],
+    "failures": [],
+    "recovery_attempts": 0,
+    "patch_attempts": 1,
+    "final_patch": "diff --git a/hydra_mesh/ingest/rate_limiter.py b/hydra_mesh/ingest/rate_limiter.py\nindex 024c2ee..1885d03 100644\n--- a/hydra_mesh/ingest/rate_limiter.py\n+++ b/hydra_mesh/ingest/rate_limiter.py\n@@ -18,10 +18,8 @@ class SlidingWindowLimiter:\n         self.history[client_id] = [t for t in timestamps if t >= window_start]\n         current_count = len(self.history[client_id])\n         \n-        # BUG FOR TASK-201:\n-        # Strict equality drops request when count reaches max_requests, even if burst_allowance allows extra!\n-        # Should check: current_count < (self.max_requests + self.burst_allowance)\n-        limit = self.max_requests  # Erroneously ignores burst_allowance!\n+        # The limit should include both max_requests and burst_allowance\n+        limit = self.max_requests + self.burst_allowance\n         if current_count < limit:\n             self.history[client_id].append(timestamp)\n             return True\n",
+    "verification": {
+      "status": "PASSED",
+      "success": true,
+      "patch_applied": true,
+      "containment_ok": true,
+      "unintended_files": [],
+      "files_changed": [
+        "hydra_mesh/ingest/rate_limiter.py"
+      ],
+      "test_command": "pytest -v tests/test_rate_limiter.py",
+      "test_summary": "============================== 2 passed in 0.02s ===============================",
+      "test_exit_code": 0,
+      "test_output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /lifecore-swe/fixtures/scaled_repo\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollecting ... collected 2 items\n\ntests/test_rate_limiter.py::test_rate_limiter_standard PASSED            [ 50%]\ntests/test_rate_limiter.py::test_rate_limiter_burst_allowance PASSED     [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+      "failure_reasons": []
+    },
+    "graph_evidence": "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/core/base.py\n- hydra_mesh/core/registry.py\n- hydra_mesh/ingest/rate_limiter.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n\n[Relevant Symbols & Definitions]\n- TASK-201.md [file] in tasks/TASK-201.md\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- SlidingWindowLimiter.allow_request [method] in hydra_mesh/ingest/rate_limiter.py (lines 13-28)\n- SlidingWindowLimiter [class] in hydra_mesh/ingest/rate_limiter.py (lines 5-28)\n- TASK-204.md [file] in tasks/TASK-204.md\n- TASK-203.md [file] in tasks/TASK-203.md\n- TASK-202.md [file] in tasks/TASK-202.md\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- DeadLetterQueue.count [method] in hydra_mesh/pipeline/dead_letter.py (lines 11-12)\n- SlidingWindowLimiter.__init__ [method] in hydra_mesh/ingest/rate_limiter.py (lines 7-11)\n- KeyValueCache.get [method] in hydra_mesh/storage/cache.py (lines 3-3)\n- ComponentRegistry.get [method] in hydra_mesh/core/registry.py (lines 6-6)\n- MeshEntity [class] in hydra_mesh/core/base.py (lines 5-9)\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_mesh_entity (tests/test_core.py) -> verifies MeshEntity\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.dispatch --[CALLS]--> ComponentRegistry.get\n- EventDispatcher.dispatch --[CALLS]--> KeyValueCache.get\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- ComponentRegistry.get --[CALLS]--> KeyValueCache.get\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- MetricsAggregator.sum_metric --[CALLS]--> ComponentRegistry.get\n- MetricsAggregator.sum_metric --[CALLS]--> KeyValueCache.get\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventRouter.route_key --[CALLS]--> ComponentRegistry.get\n- EventRouter.route_key --[CALLS]--> KeyValueCache.get\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- KeyValueCache.get --[CALLS]--> ComponentRegistry.get\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- SimpleQueryEngine.match --[CALLS]--> ComponentRegistry.get\n- SimpleQueryEngine.match --[CALLS]--> KeyValueCache.get\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_mesh_entity --[CALLS]--> MeshEntity\n- test_mesh_entity --[TESTS]--> MeshEntity\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer",
+    "current_phase": "COMPLETED"
+  },
+  "trajectory_file": "/lifecore-swe/experiments/trajectories/m1c_graph_task201.jsonl",
+  "model_info": {
+    "model_name": "models/gemma-4-26b-a4b-it",
+    "model_version": "001",
+    "display_name": "Gemma 4 26B A4B IT",
+    "provider": "Google",
+    "api_runtime": "Google GenAI API (google-genai 2.25.0)",
+    "context_length": {
+      "input_tokens": 262144,
+      "output_tokens": 32768
+    },
+    "temperature": 0.1,
+    "tool_calling_capability": "Structured JSON Output Action Selection & Reasoning",
+    "is_development_adapter": false,
+    "timestamp": "2026-09-27T00:22:12.346602+00:00"
+  },
+  "retrieval_result": {
+    "query": "# TASK-201: Fix Burst Allowance in SlidingWindowLimiter\n\n## Summary\nThe API gateway team reports that clients with burst capacity enabled are being prematurely throttled by the ingestion rate limiter. When a client sends requests exceeding `max_requests`, the limiter is expected to permit up to `max_requests + burst_allowance` requests within the active time window.\n\n## Current Observed Behavior\nRequests sent after reaching `max_requests` are rejected with False, even when burst allowance is configured and unexhausted.\n\n## Expected Behavior\nThe limiter must permit requests up to the combined limit of `max_requests + burst_allowance` within the sliding window before throttling subsequent calls.\n",
+    "candidate_nodes": [
+      {
+        "node_id": "file:tasks/TASK-201.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-201.md",
+        "symbol": "TASK-201.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 8.0
+      },
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        },
+        "relevance_score": 6.0
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.allow_request",
+        "start_line": 13,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "09fa08bc38f67b8496679a3d1587fce4514659a8f65328a24e74b6d35690d23f",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "max_requests",
+            "str",
+            "float",
+            "timestamp",
+            "window_seconds",
+            "setdefault",
+            "client_id",
+            "history",
+            "t",
+            "len",
+            "self",
+            "append"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 6.0
+      },
+      {
+        "node_id": "file:tasks/TASK-202.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-202.md",
+        "symbol": "TASK-202.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-203.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-203.md",
+        "symbol": "TASK-203.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-204.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-204.md",
+        "symbol": "TASK-204.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.__init__",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.__init__",
+        "start_line": 7,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "adfe38a30c47392c03826a223df0718087bb4141e571e9370dc921f991b4ff16",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "List"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 3.0
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.count",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.count",
+        "start_line": 11,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e42891d8a14d37ba4a04709002c78f65d63c031e32ae88fd8d7d1563b524f7d6",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "failed_events",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 3.0
+      },
+      {
+        "node_id": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/registry.py",
+        "symbol": "ComponentRegistry.get",
+        "start_line": 6,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "9565b8174388820882da7f5ff5d851080c0bbe6d6cd0f36035b2e2bbf5308ee9",
+        "metadata": {
+          "calls": [
+            "get"
+          ],
+          "references": [
+            "Any",
+            "str",
+            "get",
+            "name",
+            "_reg",
+            "self"
+          ],
+          "parent": "ComponentRegistry"
+        },
+        "relevance_score": 2.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/cache.py",
+        "symbol": "KeyValueCache.get",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "d9998f08a8f09ff3cf44c4e86a7aa5b19ac65e0444ec4f92e2cfbd47d1c73afc",
+        "metadata": {
+          "calls": [
+            "get"
+          ],
+          "references": [
+            "get",
+            "k",
+            "data",
+            "self"
+          ],
+          "parent": "KeyValueCache"
+        },
+        "relevance_score": 2.5
+      },
+      {
+        "node_id": "class:hydra_mesh/core/base.py::MeshEntity",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/base.py",
+        "symbol": "MeshEntity",
+        "start_line": 5,
+        "end_line": 9,
+        "language": "python",
+        "content_hash": "0d55fe427fc8522f058dc903c3f159da43d297aa545194b131c1b9149dbb6ca6",
+        "metadata": {
+          "calls": [
+            "field",
+            "bool"
+          ],
+          "references": [
+            "dataclass",
+            "entity_id",
+            "str",
+            "metadata",
+            "bool",
+            "Dict",
+            "field",
+            "Any",
+            "dict",
+            "self"
+          ],
+          "parent": null
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "method:hydra_mesh/core/base.py::MeshEntity.validate",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/base.py",
+        "symbol": "MeshEntity.validate",
+        "start_line": 8,
+        "end_line": 9,
+        "language": "python",
+        "content_hash": "eb61272402896033ed5b5198ea94cb23f0b070e3dba0ffd3cdfcf69e9fcc77b8",
+        "metadata": {
+          "calls": [
+            "bool"
+          ],
+          "references": [
+            "bool",
+            "entity_id",
+            "self"
+          ],
+          "parent": "MeshEntity"
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "class:hydra_mesh/core/exceptions.py::BufferOverflowError",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "BufferOverflowError",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "196fb4f003907a2cf60b37e2bfb25fc01a06413b0400edc09a331dd6b5e9b7f7",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "MeshError"
+          ],
+          "parent": null
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "class:hydra_mesh/storage/buffer.py::RingBuffer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/buffer.py",
+        "symbol": "RingBuffer",
+        "start_line": 4,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "0b9dd4eb759b41b18141e8630308dbd9da445824c8a60af1354180ddb067555a",
+        "metadata": {
+          "calls": [
+            "append",
+            "len",
+            "BufferOverflowError"
+          ],
+          "references": [
+            "bool",
+            "int",
+            "capacity",
+            "items",
+            "self",
+            "List",
+            "Any",
+            "append",
+            "item",
+            "len",
+            "BufferOverflowError"
+          ],
+          "parent": null
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/buffer.py",
+        "symbol": "RingBuffer.push",
+        "start_line": 10,
+        "end_line": 17,
+        "language": "python",
+        "content_hash": "026931ab9a99759cff7a179f83a11b0e4dc5b3c33c2d2d439f2e301257f9d683",
+        "metadata": {
+          "calls": [
+            "append",
+            "len",
+            "BufferOverflowError"
+          ],
+          "references": [
+            "bool",
+            "Any",
+            "capacity",
+            "append",
+            "item",
+            "len",
+            "items",
+            "self",
+            "BufferOverflowError"
+          ],
+          "parent": "RingBuffer"
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.size",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/buffer.py",
+        "symbol": "RingBuffer.size",
+        "start_line": 19,
+        "end_line": 20,
+        "language": "python",
+        "content_hash": "8f7e6f82fc8ae271610bfe1655ee710933fc63304e64955eb34e664446a93d17",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "items",
+            "self"
+          ],
+          "parent": "RingBuffer"
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "class:hydra_mesh/connectors/http_sink.py::HttpSink",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/connectors/http_sink.py",
+        "symbol": "HttpSink",
+        "start_line": 3,
+        "end_line": 23,
+        "language": "python",
+        "content_hash": "9ac95b175c0f63fc579a306780a2222bc175965b9a03f334c487cadfaadded9c",
+        "metadata": {
+          "calls": [
+            "items",
+            "dict"
+          ],
+          "references": [
+            "endpoint",
+            "sanitized",
+            "sensitive_names",
+            "Dict",
+            "str",
+            "self",
+            "bool",
+            "strip_sensitive",
+            "k",
+            "v",
+            "items",
+            "dict",
+            "headers"
+          ],
+          "parent": null
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "method:hydra_mesh/connectors/http_sink.py::HttpSink.prepare_headers",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/connectors/http_sink.py",
+        "symbol": "HttpSink.prepare_headers",
+        "start_line": 8,
+        "end_line": 23,
+        "language": "python",
+        "content_hash": "58de48c665e3f761b7868e146d05617bf16cdf93fc11970fae5ea8ccbf952b7a",
+        "metadata": {
+          "calls": [
+            "items",
+            "dict"
+          ],
+          "references": [
+            "sanitized",
+            "sensitive_names",
+            "Dict",
+            "bool",
+            "strip_sensitive",
+            "k",
+            "v",
+            "items",
+            "str",
+            "dict",
+            "headers"
+          ],
+          "parent": "HttpSink"
+        },
+        "relevance_score": 1.5
+      },
+      {
+        "node_id": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/exceptions.py",
+        "symbol": "SchemaError",
+        "start_line": 2,
+        "end_line": 2,
+        "language": "python",
+        "content_hash": "98f4d8560143d831dcd369e078c157f1f09406caed81e897a70ae821500e8261",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "MeshError"
+          ],
+          "parent": null
+        },
+        "relevance_score": 0.5
+      },
+      {
+        "node_id": "method:hydra_mesh/core/serializer.py::JsonSerializer.loads",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/serializer.py",
+        "symbol": "JsonSerializer.loads",
+        "start_line": 7,
+        "end_line": 7,
+        "language": "python",
+        "content_hash": "85a44fd06c02cb5076d49f2927d4f1ac89deaf45197756b00fb86d6bb1d3def5",
+        "metadata": {
+          "calls": [
+            "loads"
+          ],
+          "references": [
+            "staticmethod",
+            "dict",
+            "str",
+            "loads",
+            "s",
+            "json"
+          ],
+          "parent": "JsonSerializer"
+        },
+        "relevance_score": 0.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/batcher.py",
+        "symbol": "EventBatcher.add",
+        "start_line": 7,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "8fddf98e5e5ef1c6d029c1cf0fdcad2f3dd1bdc932166f963496a873604ec201",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "bool",
+            "dict",
+            "max_batch_size",
+            "append",
+            "event",
+            "len",
+            "current_batch",
+            "self"
+          ],
+          "parent": "EventBatcher"
+        },
+        "relevance_score": 0.5
+      },
+      {
+        "node_id": "class:hydra_mesh/ingest/decoders.py::FrameDecoder",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/decoders.py",
+        "symbol": "FrameDecoder",
+        "start_line": 3,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "9ab36dcaaed650def0fd62287e331d1f7ab698db232339457694f3b88c3987e4",
+        "metadata": {
+          "calls": [
+            "loads",
+            "decode"
+          ],
+          "references": [
+            "dict",
+            "bytes",
+            "loads",
+            "json",
+            "decode",
+            "payload"
+          ],
+          "parent": null
+        },
+        "relevance_score": 0.5
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/decoders.py::FrameDecoder.decode",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/decoders.py",
+        "symbol": "FrameDecoder.decode",
+        "start_line": 4,
+        "end_line": 5,
+        "language": "python",
+        "content_hash": "7e8e3e27a5f1ede79ffca26ca1911a0fd921df2b8c79d89780a3c99d8b71c473",
+        "metadata": {
+          "calls": [
+            "loads",
+            "decode"
+          ],
+          "references": [
+            "dict",
+            "bytes",
+            "loads",
+            "json",
+            "decode",
+            "payload"
+          ],
+          "parent": "FrameDecoder"
+        },
+        "relevance_score": 0.5
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/cache.py::KeyValueCache.set",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/cache.py",
+        "symbol": "KeyValueCache.set",
+        "start_line": 4,
+        "end_line": 4,
+        "language": "python",
+        "content_hash": "f59f68d74ef10f43af39ee08c5411cf59545323dd5a9267a7254438e2b5aaa72",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "v",
+            "data",
+            "k",
+            "self"
+          ],
+          "parent": "KeyValueCache"
+        },
+        "relevance_score": 0.5
+      }
+    ],
+    "selected_nodes": [
+      {
+        "node_id": "file:tasks/TASK-201.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-201.md",
+        "symbol": "TASK-201.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+        "metadata": {},
+        "relevance_score": 9.0
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/wal.py",
+        "symbol": "WriteAheadLog.append",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+        "metadata": {
+          "calls": [
+            "append"
+          ],
+          "references": [
+            "str",
+            "append",
+            "entry",
+            "log",
+            "self"
+          ],
+          "parent": "WriteAheadLog"
+        },
+        "relevance_score": 8.0
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.allow_request",
+        "start_line": 13,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "09fa08bc38f67b8496679a3d1587fce4514659a8f65328a24e74b6d35690d23f",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "max_requests",
+            "str",
+            "float",
+            "timestamp",
+            "window_seconds",
+            "setdefault",
+            "client_id",
+            "history",
+            "t",
+            "len",
+            "self",
+            "append"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 6.0
+      },
+      {
+        "node_id": "class:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter",
+        "start_line": 5,
+        "end_line": 28,
+        "language": "python",
+        "content_hash": "71fbedda529d22564e8b0b04a6de1f21d3c31d485c6b051419cb1df2c159b434",
+        "metadata": {
+          "calls": [
+            "setdefault",
+            "len",
+            "append"
+          ],
+          "references": [
+            "bool",
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "window_start",
+            "timestamps",
+            "current_count",
+            "limit",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "timestamp",
+            "setdefault",
+            "client_id",
+            "t",
+            "len",
+            "append",
+            "List"
+          ],
+          "parent": null
+        },
+        "relevance_score": 6.0
+      },
+      {
+        "node_id": "file:tasks/TASK-204.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-204.md",
+        "symbol": "TASK-204.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-203.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-203.md",
+        "symbol": "TASK-203.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "file:tasks/TASK-202.md",
+        "node_type": "file",
+        "repository_id": "scaled_repo",
+        "path": "tasks/TASK-202.md",
+        "symbol": "TASK-202.md",
+        "start_line": null,
+        "end_line": null,
+        "language": "text",
+        "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+        "metadata": {},
+        "relevance_score": 4.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer.transform_event",
+        "start_line": 10,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+        "metadata": {
+          "calls": [
+            "SchemaError"
+          ],
+          "references": [
+            "event",
+            "Optional",
+            "Dict",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": "EventTransformer"
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/transformer.py",
+        "symbol": "EventTransformer",
+        "start_line": 5,
+        "end_line": 18,
+        "language": "python",
+        "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "SchemaError"
+          ],
+          "references": [
+            "dead_letter",
+            "event",
+            "Optional",
+            "self",
+            "dlq",
+            "Dict",
+            "DeadLetterQueue",
+            "SchemaError",
+            "str",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue",
+        "start_line": 3,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+        "metadata": {
+          "calls": [
+            "append",
+            "len"
+          ],
+          "references": [
+            "int",
+            "failed_events",
+            "self",
+            "List",
+            "dict",
+            "str",
+            "append",
+            "len",
+            "Dict",
+            "event",
+            "reason",
+            "Any"
+          ],
+          "parent": null
+        },
+        "relevance_score": 3.5
+      },
+      {
+        "node_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.count",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/pipeline/dead_letter.py",
+        "symbol": "DeadLetterQueue.count",
+        "start_line": 11,
+        "end_line": 12,
+        "language": "python",
+        "content_hash": "e42891d8a14d37ba4a04709002c78f65d63c031e32ae88fd8d7d1563b524f7d6",
+        "metadata": {
+          "calls": [
+            "len"
+          ],
+          "references": [
+            "int",
+            "len",
+            "failed_events",
+            "self"
+          ],
+          "parent": "DeadLetterQueue"
+        },
+        "relevance_score": 3.0
+      },
+      {
+        "node_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.__init__",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/ingest/rate_limiter.py",
+        "symbol": "SlidingWindowLimiter.__init__",
+        "start_line": 7,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "adfe38a30c47392c03826a223df0718087bb4141e571e9370dc921f991b4ff16",
+        "metadata": {
+          "calls": [],
+          "references": [
+            "max_requests",
+            "burst_allowance",
+            "window_seconds",
+            "history",
+            "int",
+            "float",
+            "self",
+            "Dict",
+            "str",
+            "List"
+          ],
+          "parent": "SlidingWindowLimiter"
+        },
+        "relevance_score": 3.0
+      },
+      {
+        "node_id": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/storage/cache.py",
+        "symbol": "KeyValueCache.get",
+        "start_line": 3,
+        "end_line": 3,
+        "language": "python",
+        "content_hash": "d9998f08a8f09ff3cf44c4e86a7aa5b19ac65e0444ec4f92e2cfbd47d1c73afc",
+        "metadata": {
+          "calls": [
+            "get"
+          ],
+          "references": [
+            "get",
+            "k",
+            "data",
+            "self"
+          ],
+          "parent": "KeyValueCache"
+        },
+        "relevance_score": 2.5
+      },
+      {
+        "node_id": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "node_type": "method",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/registry.py",
+        "symbol": "ComponentRegistry.get",
+        "start_line": 6,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "9565b8174388820882da7f5ff5d851080c0bbe6d6cd0f36035b2e2bbf5308ee9",
+        "metadata": {
+          "calls": [
+            "get"
+          ],
+          "references": [
+            "Any",
+            "str",
+            "get",
+            "name",
+            "_reg",
+            "self"
+          ],
+          "parent": "ComponentRegistry"
+        },
+        "relevance_score": 2.5
+      },
+      {
+        "node_id": "class:hydra_mesh/core/base.py::MeshEntity",
+        "node_type": "class",
+        "repository_id": "scaled_repo",
+        "path": "hydra_mesh/core/base.py",
+        "symbol": "MeshEntity",
+        "start_line": 5,
+        "end_line": 9,
+        "language": "python",
+        "content_hash": "0d55fe427fc8522f058dc903c3f159da43d297aa545194b131c1b9149dbb6ca6",
+        "metadata": {
+          "calls": [
+            "field",
+            "bool"
+          ],
+          "references": [
+            "dataclass",
+            "entity_id",
+            "str",
+            "metadata",
+            "bool",
+            "Dict",
+            "field",
+            "Any",
+            "dict",
+            "self"
+          ],
+          "parent": null
+        },
+        "relevance_score": 1.5
+      }
+    ],
+    "selected_edges": [
+      {
+        "edge_id": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.dispatch->CALLS->method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.dispatch",
+        "source_symbol": "EventDispatcher.dispatch",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "target_symbol": "ComponentRegistry.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.dispatch->CALLS->method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.dispatch",
+        "source_symbol": "EventDispatcher.dispatch",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "target_symbol": "KeyValueCache.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.register->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/core/dispatcher.py::EventDispatcher.register",
+        "source_symbol": "EventDispatcher.register",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/core/registry.py::ComponentRegistry.get->CALLS->method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source_symbol": "ComponentRegistry.get",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "target_symbol": "KeyValueCache.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/ingest/batcher.py::EventBatcher.add",
+        "source_symbol": "EventBatcher.add",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/ingest/rate_limiter.py::SlidingWindowLimiter.allow_request",
+        "source_symbol": "SlidingWindowLimiter.allow_request",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/aggregators.py::MetricsAggregator.sum_metric->CALLS->method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source": "method:hydra_mesh/pipeline/aggregators.py::MetricsAggregator.sum_metric",
+        "source_symbol": "MetricsAggregator.sum_metric",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "target_symbol": "ComponentRegistry.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/aggregators.py::MetricsAggregator.sum_metric->CALLS->method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source": "method:hydra_mesh/pipeline/aggregators.py::MetricsAggregator.sum_metric",
+        "source_symbol": "MetricsAggregator.sum_metric",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "target_symbol": "KeyValueCache.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.__init__->CALLS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.__init__",
+        "source_symbol": "PipelineCoordinator.__init__",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline->CALLS->method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source": "method:hydra_mesh/pipeline/coordinator.py::PipelineCoordinator.run_pipeline",
+        "source_symbol": "PipelineCoordinator.run_pipeline",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "target_symbol": "EventTransformer.transform_event"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue.route",
+        "source_symbol": "DeadLetterQueue.route",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/router.py::EventRouter.route_key->CALLS->method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source": "method:hydra_mesh/pipeline/router.py::EventRouter.route_key",
+        "source_symbol": "EventRouter.route_key",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "target_symbol": "ComponentRegistry.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/router.py::EventRouter.route_key->CALLS->method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source": "method:hydra_mesh/pipeline/router.py::EventRouter.route_key",
+        "source_symbol": "EventRouter.route_key",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "target_symbol": "KeyValueCache.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__->CALLS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.__init__",
+        "source_symbol": "EventTransformer.__init__",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event->CALLS->class:hydra_mesh/core/exceptions.py::SchemaError",
+        "source": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+        "source_symbol": "EventTransformer.transform_event",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/core/exceptions.py::SchemaError",
+        "target_symbol": "SchemaError"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.push->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+        "source_symbol": "RingBuffer.push",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/cache.py::KeyValueCache.get->CALLS->method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source_symbol": "KeyValueCache.get",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "target_symbol": "ComponentRegistry.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/memory_store.py::MemoryStore.save->CALLS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "method:hydra_mesh/storage/memory_store.py::MemoryStore.save",
+        "source_symbol": "MemoryStore.save",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/query_engine.py::SimpleQueryEngine.match->CALLS->method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "source": "method:hydra_mesh/storage/query_engine.py::SimpleQueryEngine.match",
+        "source_symbol": "SimpleQueryEngine.match",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/core/registry.py::ComponentRegistry.get",
+        "target_symbol": "ComponentRegistry.get"
+      },
+      {
+        "edge_id": "method:hydra_mesh/storage/query_engine.py::SimpleQueryEngine.match->CALLS->method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "source": "method:hydra_mesh/storage/query_engine.py::SimpleQueryEngine.match",
+        "source_symbol": "SimpleQueryEngine.match",
+        "edge_type": "CALLS",
+        "target": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+        "target_symbol": "KeyValueCache.get"
+      },
+      {
+        "edge_id": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity->TESTS->method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "source": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+        "source_symbol": "test_buffer_push_and_capacity",
+        "edge_type": "TESTS",
+        "target": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "edge_id": "test:tests/test_core.py::test_mesh_entity->CALLS->class:hydra_mesh/core/base.py::MeshEntity",
+        "source": "test:tests/test_core.py::test_mesh_entity",
+        "source_symbol": "test_mesh_entity",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/core/base.py::MeshEntity",
+        "target_symbol": "MeshEntity"
+      },
+      {
+        "edge_id": "test:tests/test_core.py::test_mesh_entity->TESTS->class:hydra_mesh/core/base.py::MeshEntity",
+        "source": "test:tests/test_core.py::test_mesh_entity",
+        "source_symbol": "test_mesh_entity",
+        "edge_type": "TESTS",
+        "target": "class:hydra_mesh/core/base.py::MeshEntity",
+        "target_symbol": "MeshEntity"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+        "target_symbol": "DeadLetterQueue"
+      },
+      {
+        "edge_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq->CALLS->class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "source": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "source_symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "edge_type": "CALLS",
+        "target": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+        "target_symbol": "EventTransformer"
+      }
+    ],
+    "relevant_files": [
+      "hydra_mesh/core/base.py",
+      "hydra_mesh/core/registry.py",
+      "hydra_mesh/ingest/rate_limiter.py",
+      "hydra_mesh/pipeline/dead_letter.py",
+      "hydra_mesh/pipeline/transformer.py"
+    ],
+    "relevant_symbols": [
+      "TASK-201.md",
+      "WriteAheadLog.append",
+      "SlidingWindowLimiter.allow_request",
+      "SlidingWindowLimiter",
+      "TASK-204.md",
+      "TASK-203.md",
+      "TASK-202.md",
+      "EventTransformer.transform_event",
+      "EventTransformer",
+      "DeadLetterQueue",
+      "DeadLetterQueue.count",
+      "SlidingWindowLimiter.__init__",
+      "KeyValueCache.get",
+      "ComponentRegistry.get",
+      "MeshEntity"
+    ],
+    "associated_tests": [
+      {
+        "node_id": "test:tests/test_buffer_eviction.py::test_buffer_push_and_capacity",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_buffer_eviction.py",
+        "symbol": "test_buffer_push_and_capacity",
+        "start_line": 5,
+        "end_line": 14,
+        "language": "python",
+        "content_hash": "b2afa3eb3d6109f4dbedcb013bd125e00426ea4b6f7d1d377deec78dcd74fdb9",
+        "metadata": {
+          "calls": [
+            "RingBuffer",
+            "push",
+            "size",
+            "raises"
+          ],
+          "references": [
+            "buf",
+            "RingBuffer",
+            "push",
+            "size",
+            "raises",
+            "BufferOverflowError",
+            "pytest"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_buffer_push_and_capacity calls RingBuffer.push which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "node_id": "test:tests/test_core.py::test_mesh_entity",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_core.py",
+        "symbol": "test_mesh_entity",
+        "start_line": 4,
+        "end_line": 6,
+        "language": "python",
+        "content_hash": "b4a4ef0bc423ef1c4d45fa2a9d7c628382844ce2489cb733cabd213e75d86fd5",
+        "metadata": {
+          "calls": [
+            "MeshEntity",
+            "validate"
+          ],
+          "references": [
+            "e",
+            "MeshEntity",
+            "validate"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Test verification: test_mesh_entity directly executes/asserts MeshEntity",
+        "edge_confidence": 0.92,
+        "target_symbol": "MeshEntity"
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_missing_schema_routes_to_dlq",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_missing_schema_routes_to_dlq",
+        "start_line": 13,
+        "end_line": 19,
+        "language": "python",
+        "content_hash": "9b733e6559a338b3e77e0c1f57bf26f8049925ce67ec84ed2db25c0cce8e0fdb",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_transformer_missing_schema_routes_to_dlq calls DeadLetterQueue which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "node_id": "test:tests/test_dead_letter.py::test_transformer_valid",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_dead_letter.py",
+        "symbol": "test_transformer_valid",
+        "start_line": 5,
+        "end_line": 11,
+        "language": "python",
+        "content_hash": "e633fb7b1da317ff21071c41111eea4e4bb8f51fe9ecc37441992441c0a34fed",
+        "metadata": {
+          "calls": [
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "references": [
+            "dlq",
+            "transformer",
+            "res",
+            "DeadLetterQueue",
+            "EventTransformer",
+            "transform_event",
+            "count"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_transformer_valid calls DeadLetterQueue which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      },
+      {
+        "node_id": "test:tests/test_rate_limiter.py::test_rate_limiter_burst_allowance",
+        "node_type": "test",
+        "repository_id": "scaled_repo",
+        "path": "tests/test_rate_limiter.py",
+        "symbol": "test_rate_limiter_burst_allowance",
+        "start_line": 9,
+        "end_line": 19,
+        "language": "python",
+        "content_hash": "7601f5f70009062a63932d769fcbe29839d1948305a9cc8606942395431bd3dc",
+        "metadata": {
+          "calls": [
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "references": [
+            "limiter",
+            "i",
+            "SlidingWindowLimiter",
+            "range",
+            "allow_request"
+          ],
+          "parent": null
+        },
+        "edge_evidence": "Transitive test execution: test_rate_limiter_burst_allowance calls SlidingWindowLimiter.allow_request which calls WriteAheadLog.append",
+        "edge_confidence": 0.85,
+        "target_symbol": "WriteAheadLog.append"
+      }
+    ],
+    "latency_ms": 3.06,
+    "compact_context": "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/core/base.py\n- hydra_mesh/core/registry.py\n- hydra_mesh/ingest/rate_limiter.py\n- hydra_mesh/pipeline/dead_letter.py\n- hydra_mesh/pipeline/transformer.py\n\n[Relevant Symbols & Definitions]\n- TASK-201.md [file] in tasks/TASK-201.md\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- SlidingWindowLimiter.allow_request [method] in hydra_mesh/ingest/rate_limiter.py (lines 13-28)\n- SlidingWindowLimiter [class] in hydra_mesh/ingest/rate_limiter.py (lines 5-28)\n- TASK-204.md [file] in tasks/TASK-204.md\n- TASK-203.md [file] in tasks/TASK-203.md\n- TASK-202.md [file] in tasks/TASK-202.md\n- EventTransformer.transform_event [method] in hydra_mesh/pipeline/transformer.py (lines 10-18)\n- EventTransformer [class] in hydra_mesh/pipeline/transformer.py (lines 5-18)\n- DeadLetterQueue [class] in hydra_mesh/pipeline/dead_letter.py (lines 3-12)\n- DeadLetterQueue.count [method] in hydra_mesh/pipeline/dead_letter.py (lines 11-12)\n- SlidingWindowLimiter.__init__ [method] in hydra_mesh/ingest/rate_limiter.py (lines 7-11)\n- KeyValueCache.get [method] in hydra_mesh/storage/cache.py (lines 3-3)\n- ComponentRegistry.get [method] in hydra_mesh/core/registry.py (lines 6-6)\n- MeshEntity [class] in hydra_mesh/core/base.py (lines 5-9)\n\n[Associated Tests]\n- test_buffer_push_and_capacity (tests/test_buffer_eviction.py) -> verifies WriteAheadLog.append\n- test_mesh_entity (tests/test_core.py) -> verifies MeshEntity\n- test_transformer_missing_schema_routes_to_dlq (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_transformer_valid (tests/test_dead_letter.py) -> verifies WriteAheadLog.append\n- test_rate_limiter_burst_allowance (tests/test_rate_limiter.py) -> verifies WriteAheadLog.append\n\n[Graph Relationships]\n- EventDispatcher.dispatch --[CALLS]--> ComponentRegistry.get\n- EventDispatcher.dispatch --[CALLS]--> KeyValueCache.get\n- EventDispatcher.register --[CALLS]--> WriteAheadLog.append\n- ComponentRegistry.get --[CALLS]--> KeyValueCache.get\n- EventBatcher.add --[CALLS]--> WriteAheadLog.append\n- SlidingWindowLimiter.allow_request --[CALLS]--> WriteAheadLog.append\n- MetricsAggregator.sum_metric --[CALLS]--> ComponentRegistry.get\n- MetricsAggregator.sum_metric --[CALLS]--> KeyValueCache.get\n- PipelineCoordinator.__init__ --[CALLS]--> EventTransformer\n- PipelineCoordinator.run_pipeline --[CALLS]--> EventTransformer.transform_event\n- DeadLetterQueue.route --[CALLS]--> WriteAheadLog.append\n- EventRouter.route_key --[CALLS]--> ComponentRegistry.get\n- EventRouter.route_key --[CALLS]--> KeyValueCache.get\n- EventTransformer.__init__ --[CALLS]--> DeadLetterQueue\n- EventTransformer.transform_event --[CALLS]--> SchemaError\n- RingBuffer.push --[CALLS]--> WriteAheadLog.append\n- KeyValueCache.get --[CALLS]--> ComponentRegistry.get\n- MemoryStore.save --[CALLS]--> WriteAheadLog.append\n- SimpleQueryEngine.match --[CALLS]--> ComponentRegistry.get\n- SimpleQueryEngine.match --[CALLS]--> KeyValueCache.get\n- test_buffer_push_and_capacity --[TESTS]--> WriteAheadLog.append\n- test_mesh_entity --[CALLS]--> MeshEntity\n- test_mesh_entity --[TESTS]--> MeshEntity\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> DeadLetterQueue\n- test_transformer_missing_schema_routes_to_dlq --[CALLS]--> EventTransformer",
+    "config": {
+      "max_nodes": 15,
+      "max_edges": 25,
+      "max_files": 5,
+      "max_tests": 5,
+      "max_context_chars": 4000,
+      "expansion_depth": 1,
+      "enable_relationship_expansion": true
+    }
+  }
+}

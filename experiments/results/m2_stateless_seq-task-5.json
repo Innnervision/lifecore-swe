@@ -1,0 +1,38 @@
+{
+  "status": "SUCCESS",
+  "metrics": {
+    "task_success": true,
+    "patch_applied": true,
+    "patch_correctness": true,
+    "tests_before": null,
+    "tests_after": {
+      "passed": true,
+      "summary": "============================== 1 passed in 0.02s ===============================",
+      "exit_code": 0
+    },
+    "test_passed": true,
+    "files_inspected": [
+      "hydra_mesh/pipeline/transformer.py"
+    ],
+    "files_read": 1,
+    "search_count": 7,
+    "tool_calls": 15,
+    "test_runs": 4,
+    "graph_queries": 0,
+    "graph_nodes_retrieved": 0,
+    "graph_edges_retrieved": 0,
+    "candidate_nodes": 0,
+    "selected_nodes": 0,
+    "patch_attempts": 1,
+    "recovery_attempts": 0,
+    "repository_localization_efficiency": 0.5,
+    "execution_time": 285.4,
+    "verification_status": "PASSED",
+    "experiences_retrieved": [],
+    "experience_count": 0,
+    "experience_stored": null,
+    "experience_influence": "NONE",
+    "experience_stale_count": 0
+  },
+  "trajectory_file": "experiments/trajectories/m2_stateless_seq-task-5.jsonl"
+}

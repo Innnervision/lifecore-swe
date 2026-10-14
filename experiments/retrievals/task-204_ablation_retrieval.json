@@ -1,0 +1,725 @@
+{
+  "query": "# TASK-204: RingBuffer Capacity Enforcement and Overflow Detection\n\n## Summary\nUnder high load, memory metrics indicated that `RingBuffer` exceeded its configured capacity threshold before raising a `BufferOverflowError`, causing memory bloat in storage buffering.\n\n## Current Observed Behavior\n`RingBuffer.push()` permits `capacity + 1` items to be appended before throwing an overflow error due to an off-by-one boundary comparison.\n\n## Expected Behavior\nWhen the buffer already contains `capacity` items, attempting to push an additional item must immediately raise `BufferOverflowError(\"Buffer capacity exceeded\")`.\n",
+  "candidate_nodes": [
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.push",
+      "start_line": 10,
+      "end_line": 17,
+      "language": "python",
+      "content_hash": "026931ab9a99759cff7a179f83a11b0e4dc5b3c33c2d2d439f2e301257f9d683",
+      "metadata": {
+        "calls": [
+          "append",
+          "len",
+          "BufferOverflowError"
+        ],
+        "references": [
+          "bool",
+          "Any",
+          "capacity",
+          "append",
+          "item",
+          "len",
+          "items",
+          "self",
+          "BufferOverflowError"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 10.5
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/wal.py",
+      "symbol": "WriteAheadLog.append",
+      "start_line": 3,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+      "metadata": {
+        "calls": [
+          "append"
+        ],
+        "references": [
+          "str",
+          "append",
+          "entry",
+          "log",
+          "self"
+        ],
+        "parent": "WriteAheadLog"
+      },
+      "relevance_score": 9.5
+    },
+    {
+      "node_id": "file:tasks/TASK-204.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-204.md",
+      "symbol": "TASK-204.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+      "metadata": {},
+      "relevance_score": 9.0
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.buffer",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "hydra_mesh.storage.buffer",
+      "start_line": 1,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "cfb7986be9973441f2cfd17da0b6a36a3eaa4ccecf3ea11184ee2a9a8eecad05",
+      "metadata": {},
+      "relevance_score": 9.0
+    },
+    {
+      "node_id": "class:hydra_mesh/storage/buffer.py::RingBuffer",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer",
+      "start_line": 4,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "0b9dd4eb759b41b18141e8630308dbd9da445824c8a60af1354180ddb067555a",
+      "metadata": {
+        "calls": [
+          "append",
+          "len",
+          "BufferOverflowError"
+        ],
+        "references": [
+          "bool",
+          "int",
+          "capacity",
+          "items",
+          "self",
+          "List",
+          "Any",
+          "append",
+          "item",
+          "len",
+          "BufferOverflowError"
+        ],
+        "parent": null
+      },
+      "relevance_score": 7.5
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.size",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.size",
+      "start_line": 19,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "8f7e6f82fc8ae271610bfe1655ee710933fc63304e64955eb34e664446a93d17",
+      "metadata": {
+        "calls": [
+          "len"
+        ],
+        "references": [
+          "int",
+          "len",
+          "items",
+          "self"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 7.5
+    },
+    {
+      "node_id": "file:hydra_mesh/storage/buffer.py",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "buffer.py",
+      "start_line": null,
+      "end_line": null,
+      "language": "python",
+      "content_hash": "cfb7986be9973441f2cfd17da0b6a36a3eaa4ccecf3ea11184ee2a9a8eecad05",
+      "metadata": {},
+      "relevance_score": 6.0
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.__init__",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.__init__",
+      "start_line": 6,
+      "end_line": 8,
+      "language": "python",
+      "content_hash": "f232e12f02c16483481bc1f996ce1763f263108c7c601a0f414ef63c2578984b",
+      "metadata": {
+        "calls": [],
+        "references": [
+          "capacity",
+          "items",
+          "int",
+          "self",
+          "List",
+          "Any"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 6.0
+    },
+    {
+      "node_id": "file:tasks/TASK-201.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-201.md",
+      "symbol": "TASK-201.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "file:tasks/TASK-202.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-202.md",
+      "symbol": "TASK-202.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "file:tasks/TASK-203.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-203.md",
+      "symbol": "TASK-203.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "class:hydra_mesh/core/exceptions.py::BufferOverflowError",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/core/exceptions.py",
+      "symbol": "BufferOverflowError",
+      "start_line": 3,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "196fb4f003907a2cf60b37e2bfb25fc01a06413b0400edc09a331dd6b5e9b7f7",
+      "metadata": {
+        "calls": [],
+        "references": [
+          "MeshError"
+        ],
+        "parent": null
+      },
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.__init__",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/__init__.py",
+      "symbol": "hydra_mesh.storage.__init__",
+      "start_line": 1,
+      "end_line": 2,
+      "language": "python",
+      "content_hash": "a51fc14d4767254fc203598eaca953a54e0a9034f2548b11e5930e06621c1aba",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.cache",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/cache.py",
+      "symbol": "hydra_mesh.storage.cache",
+      "start_line": 1,
+      "end_line": 4,
+      "language": "python",
+      "content_hash": "ffa4a34f376803283420917caca958a55084a172e2cb3d65f908dd07205dd4c0",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.eviction",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/eviction.py",
+      "symbol": "hydra_mesh.storage.eviction",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "538878cb94a014f11a277195315d14170757e24bf3043e2d7ab416962e677414",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.indexer",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/indexer.py",
+      "symbol": "hydra_mesh.storage.indexer",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "5dd3b85a8ab3c31998858a6e5d8d089ddf4a6fad6ce3a9dffb3a56189ce75e0f",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.memory_store",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/memory_store.py",
+      "symbol": "hydra_mesh.storage.memory_store",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "55fd1849e652c71ff7c1eb1124813a2fd2b71fe1a58d4cc0379d5c8c1bd7f7bc",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.query_engine",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/query_engine.py",
+      "symbol": "hydra_mesh.storage.query_engine",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "ba7e1e1f6b98335b8e7bc0ed19f0213cd37f476409dd3f66bb5c91a372144dcc",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.retention",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/retention.py",
+      "symbol": "hydra_mesh.storage.retention",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "4606eb4fdafc09af6874798c110118ec158fe8887e1065907d863a054d8747be",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.wal",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/wal.py",
+      "symbol": "hydra_mesh.storage.wal",
+      "start_line": 1,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "8661405b4da4b06f594646b5f677e554e80d992c507c44f0c097e7626d95d15c",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/cache.py::KeyValueCache.get",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/cache.py",
+      "symbol": "KeyValueCache.get",
+      "start_line": 3,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "d9998f08a8f09ff3cf44c4e86a7aa5b19ac65e0444ec4f92e2cfbd47d1c73afc",
+      "metadata": {
+        "calls": [
+          "get"
+        ],
+        "references": [
+          "get",
+          "k",
+          "data",
+          "self"
+        ],
+        "parent": "KeyValueCache"
+      },
+      "relevance_score": 4.0
+    },
+    {
+      "node_id": "class:hydra_mesh/pipeline/dead_letter.py::DeadLetterQueue",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/pipeline/dead_letter.py",
+      "symbol": "DeadLetterQueue",
+      "start_line": 3,
+      "end_line": 12,
+      "language": "python",
+      "content_hash": "1165ea97bc632b667cf4f3eacd5a68eb0ae40fcd14be543e3967518e28416d71",
+      "metadata": {
+        "calls": [
+          "append",
+          "len"
+        ],
+        "references": [
+          "int",
+          "failed_events",
+          "self",
+          "List",
+          "dict",
+          "str",
+          "append",
+          "len",
+          "Dict",
+          "event",
+          "reason",
+          "Any"
+        ],
+        "parent": null
+      },
+      "relevance_score": 3.5
+    },
+    {
+      "node_id": "class:hydra_mesh/pipeline/transformer.py::EventTransformer",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/pipeline/transformer.py",
+      "symbol": "EventTransformer",
+      "start_line": 5,
+      "end_line": 18,
+      "language": "python",
+      "content_hash": "fbfe50af65ffa3dd6917b86b29c527c672dafcefa401ad9c76f8910bd8e0573f",
+      "metadata": {
+        "calls": [
+          "DeadLetterQueue",
+          "SchemaError"
+        ],
+        "references": [
+          "dead_letter",
+          "event",
+          "Optional",
+          "self",
+          "dlq",
+          "Dict",
+          "DeadLetterQueue",
+          "SchemaError",
+          "str",
+          "Any"
+        ],
+        "parent": null
+      },
+      "relevance_score": 3.5
+    },
+    {
+      "node_id": "method:hydra_mesh/pipeline/transformer.py::EventTransformer.transform_event",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/pipeline/transformer.py",
+      "symbol": "EventTransformer.transform_event",
+      "start_line": 10,
+      "end_line": 18,
+      "language": "python",
+      "content_hash": "8ba8101939fd0bcba29a37cf504701954fb37f692583705362d261dabf857162",
+      "metadata": {
+        "calls": [
+          "SchemaError"
+        ],
+        "references": [
+          "event",
+          "Optional",
+          "Dict",
+          "SchemaError",
+          "str",
+          "Any"
+        ],
+        "parent": "EventTransformer"
+      },
+      "relevance_score": 3.5
+    }
+  ],
+  "selected_nodes": [
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.push",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.push",
+      "start_line": 10,
+      "end_line": 17,
+      "language": "python",
+      "content_hash": "026931ab9a99759cff7a179f83a11b0e4dc5b3c33c2d2d439f2e301257f9d683",
+      "metadata": {
+        "calls": [
+          "append",
+          "len",
+          "BufferOverflowError"
+        ],
+        "references": [
+          "bool",
+          "Any",
+          "capacity",
+          "append",
+          "item",
+          "len",
+          "items",
+          "self",
+          "BufferOverflowError"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 10.5
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/wal.py::WriteAheadLog.append",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/wal.py",
+      "symbol": "WriteAheadLog.append",
+      "start_line": 3,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "b86a2023e8761e895f2473292584c90c287886c3709b8d58f092a6eb4ffce60e",
+      "metadata": {
+        "calls": [
+          "append"
+        ],
+        "references": [
+          "str",
+          "append",
+          "entry",
+          "log",
+          "self"
+        ],
+        "parent": "WriteAheadLog"
+      },
+      "relevance_score": 9.5
+    },
+    {
+      "node_id": "module:hydra_mesh.storage.buffer",
+      "node_type": "module",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "hydra_mesh.storage.buffer",
+      "start_line": 1,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "cfb7986be9973441f2cfd17da0b6a36a3eaa4ccecf3ea11184ee2a9a8eecad05",
+      "metadata": {},
+      "relevance_score": 9.0
+    },
+    {
+      "node_id": "file:tasks/TASK-204.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-204.md",
+      "symbol": "TASK-204.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "6856d089060a6ad24d6d70e558a92afe823ed5e736c128d90925f59d5f1ed57f",
+      "metadata": {},
+      "relevance_score": 9.0
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.size",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.size",
+      "start_line": 19,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "8f7e6f82fc8ae271610bfe1655ee710933fc63304e64955eb34e664446a93d17",
+      "metadata": {
+        "calls": [
+          "len"
+        ],
+        "references": [
+          "int",
+          "len",
+          "items",
+          "self"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 7.5
+    },
+    {
+      "node_id": "class:hydra_mesh/storage/buffer.py::RingBuffer",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer",
+      "start_line": 4,
+      "end_line": 20,
+      "language": "python",
+      "content_hash": "0b9dd4eb759b41b18141e8630308dbd9da445824c8a60af1354180ddb067555a",
+      "metadata": {
+        "calls": [
+          "append",
+          "len",
+          "BufferOverflowError"
+        ],
+        "references": [
+          "bool",
+          "int",
+          "capacity",
+          "items",
+          "self",
+          "List",
+          "Any",
+          "append",
+          "item",
+          "len",
+          "BufferOverflowError"
+        ],
+        "parent": null
+      },
+      "relevance_score": 7.5
+    },
+    {
+      "node_id": "method:hydra_mesh/storage/buffer.py::RingBuffer.__init__",
+      "node_type": "method",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "RingBuffer.__init__",
+      "start_line": 6,
+      "end_line": 8,
+      "language": "python",
+      "content_hash": "f232e12f02c16483481bc1f996ce1763f263108c7c601a0f414ef63c2578984b",
+      "metadata": {
+        "calls": [],
+        "references": [
+          "capacity",
+          "items",
+          "int",
+          "self",
+          "List",
+          "Any"
+        ],
+        "parent": "RingBuffer"
+      },
+      "relevance_score": 6.0
+    },
+    {
+      "node_id": "file:hydra_mesh/storage/buffer.py",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/storage/buffer.py",
+      "symbol": "buffer.py",
+      "start_line": null,
+      "end_line": null,
+      "language": "python",
+      "content_hash": "cfb7986be9973441f2cfd17da0b6a36a3eaa4ccecf3ea11184ee2a9a8eecad05",
+      "metadata": {},
+      "relevance_score": 6.0
+    },
+    {
+      "node_id": "file:tasks/TASK-203.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-203.md",
+      "symbol": "TASK-203.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "f58e47551aa2755827d916d97fde074b88c88755deabf3b8c07f6732c2764625",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "file:tasks/TASK-202.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-202.md",
+      "symbol": "TASK-202.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "d30f5d210b8ebb6d7ce0a638db9dc2c3aa57e0cfb01be838694a67dfa3821862",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "file:tasks/TASK-201.md",
+      "node_type": "file",
+      "repository_id": "scaled_repo",
+      "path": "tasks/TASK-201.md",
+      "symbol": "TASK-201.md",
+      "start_line": null,
+      "end_line": null,
+      "language": "text",
+      "content_hash": "8e252e95bfd55382c422386d9f153eda1a8b5ba32e3f1e3b41109d6ddb98582e",
+      "metadata": {},
+      "relevance_score": 4.5
+    },
+    {
+      "node_id": "class:hydra_mesh/core/exceptions.py::BufferOverflowError",
+      "node_type": "class",
+      "repository_id": "scaled_repo",
+      "path": "hydra_mesh/core/exceptions.py",
+      "symbol": "BufferOverflowError",
+      "start_line": 3,
+      "end_line": 3,
+      "language": "python",
+      "content_hash": "196fb4f003907a2cf60b37e2bfb25fc01a06413b0400edc09a331dd6b5e9b7f7",
+      "metadata": {
+        "calls": [],
+        "references": [
+          "MeshError"
+        ],
+        "parent": null
+      },
+      "relevance_score": 4.5
+    }
+  ],
+  "selected_edges": [],
+  "relevant_files": [
+    "hydra_mesh/core/exceptions.py",
+    "hydra_mesh/storage/buffer.py",
+    "hydra_mesh/storage/wal.py"
+  ],
+  "relevant_symbols": [
+    "RingBuffer.push",
+    "WriteAheadLog.append",
+    "hydra_mesh.storage.buffer",
+    "TASK-204.md",
+    "RingBuffer.size",
+    "RingBuffer",
+    "RingBuffer.__init__",
+    "buffer.py",
+    "TASK-203.md",
+    "TASK-202.md",
+    "TASK-201.md",
+    "BufferOverflowError"
+  ],
+  "associated_tests": [],
+  "latency_ms": 2.09,
+  "compact_context": "==================================================\nGRAPH-GUIDED REPOSITORY EVIDENCE (AUTOMATIC PRE-RETRIEVAL)\n==================================================\n\n[Relevant Files]\n- hydra_mesh/core/exceptions.py\n- hydra_mesh/storage/buffer.py\n- hydra_mesh/storage/wal.py\n\n[Relevant Symbols & Definitions]\n- RingBuffer.push [method] in hydra_mesh/storage/buffer.py (lines 10-17)\n- WriteAheadLog.append [method] in hydra_mesh/storage/wal.py (lines 3-3)\n- hydra_mesh.storage.buffer [module] in hydra_mesh/storage/buffer.py (lines 1-20)\n- TASK-204.md [file] in tasks/TASK-204.md\n- RingBuffer.size [method] in hydra_mesh/storage/buffer.py (lines 19-20)\n- RingBuffer [class] in hydra_mesh/storage/buffer.py (lines 4-20)\n- RingBuffer.__init__ [method] in hydra_mesh/storage/buffer.py (lines 6-8)\n- buffer.py [file] in hydra_mesh/storage/buffer.py\n- TASK-203.md [file] in tasks/TASK-203.md\n- TASK-202.md [file] in tasks/TASK-202.md\n- TASK-201.md [file] in tasks/TASK-201.md\n- BufferOverflowError [class] in hydra_mesh/core/exceptions.py (lines 3-3)",
+  "config": {
+    "max_nodes": 12,
+    "max_edges": 20,
+    "max_files": 5,
+    "max_tests": 5,
+    "max_context_chars": 4000,
+    "expansion_depth": 0,
+    "enable_relationship_expansion": false
+  }
+}
