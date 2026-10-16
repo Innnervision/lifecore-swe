@@ -1,0 +1,79 @@
+<svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0E1A"/>
+      <stop offset="100%" style="stop-color:#0D1F3C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect x="0" y="0" width="6" height="640" fill="#34A853"/>
+
+  <!-- Title -->
+  <text x="640" y="55" text-anchor="middle" font-size="13" fill="#34A853" font-weight="bold">KEY FINDING — M3 ABLATION</text>
+  <text x="640" y="95" text-anchor="middle" font-size="34" font-weight="bold" fill="white">Structural Memory Replaces Text Injection</text>
+  <text x="640" y="132" text-anchor="middle" font-size="15" fill="#AAB4BE">Condition E achieves 100% accuracy with zero narrative text in the prompt — and runs faster</text>
+
+  <!-- 5 condition bars — execution time -->
+  <text x="200" y="175" text-anchor="middle" font-size="13" fill="#AAB4BE">Avg Execution Time (seconds) — lower is better</text>
+
+  <!-- Bar A -->
+  <rect x="60" y="190" width="204" height="50" rx="4" fill="#EA4335" opacity="0.85"/>
+  <text x="172" y="221" text-anchor="middle" font-size="13" font-weight="bold" fill="white">204.6s</text>
+  <text x="172" y="258" text-anchor="middle" font-size="11" fill="#AAB4BE">A: Stateless</text>
+
+  <!-- Bar B -->
+  <rect x="60" y="290" width="136" height="50" rx="4" fill="#4285F4" opacity="0.85"/>
+  <text x="132" y="321" text-anchor="middle" font-size="13" font-weight="bold" fill="white">136.5s</text>
+  <text x="132" y="358" text-anchor="middle" font-size="11" fill="#AAB4BE">B: Static Graph</text>
+
+  <!-- Bar C -->
+  <rect x="60" y="390" width="141" height="50" rx="4" fill="#FBBC04" opacity="0.85"/>
+  <text x="135" y="421" text-anchor="middle" font-size="13" font-weight="bold" fill="white">141.9s</text>
+  <text x="135" y="458" text-anchor="middle" font-size="11" fill="#AAB4BE">C: Graph + Text</text>
+
+  <!-- Bar D -->
+  <rect x="60" y="490" width="180" height="50" rx="4" fill="#9334E6" opacity="0.85"/>
+  <text x="154" y="521" text-anchor="middle" font-size="13" font-weight="bold" fill="white">180.7s</text>
+  <text x="154" y="558" text-anchor="middle" font-size="11" fill="#AAB4BE">D: Exp-Graph + Text</text>
+
+  <!-- Bar E — highlighted -->
+  <rect x="330" y="190" width="115" height="50" rx="4" fill="#34A853"/>
+  <text x="388" y="221" text-anchor="middle" font-size="15" font-weight="bold" fill="white">115.5s ★</text>
+  <text x="388" y="258" text-anchor="middle" font-size="11" fill="#34A853" font-weight="bold">E: Exp-Graph No Text</text>
+  <!-- Star annotation -->
+  <rect x="330" y="270" width="200" height="36" rx="6" fill="#0D2B0D" stroke="#34A853" stroke-width="1.5"/>
+  <text x="430" y="285" text-anchor="middle" font-size="10" fill="#34A853" font-weight="bold">FASTEST of all 5 conditions</text>
+  <text x="430" y="299" text-anchor="middle" font-size="9" fill="#AAB4BE">No text injected into prompt</text>
+
+  <!-- Vertical divider -->
+  <line x1="560" y1="160" x2="560" y2="600" stroke="#1A2744" stroke-width="1.5"/>
+
+  <!-- Right side: what this means -->
+  <text x="920" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="white">What Condition E proves</text>
+
+  <rect x="600" y="205" width="630" height="75" rx="8" fill="#0D1828" stroke="#4285F4" stroke-width="1.5"/>
+  <text x="915" y="232" text-anchor="middle" font-size="12" fill="#4285F4" font-weight="bold">Verified experience encoded as graph edge weights</text>
+  <text x="915" y="252" text-anchor="middle" font-size="11" fill="#AAB4BE">guides navigation without consuming prompt tokens</text>
+  <text x="915" y="268" text-anchor="middle" font-size="11" fill="#AAB4BE">or increasing inference latency</text>
+
+  <rect x="600" y="300" width="630" height="75" rx="8" fill="#0D2B0D" stroke="#34A853" stroke-width="1.5"/>
+  <text x="915" y="327" text-anchor="middle" font-size="12" fill="#34A853" font-weight="bold">Structural memory is model-agnostic</text>
+  <text x="915" y="347" text-anchor="middle" font-size="11" fill="#AAB4BE">overlays operate on AST topology and test outcomes</text>
+  <text x="915" y="363" text-anchor="middle" font-size="11" fill="#AAB4BE">not on model internals or parameters</text>
+
+  <rect x="600" y="395" width="630" height="75" rx="8" fill="#2B0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="915" y="422" text-anchor="middle" font-size="12" fill="#EA4335" font-weight="bold">Cold-start property verified</text>
+  <text x="915" y="442" text-anchor="middle" font-size="11" fill="#AAB4BE">at T1 (empty overlay): Condition E = Condition B</text>
+  <text x="915" y="458" text-anchor="middle" font-size="11" fill="#AAB4BE">no hallucination or cold-start bias</text>
+
+  <!-- Bottom stat -->
+  <rect x="600" y="490" width="630" height="80" rx="8" fill="#0A1628" stroke="#333" stroke-width="1"/>
+  <text x="700" y="525" text-anchor="middle" font-size="28" font-weight="bold" fill="#34A853">100%</text>
+  <text x="700" y="548" text-anchor="middle" font-size="11" fill="#AAB4BE">Success (all 5 tasks)</text>
+  <text x="870" y="525" text-anchor="middle" font-size="28" font-weight="bold" fill="#4285F4">0</text>
+  <text x="870" y="548" text-anchor="middle" font-size="11" fill="#AAB4BE">Searches</text>
+  <text x="1040" y="525" text-anchor="middle" font-size="28" font-weight="bold" fill="#FBBC04">36%</text>
+  <text x="1040" y="548" text-anchor="middle" font-size="11" fill="#AAB4BE">Faster than C</text>
+  <text x="1180" y="525" text-anchor="middle" font-size="28" font-weight="bold" fill="#9334E6">39%</text>
+  <text x="1180" y="548" text-anchor="middle" font-size="11" fill="#AAB4BE">Edge utilization</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0E1A"/>
+      <stop offset="100%" style="stop-color:#0D1F3C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect x="0" y="0" width="6" height="640" fill="#EA4335"/>
+
+  <!-- Title -->
+  <text x="640" y="55" text-anchor="middle" font-size="13" fill="#EA4335" font-weight="bold">THE PROBLEM</text>
+  <text x="640" y="95" text-anchor="middle" font-size="36" font-weight="bold" fill="white">Search Thrashing in Large Codebases</text>
+  <text x="640" y="130" text-anchor="middle" font-size="16" fill="#AAB4BE">Without graph guidance, agents exhaust their tool budget searching — never reaching the fix</text>
+
+  <!-- Stateless agent path — chaotic -->
+  <text x="200" y="180" text-anchor="middle" font-size="14" fill="#EA4335" font-weight="bold">Stateless Agent (59-file repo)</text>
+
+  <!-- File boxes -->
+  <rect x="60"  y="200" width="90" height="36" rx="4" fill="#1A0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="105" y="223" text-anchor="middle" font-size="9" fill="#EA4335">retry_policy.py</text>
+
+  <rect x="170" y="240" width="90" height="36" rx="4" fill="#1A0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="215" y="263" text-anchor="middle" font-size="9" fill="#EA4335">connectors.py</text>
+
+  <rect x="60"  y="280" width="90" height="36" rx="4" fill="#1A0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="105" y="303" text-anchor="middle" font-size="9" fill="#EA4335">utils.py</text>
+
+  <rect x="170" y="320" width="90" height="36" rx="4" fill="#1A0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="215" y="343" text-anchor="middle" font-size="9" fill="#EA4335">pipeline.py</text>
+
+  <rect x="60"  y="360" width="90" height="36" rx="4" fill="#1A0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="105" y="383" text-anchor="middle" font-size="9" fill="#EA4335">storage.py</text>
+
+  <!-- Target file never reached -->
+  <rect x="270" y="280" width="110" height="36" rx="4" fill="#0D2B0D" stroke="#34A853" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="325" y="299" text-anchor="middle" font-size="9" fill="#34A853">rate_limiter.py</text>
+  <text x="325" y="311" text-anchor="middle" font-size="8" fill="#34A853">← TARGET</text>
+
+  <!-- Chaotic arrows -->
+  <line x1="105" y1="200" x2="215" y2="240" stroke="#EA4335" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="215" y1="240" x2="105" y2="280" stroke="#EA4335" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="105" y1="280" x2="215" y2="320" stroke="#EA4335" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="215" y1="320" x2="105" y2="360" stroke="#EA4335" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- FAIL badge -->
+  <rect x="80" y="420" width="200" height="50" rx="8" fill="#2B0A0A" stroke="#EA4335" stroke-width="2"/>
+  <text x="180" y="442" text-anchor="middle" font-size="14" font-weight="bold" fill="#EA4335">FAILED</text>
+  <text x="180" y="460" text-anchor="middle" font-size="11" fill="#AAB4BE">20 tool calls · 17 searches · 0 edits</text>
+
+  <!-- Divider -->
+  <line x1="430" y1="160" x2="430" y2="560" stroke="#333" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="430" y="150" text-anchor="middle" font-size="11" fill="#666">vs</text>
+
+  <!-- Graph-guided path — clean -->
+  <text x="855" y="180" text-anchor="middle" font-size="14" fill="#34A853" font-weight="bold">Graph-Guided Agent (same repo)</text>
+
+  <!-- AST graph mini -->
+  <circle cx="640" cy="290" r="28" fill="#0D1828" stroke="#4285F4" stroke-width="2"/>
+  <text x="640" y="286" text-anchor="middle" font-size="8" fill="#4285F4">AST</text>
+  <text x="640" y="298" text-anchor="middle" font-size="8" fill="#4285F4">GRAPH</text>
+
+  <!-- Direct arrow to target -->
+  <line x1="668" y1="290" x2="790" y2="290" stroke="#34A853" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Target file -->
+  <rect x="790" y="270" width="130" height="40" rx="6" fill="#0D2B0D" stroke="#34A853" stroke-width="2"/>
+  <text x="855" y="288" text-anchor="middle" font-size="10" fill="#34A853" font-weight="bold">rate_limiter.py</text>
+  <text x="855" y="302" text-anchor="middle" font-size="9" fill="#AAB4BE">First shot · 0 searches</text>
+
+  <!-- Fix arrow -->
+  <line x1="855" y1="310" x2="855" y2="360" stroke="#34A853" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <!-- Pass badge -->
+  <rect x="740" y="360" width="230" height="50" rx="8" fill="#0D2B0D" stroke="#34A853" stroke-width="2"/>
+  <text x="855" y="381" text-anchor="middle" font-size="14" font-weight="bold" fill="#34A853">SUCCESS</text>
+  <text x="855" y="399" text-anchor="middle" font-size="11" fill="#AAB4BE">5 tool calls · 0 searches · 52.98s</text>
+
+  <!-- Stats comparison -->
+  <rect x="440" y="480" width="840" height="100" rx="8" fill="#0A1628" stroke="#333" stroke-width="1"/>
+  <text x="860" y="505" text-anchor="middle" font-size="12" fill="#AAB4BE">Localization efficiency on 59-file scaled repo</text>
+
+  <text x="560" y="545" text-anchor="middle" font-size="32" font-weight="bold" fill="#EA4335">0%</text>
+  <text x="560" y="565" text-anchor="middle" font-size="11" fill="#AAB4BE">Stateless baseline</text>
+
+  <text x="760" y="545" text-anchor="middle" font-size="32" font-weight="bold" fill="#34A853">100%</text>
+  <text x="760" y="565" text-anchor="middle" font-size="11" fill="#AAB4BE">Graph-guided</text>
+
+  <text x="960" y="545" text-anchor="middle" font-size="32" font-weight="bold" fill="#4285F4">3.7×</text>
+  <text x="960" y="565" text-anchor="middle" font-size="11" fill="#AAB4BE">Speedup</text>
+
+  <text x="1160" y="545" text-anchor="middle" font-size="32" font-weight="bold" fill="#FBBC04">&lt;3ms</text>
+  <text x="1160" y="565" text-anchor="middle" font-size="11" fill="#AAB4BE">Retrieval latency</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34A853"/>
+    </marker>
+    <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34A853"/>
+    </marker>
+  </defs>
+</svg>
