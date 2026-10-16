@@ -1,0 +1,85 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0E1A"/>
+      <stop offset="100%" style="stop-color:#0D1F3C"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg2)"/>
+
+  <!-- Subtle grid -->
+  <g stroke="#1A2744" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="400" y1="0" x2="400" y2="400"/>
+    <line x1="600" y1="0" x2="600" y2="400"/>
+  </g>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="6" height="400" fill="#4285F4"/>
+
+  <!-- Title block -->
+  <text x="400" y="60" text-anchor="middle" font-size="34" font-weight="bold" fill="white">LIFECORE-SWE</text>
+  <text x="400" y="90" text-anchor="middle" font-size="14" fill="#4285F4">Experience-Conditioned Code Graphs for Autonomous SWE</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="108" x2="760" y2="108" stroke="#1A2744" stroke-width="1.5"/>
+
+  <!-- 4 stream boxes -->
+  <rect x="30"  y="125" width="160" height="70" rx="6" fill="#0D1828" stroke="#4285F4" stroke-width="1.5"/>
+  <text x="110" y="150" text-anchor="middle" font-size="9" fill="#4285F4" font-weight="bold">STREAM 1</text>
+  <text x="110" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">AST Code Graph</text>
+  <text x="110" y="182" text-anchor="middle" font-size="9" fill="#AAB4BE">252 nodes · 345 edges</text>
+
+  <rect x="210" y="125" width="160" height="70" rx="6" fill="#0D2B0D" stroke="#34A853" stroke-width="1.5"/>
+  <text x="290" y="150" text-anchor="middle" font-size="9" fill="#34A853" font-weight="bold">STREAM 2</text>
+  <text x="290" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Positive Overlay</text>
+  <text x="290" y="182" text-anchor="middle" font-size="9" fill="#AAB4BE">Verified edge weights</text>
+
+  <rect x="390" y="125" width="160" height="70" rx="6" fill="#2B0A0A" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="470" y="150" text-anchor="middle" font-size="9" fill="#EA4335" font-weight="bold">STREAM 3</text>
+  <text x="470" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Negative Overlay</text>
+  <text x="470" y="182" text-anchor="middle" font-size="9" fill="#AAB4BE">Causal attribution</text>
+
+  <rect x="570" y="125" width="200" height="70" rx="6" fill="#1A0A2E" stroke="#9334E6" stroke-width="1.5"/>
+  <text x="670" y="150" text-anchor="middle" font-size="9" fill="#9334E6" font-weight="bold">STREAM 4</text>
+  <text x="670" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Resource Graph</text>
+  <text x="670" y="182" text-anchor="middle" font-size="9" fill="#AAB4BE">Provenance-aware</text>
+
+  <!-- Arrows down -->
+  <line x1="400" y1="195" x2="400" y2="215" stroke="#AAB4BE" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- Gemma 4 bar -->
+  <rect x="150" y="215" width="500" height="50" rx="8" fill="#1565C0" stroke="#4285F4" stroke-width="1.5"/>
+  <text x="400" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gemma 4 · gemma-4-26b-a4b-it · temperature=0.1</text>
+  <text x="400" y="256" text-anchor="middle" font-size="10" fill="#90CAF9">Google GenAI SDK 2.25.0 · Structured JSON output · 5 conditions · 9 tasks</text>
+
+  <!-- Key finding -->
+  <rect x="30" y="285" width="740" height="50" rx="6" fill="#0A1628" stroke="#34A853" stroke-width="1.5"/>
+  <text x="400" y="306" text-anchor="middle" font-size="10" fill="#AAB4BE">Key Finding</text>
+  <text x="400" y="324" text-anchor="middle" font-size="13" font-weight="bold" fill="#34A853">Structural graph conditioning replaces narrative text injection — 100% accuracy, 36% lower latency</text>
+
+  <!-- Bottom stats -->
+  <text x="133" y="370" text-anchor="middle" font-size="20" font-weight="bold" fill="#34A853">100%</text>
+  <text x="133" y="386" text-anchor="middle" font-size="9" fill="#AAB4BE">Task Success</text>
+
+  <text x="267" y="370" text-anchor="middle" font-size="20" font-weight="bold" fill="#4285F4">0</text>
+  <text x="267" y="386" text-anchor="middle" font-size="9" fill="#AAB4BE">Search Queries</text>
+
+  <text x="400" y="370" text-anchor="middle" font-size="20" font-weight="bold" fill="#FBBC04">121</text>
+  <text x="400" y="386" text-anchor="middle" font-size="9" fill="#AAB4BE">Unit Tests</text>
+
+  <text x="533" y="370" text-anchor="middle" font-size="20" font-weight="bold" fill="#9334E6">p=0.024</text>
+  <text x="533" y="386" text-anchor="middle" font-size="9" fill="#AAB4BE">Significance</text>
+
+  <text x="667" y="370" text-anchor="middle" font-size="20" font-weight="bold" fill="#EA4335">d=2.18</text>
+  <text x="667" y="386" text-anchor="middle" font-size="9" fill="#AAB4BE">Cohen's d</text>
+
+  <defs>
+    <marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#AAB4BE"/>
+    </marker>
+  </defs>
+</svg>
